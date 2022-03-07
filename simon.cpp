@@ -82,7 +82,6 @@ window_space get_dense_window(probability_matrix& now) {
     }
 
     // 下面计算活跃位
-    // 
     for(uint32_t i = 0; i < now.left_size; i++) {       // for l
         uint32_t free = 0;
         int bits[32] = {0}; //统计A数组每个元素相应bit位的个数
@@ -92,10 +91,11 @@ window_space get_dense_window(probability_matrix& now) {
                 if(Matrix[i].A[j] & (1<<k)) bits[k]++;  //若为活跃位则++
             }
         }
+        for(int j = 0; j < 32; j++) bits[j] = bits[j] ? 1 : 0; // [*] repeat or no repeats
         // 统计 r ^ m[l].base ^ base的非0位(非0位要作为活跃位)
         for(size_t j = 0; j < now.right_size; j++) {    // for r
             uint32_t brbase = now.right.data[j] ^ Matrix[i].base ^ base;
-            brbase |= free;         // 
+            // brbase |= free;   // [*] free or no free
             for (int k = 0; k < 32 && brbase; k++) {
                 if(brbase & (1<<k)) free_prob[k] += now(i, j) * Matrix[i].proba; //权重now(i, j) * Matrix[i].proba
             }
