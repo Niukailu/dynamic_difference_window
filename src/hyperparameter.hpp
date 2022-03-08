@@ -5,11 +5,11 @@
 
 /**
  * FROM_0x0_0x1_TO_0x1_0x0_ROUND_39
- * FROM_0x0_0x11_TO_0x5_0x2_ROUND_28
+ * FROM_0x0_0x11_TO_0x5_0x2_ROUND_27
  * FROM_0x440_0x1880_TO_0x440_0x100_ROUND_22
  * FROM_0x4000000_0x11000000_TO_0x11000000_0x4000000_ROUND_21
 **/
-#define FROM_0x4000000_0x11000000_TO_0x11000000_0x4000000_ROUND_21
+#define FROM_0x440_0x1880_TO_0x440_0x100_ROUND_22
 
 
 #ifdef FROM_0x0_0x1_TO_0x1_0x0_ROUND_39
@@ -27,7 +27,7 @@
     #define PRECISION 14
     #define ROUNDS 28
     #define LOAD_ROUND 0
-    const std::string name = "FROM_0x0-0x11_TO_0x5_0x2";
+    const std::string name = "FROM_0x0_0x11_TO_0x5_0x2_ROUND_27";
     const uint32_t begin_left = 0;
     const uint32_t begin_right = 17;
     const uint32_t end_left = 5;
@@ -38,7 +38,7 @@
     #define PRECISION 14
     #define ROUNDS 23
     #define LOAD_ROUND 0
-    const std::string name = "FROM_0x440_0x1880_TO_0x440_0x100";
+    const std::string name = "FROM_0x440_0x1880_TO_0x440_0x100_ROUND_22";
     const uint32_t begin_left = 1088;
     const uint32_t begin_right = 6272;
     const uint32_t end_left = 1088;
