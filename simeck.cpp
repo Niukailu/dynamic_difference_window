@@ -68,9 +68,9 @@ window_space get_dense_window(probability_matrix& now) {
     // 首先计算base
     for(size_t i = 0; i < now.left_size; i++) {
         for(size_t j = 0; j < now.right_size; j++) {
-            uint32_t br = now.right.data[j] ^ Matrix[i].base;
+            uint32_t br = now.right.data[j] ^ Matrix[i].base; // 计算 r^m[l].base
             for(int k = 0; k < 32; k++) {
-                if(br & (1<<k)) base_prob[k] += now(i, j)();
+                if(br & (1<<k)) base_prob[k] += now(i, j)(); //权重就是prob[l][r]
                 else base_prob[k] -= now(i, j)();
             }
         }
@@ -78,30 +78,33 @@ window_space get_dense_window(probability_matrix& now) {
     uint32_t base = 0;
     for(int i = 31; i >= 0; i--) {
         base <<= 1;
-        if(base_prob[i] > 0) base |= 1;
+        if(base_prob[i] > 0) base |= 1;  //得到base
     }
 
     // 下面计算活跃位
     for(uint32_t i = 0; i < now.left_size; i++) {       // for l
         uint32_t free = 0;
-        int bits[32] = {0};
+        int bits[32] = {0}; //统计A数组每个元素相应bit位的个数
         for(int j = 0; j < Matrix[i].num; j++) {        // for len( M[l].A )
             free |= Matrix[i].A[j];
             for(int k = 0; k < 32; k++) {
-                if(Matrix[i].A[j] & (1<<k)) bits[k]++;
+                if(Matrix[i].A[j] & (1<<k)) bits[k]++;  //若为活跃位则++
             }
         }
+        for(int j = 0; j < 32; j++) bits[j] = bits[j] ? 1 : 0; // [*] repeat or no repeats
+        // 统计 r ^ m[l].base ^ base的非0位(非0位要作为活跃位)
         for(size_t j = 0; j < now.right_size; j++) {    // for r
             uint32_t brbase = now.right.data[j] ^ Matrix[i].base ^ base;
-            brbase |= free;         // ?
+            // brbase |= free;   // [*] free or no free
             for (int k = 0; k < 32 && brbase; k++) {
-                if(brbase & (1<<k)) free_prob[k] += now(i, j) * Matrix[i].proba;
+                if(brbase & (1<<k)) free_prob[k] += now(i, j) * Matrix[i].proba; //权重now(i, j) * Matrix[i].proba
             }
         }
         double all_bits_num = 0;
-        for(int j = 0; j < 32; j++) all_bits_num += bits[j];
-        for(int j = 0; j < 32 && all_bits_num; j++) free_prob[j] += edge_prob[i] * Matrix[i].proba * (bits[j]  / all_bits_num);
+        for(int j = 0; j < 32; j++) all_bits_num += bits[j]; //为得到每位上的 (活跃位个数 / 总数) 这个占比
+        for(int j = 0; j < 32 && all_bits_num; j++) free_prob[j] += edge_prob[i] * Matrix[i].proba * (bits[j]  / all_bits_num); //
     }
+    // 根据概率对idx(下标)排序，得到活跃位
     sort(idx, idx + 32, [&](int a, int b) {
         return free_prob[a] == free_prob[b] ? a < b : free_prob[a] > free_prob[b];
     });
@@ -109,7 +112,7 @@ window_space get_dense_window(probability_matrix& now) {
     for(int i = 0; i < PRECISION; i++) {
         if(free_prob[idx[i]].value != ZERO) active_bits.push_back(idx[i]);
     }
-    // 下面计算base
+    // 得到窗口
     return window_space(base, active_bits);
 }
 
