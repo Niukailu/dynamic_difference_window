@@ -13,7 +13,7 @@
 g++ simon.cpp -Wall -Wextra -O3 -march=native -fopenmp -lm -o bin/simon
 
 # simeck
-g++ simon.cpp -Wall -Wextra -O3 -march=native -fopenmp -lm -o bin/simon
+g++ simeck.cpp -Wall -Wextra -O3 -march=native -fopenmp -lm -o bin/simeck
 ```
 
 ### 3. 运行程序
