@@ -9,6 +9,7 @@
 #include <assert.h>
 #include <sys/stat.h>
 #include "window_space.hpp"
+#include "hyperparameter.hpp"
 
 
 int mkpath(std::string s,mode_t mode=0755) {
@@ -39,16 +40,16 @@ void free_distribution(void *p, uint32_t size) { munmap(p, size); }
 class probability_matrix {
 public:
     window_space left, right;
-    uint32_t left_size, right_size;
+    int left_size, right_size;
     probability* prob;
 
     probability_matrix(window_space left, window_space right) {
         this->left = left;
         this->right = right;
         left_size = left.data.size(), right_size = right.data.size();
-        uint32_t all_size = left_size * right_size;
+        int all_size = left_size * right_size;
         prob = (probability*) alloc_distribution(sizeof(probability) * all_size);
-        for(uint32_t i = 0; i < all_size; i++) prob[i] = 0;
+        for(int i = 0; i < all_size; i++) prob[i] = 0;
     }
     void unalloc() {
         free_distribution(prob, sizeof(probability) * left_size * right_size);

@@ -9,21 +9,12 @@
 
 ### 2. 编译程序
 ```bash
-# simon
-g++ simon.cpp -Wall -Wextra -O3 -march=native -fopenmp -lm -o bin/simon
-
-# simeck
-g++ simeck.cpp -Wall -Wextra -O3 -march=native -fopenmp -lm -o bin/simeck
+g++ main.cpp -Wall -Wextra -O3 -march=native -fopenmp -lm -o bin/{name}
 ```
 
 ### 3. 运行程序
 
 ```bash
-# simon
 mkdir experiments/{name}/
-./bin/simon 2>&1 | tee experiments/{name}/info.log
-
-# simeck
-mkdir experiments/{name}/
-./bin/simeck 2>&1 | tee experiments/{name}/info.log
+./bin/{name} 2>&1 | tee experiments/{name}/info.log
 ```
