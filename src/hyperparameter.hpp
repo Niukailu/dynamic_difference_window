@@ -8,9 +8,11 @@
  * SIMECK64_FROM_0x0_0x11_TO_0x5_0x2_ROUND_27
  * SIMON64_FROM_0x440_0x1880_TO_0x440_0x100_ROUND_22
  * SIMON64_FROM_0x4000000_0x11000000_TO_0x11000000_0x4000000_ROUND_21
+ * SIMON48_FROM_0x80_0x222_TO_0x222_0x80_ROUND_17
+ * SIMON32_FROM_0x0_0x40_TO_0x4000_0x0_ROUND_13
 **/
 // 在这里定义启用哪一个实验
-#define SIMON64_FROM_0x440_0x1880_TO_0x440_0x100_ROUND_22
+#define SIMON32_FROM_0x0_0x40_TO_0x4000_0x0_ROUND_13
 
 
 #ifdef SIMECK64_FROM_0x0_0x1_TO_0x1_0x0_ROUND_39
@@ -59,6 +61,30 @@
     const uint32_t begin_right = 285212672;
     const uint32_t end_left = 285212672;
     const uint32_t end_right = 67108864;
+#endif
+
+#ifdef SIMON48_FROM_0x80_0x222_TO_0x222_0x80_ROUND_17
+    #define SIMON48
+    #define PRECISION 14
+    #define ROUNDS 18
+    #define LOAD_ROUND 0
+    const std::string name = "SIMON48_FROM_0x80_0x222_TO_0x222_0x80_ROUND_17";
+    const uint32_t begin_left = 128;
+    const uint32_t begin_right = 546;
+    const uint32_t end_left = 546;
+    const uint32_t end_right = 128;
+#endif
+
+#ifdef SIMON32_FROM_0x0_0x40_TO_0x4000_0x0_ROUND_13
+    #define SIMON32
+    #define PRECISION 14
+    #define ROUNDS 14
+    #define LOAD_ROUND 0
+    const std::string name = "SIMON32_FROM_0x0_0x40_TO_0x4000_0x0_ROUND_13";
+    const uint16_t begin_left = 0;
+    const uint16_t begin_right = 64;
+    const uint16_t end_left = 16384;
+    const uint16_t end_right = 0;
 #endif
 
 #if defined(SIMECK32)+defined(SIMECK48)+defined(SIMECK64)+defined(SIMECK96)+defined(SIMECK128)+defined(SIMON32)+defined(SIMON48)+defined(SIMON64)+defined(SIMON96)+defined(SIMON128) != 1

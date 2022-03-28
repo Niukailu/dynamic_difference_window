@@ -117,7 +117,7 @@ void simple_prob(window_space& x, window_space& dense_window) {
     int data_size = x.data.size();
     for(int l = 0; l < data_size; l++) {
         for(int i = 0, p = BITS - 1; i < Matrix[l].num && p >= 0; i++, p--) {
-            if(!(dense_window.mask & (1<<p))) { i--; continue; }
+            if(dense_window.mask & (1<<p)) { i--; continue; }
             for(int j = i; j < Matrix[l].num; j++) {
                 if(Matrix[l].A[j] & (1<<p)) {
                     swap(Matrix[l].A[i], Matrix[l].A[j]);
@@ -163,7 +163,7 @@ probability_matrix round_trans(probability_matrix& now) {
             for(int i = 0; i < m.out_num && dd; i++) {
                 if(((dd ^ m.A[i]) & dense_window.inv_mask) < dd) dd ^= m.A[i], d ^= m.A[i];
             }
-            if(dd) continue; // 如果还是有window外的活跃位，那就真的没办法了
+            if(dd & dense_window.inv_mask) continue; // 如果还是有window外的活跃位，那就真的没办法了
             probability nowlr_m_proba = nowlr * m.proba;
             for (int i=1;; i++) {
                 int indexd = dense_window.find(d);
