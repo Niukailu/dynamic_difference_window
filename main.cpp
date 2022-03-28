@@ -1,4 +1,9 @@
 #include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <vector>
 #include <cmath>
 #include <bitset>
@@ -11,6 +16,7 @@ using namespace std;
 
 
 // 定义全局变量
+FILE* log_fp;
 transition_space Matrix[1U<<PRECISION];
 probability edge_prob[1<<PRECISION];
 probability free_prob[BITS];
@@ -143,11 +149,11 @@ void simple_prob(window_space& x, window_space& dense_window) {
 probability_matrix round_trans(probability_matrix& now) {
     get_prob(now.left);
     window_space dense_window = get_dense_window(now);      // 获取概率密集区域
-    printf("window is [");
+    printf("window is ["), fprintf(log_fp, "window is [");
     for(int i = 0; i < BITS; i++) {
-        if(dense_window.mask & (1<<i)) printf("%d, ", i);
+        if(dense_window.mask & (1<<i)) printf("%d, ", i), fprintf(log_fp, "%d, ", i);
     }
-    printf("]\n");
+    printf("]\n"), fprintf(log_fp, "]\n");
     fflush(stdout);
     probability_matrix next(dense_window, now.left);
     simple_prob(now.left, dense_window);        // 化简概率
@@ -185,15 +191,15 @@ void print(probability_matrix& now) {
             if(now(i, j) > max_prob) max_prob = now(i, j);
 	    }
     }
-    printf("Max: %.6f", max_prob.value);
+    printf("Max: %.6f", max_prob.value), fprintf(log_fp, "Max: %.6f", max_prob.value);
     for (int i = 0; i < now.left_size; i++) {
 	    for (int j = 0; j < now.right_size; j++) {
 	        if (now(i, j) > max_prob*zo6) {
-	            printf (" (%#x,%#x)", now.left.data[i], now.right.data[j]);
+	            printf(" (%#x,%#x)", now.left.data[i], now.right.data[j]), fprintf(log_fp, " (%#x,%#x)", now.left.data[i], now.right.data[j]);
 	        }
 	    }
     }
-    printf ("\n");
+    printf("\n"), fprintf(log_fp, "\n");
 }
 
 int main() {
@@ -202,24 +208,40 @@ int main() {
     probability_matrix now(left, right);
     now(now.left.find(begin_left), now.right.find(begin_right)) = 1;       // now[0, 1] = 1
 
+    // 创建文件夹
+    mkpath("experiments/");
+    mkpath("experiments/" + name + "/");
+    
+    // 配置输出
+    log_fp = fopen(("experiments/" + name + "/info.log").c_str(), "w+");
+
     if (LOAD_ROUND > 0) {   // 加载上次结果
         now.load("experiments/" + name + "/" + to_string(LOAD_ROUND) + "/", begin_round);
-        cout << "第" << begin_round - 1 << "轮结果被成功加载！" << endl;
+        printf("第%d轮结果被成功加载！\n", begin_round - 1);
+        fprintf(log_fp, "第%d轮结果被成功加载！\n", begin_round - 1);
     }
     now.save("experiments/" + name + "/" + to_string(begin_round - 1) + "/", begin_round - 1);
 
     printf("Input: (%#x, %#x) -> (%#x, %#x)\n", begin_left, begin_right, end_left, end_right);
+    fprintf(log_fp, "Input: (%#x, %#x) -> (%#x, %#x)\n", begin_left, begin_right, end_left, end_right);
     for (int i = begin_round; i < ROUNDS; i++) {
         print(now);
-        fflush(stdout);
+        fflush(stdout), fflush(log_fp);
         now = round_trans(now);
         now.save("experiments/" + name + "/" + to_string(i) + "/", i);
         int left_index = now.left.find(end_left), right_index = now.right.find(end_right);
-        if(left_index == -1 || right_index == -1) printf("Round %2i: -inf\n", i);
-        else printf("Round %2i: %f\n", i, now(left_index, right_index).value);
-        fflush(stdout);
+        if(left_index == -1 || right_index == -1) {
+            printf("Round %2i: -inf\n", i);
+            fprintf(log_fp, "Round %2i: -inf\n", i);
+        }
+        else{
+            printf("Round %2i: %f\n", i, now(left_index, right_index).value);
+            fprintf(log_fp, "Round %2i: %f\n", i, now(left_index, right_index).value);
+        }
+        fflush(stdout), fflush(log_fp);
     }
     now.unalloc();
+    fclose(log_fp);
 
     return 0;
 }

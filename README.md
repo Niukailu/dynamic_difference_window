@@ -15,6 +15,5 @@ g++ main.cpp -Wall -Wextra -O3 -march=native -fopenmp -lm -o bin/{name}
 ### 3. 运行程序
 
 ```bash
-mkdir experiments/{name}/
-./bin/{name} 2>&1 | tee experiments/{name}/info.log
+./bin/{name}
 ```
