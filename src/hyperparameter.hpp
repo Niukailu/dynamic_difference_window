@@ -42,7 +42,7 @@
 #ifdef SIMON64_FROM_0x440_0x1880_TO_0x440_0x100_ROUND_22
     #define SIMON64
     #define PRECISION 14
-    #define ROUNDS 23
+    #define ROUNDS 25   // 多两轮
     #define LOAD_ROUND 0
     const std::string name = "SIMON64_FROM_0x440_0x1880_TO_0x440_0x100_ROUND_22";
     const uint32_t begin_left = 1088;
