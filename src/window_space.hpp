@@ -56,7 +56,7 @@ public:
         data.clear();
         dtype tmp;
         for(int i = 0; i < size; i++) {
-            fread(&tmp, sizeof(dtype), 1, f);
+            assert(fread(&tmp, sizeof(dtype), 1, f));
             data.push_back(tmp);
         }
         fclose(f);

@@ -89,7 +89,7 @@ public:
         prob = (probability*) alloc_distribution(sizeof(probability) * left_size * right_size);
         std::string file_path = floder + "/prob";
         FILE* f = fopen(file_path.c_str(), "rb");
-        fread(prob, sizeof(probability), left_size * right_size, f);
+        assert(fread(prob, sizeof(probability), left_size * right_size, f));
         fclose(f);
         left.load(floder + "/left", left_size);
         right.load(floder + "/right", right_size);

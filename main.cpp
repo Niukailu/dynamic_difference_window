@@ -211,19 +211,18 @@ int main() {
     // 创建文件夹
     mkpath("experiments/");
     mkpath("experiments/" + name + "/");
-    
-    // 配置输出
-    log_fp = fopen(("experiments/" + name + "/info.log").c_str(), "w+");
 
     if (LOAD_ROUND > 0) {   // 加载上次结果
+        log_fp = fopen(("experiments/" + name + "/info.log").c_str(), "a+");    // 配置输出
         now.load("experiments/" + name + "/" + to_string(LOAD_ROUND) + "/", begin_round);
         printf("第%d轮结果被成功加载！\n", begin_round - 1);
-        fprintf(log_fp, "第%d轮结果被成功加载！\n", begin_round - 1);
     }
-    now.save("experiments/" + name + "/" + to_string(begin_round - 1) + "/", begin_round - 1);
-
-    printf("Input: (%#x, %#x) -> (%#x, %#x)\n", begin_left, begin_right, end_left, end_right);
-    fprintf(log_fp, "Input: (%#x, %#x) -> (%#x, %#x)\n", begin_left, begin_right, end_left, end_right);
+    else{
+        log_fp = fopen(("experiments/" + name + "/info.log").c_str(), "w+");    // 配置输出
+        now.save("experiments/" + name + "/" + to_string(begin_round - 1) + "/", begin_round - 1);
+        printf("Input: (%#x, %#x) -> (%#x, %#x)\n", begin_left, begin_right, end_left, end_right);
+        fprintf(log_fp, "Input: (%#x, %#x) -> (%#x, %#x)\n", begin_left, begin_right, end_left, end_right);
+    }
     for (int i = begin_round; i < ROUNDS; i++) {
         print(now);
         fflush(stdout), fflush(log_fp);
@@ -240,6 +239,9 @@ int main() {
         }
         fflush(stdout), fflush(log_fp);
     }
+    print(now);
+    fflush(stdout), fflush(log_fp);
+
     now.unalloc();
     fclose(log_fp);
 
