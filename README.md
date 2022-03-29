@@ -17,3 +17,7 @@ g++ main.cpp -Wall -Wextra -O3 -march=native -fopenmp -lm -o bin/{name}
 ```bash
 ./bin/{name}
 ```
+
+### 4. 分析程序结果
+
+可以通过`experiments/{name}/info.log`来查看运行的日志，或者运行`python3 help.py`来对结果进行分析。
