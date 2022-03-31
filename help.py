@@ -86,19 +86,19 @@ def generate_log(experiment, max_step):
     clear_console()
     info = load(experiment, 0)
     print(f"\033[0;34;40mInput: ({info['left'][0]:#x}, {info['right'][0]:#x})\033[0m")
-    print(f"\033[0;34;40mMax: {info['prob'][0,0]:06f} ({info['left'][0]:#x}, {info['right'][0]:#x})\033[0m")
+    print(f"\033[0;34;40m\tMax: {info['prob'][0,0]:06f} ({info['left'][0]:#x},{info['right'][0]:#x})\033[0m")
     for step in range(1, max_step+1):
         del info
-        print("==============")
-        print(f"\033[0;34;40mRound: {step}\033[0m")
+        print(f"\033[0;34;40mRound {step}:\033[0m")
         info = load(experiment, step)
-        print(f"\033[0;34;40mwindow is {info['left_window']}\033[0m")
+        print(f"\033[0;34;40m\twindow is {info['left_window']}\033[0m")
         max_prob = info['prob'].max()
-        print(f"\033[0;34;40mMax: {max_prob:06f}\033[0m", end="")
+        print(f"\033[0;34;40m\tMax: {max_prob:06f}\033[0m", end="")
         xs, ys = np.where(info['prob'] >= max_prob + math.log2(0.999999))
         for x, y in zip(xs, ys):
             print(f"\033[0;34;40m ({info['left'][x]:#x},{info['right'][y]:#x})\033[0m", end="")
         print("")
+    print(f"\033[0;34;40mover.\033[0m")
     del info
     input("\n按回车继续...")
 
@@ -157,7 +157,6 @@ def analysis_experiment(experiment, step):
     input("\n按回车继续...")
     return True
     
-
 
 def choice_experiment_action(experiment):
     ''' choice experiment action '''

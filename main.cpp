@@ -73,6 +73,8 @@ window_space get_dense_window(probability_matrix& now) {
             for(int k = 0; k < BITS; k++) {
                 if(br & (1<<k)) base_prob[k] += now(i, j)(); //权重就是prob[l][r]
                 else base_prob[k] -= now(i, j)();
+                // if(br & (1<<k)) base_prob[k] += now(i, j)() * Matrix[i].proba(); // [*] mdf1, 权重就是prob[l][r]
+                // else base_prob[k] -= now(i, j)() * Matrix[i].proba();
             }
         }
     }
@@ -149,9 +151,14 @@ void simple_prob(window_space& x, window_space& dense_window) {
 probability_matrix round_trans(probability_matrix& now) {
     get_prob(now.left);
     window_space dense_window = get_dense_window(now);      // 获取概率密集区域
-    printf("window is ["), fprintf(log_fp, "window is [");
+    printf("\twindow is ["), fprintf(log_fp, "\twindow is [");
+    bool first = true;
     for(int i = 0; i < BITS; i++) {
-        if(dense_window.mask & (1<<i)) printf("%d, ", i), fprintf(log_fp, "%d, ", i);
+        if(dense_window.mask & (1<<i)) {
+            if(!first) printf(", "), fprintf(log_fp, ", ");
+            first = false;
+            printf("%d", i), fprintf(log_fp, "%d", i);
+        }
     }
     printf("]\n"), fprintf(log_fp, "]\n");
     fflush(stdout);
@@ -184,14 +191,14 @@ probability_matrix round_trans(probability_matrix& now) {
     return next;
 }
 
-void print(probability_matrix& now) {
+probability print(probability_matrix& now) {
     probability max_prob = 0;
     for (int i = 0; i < now.left_size; i++) {
 	    for (int j = 0; j < now.right_size; j++) {
             if(now(i, j) > max_prob) max_prob = now(i, j);
 	    }
     }
-    printf("Max: %.6f", max_prob.value), fprintf(log_fp, "Max: %.6f", max_prob.value);
+    printf("\tMax: %.6f", max_prob.value), fprintf(log_fp, "\tMax: %.6f", max_prob.value);
     for (int i = 0; i < now.left_size; i++) {
 	    for (int j = 0; j < now.right_size; j++) {
 	        if (now(i, j) > max_prob*zo6) {
@@ -200,6 +207,7 @@ void print(probability_matrix& now) {
 	    }
     }
     printf("\n"), fprintf(log_fp, "\n");
+    return max_prob;
 }
 
 int main() {
@@ -220,26 +228,20 @@ int main() {
     else{
         log_fp = fopen(("experiments/" + name + "/info.log").c_str(), "w+");    // 配置输出
         now.save("experiments/" + name + "/" + to_string(begin_round - 1) + "/", begin_round - 1);
-        printf("Input: (%#x, %#x) -> (%#x, %#x)\n", begin_left, begin_right, end_left, end_right);
-        fprintf(log_fp, "Input: (%#x, %#x) -> (%#x, %#x)\n", begin_left, begin_right, end_left, end_right);
+        printf("Input: (%#x, %#x)\n", begin_left, begin_right);
+        fprintf(log_fp, "Input: (%#x, %#x)\n", begin_left, begin_right);
     }
-    for (int i = begin_round; i < ROUNDS; i++) {
-        print(now);
+    probability max_prob = print(now);
+    for (int i = begin_round; max_prob.value + 2 * BITS > 0; i++) {     // 一直计算到概率低于2^(-2*bits)
+        printf("Round %d:\n", i), fprintf(log_fp, "Round %d:\n", i);
         fflush(stdout), fflush(log_fp);
         now = round_trans(now);
         now.save("experiments/" + name + "/" + to_string(i) + "/", i);
-        int left_index = now.left.find(end_left), right_index = now.right.find(end_right);
-        if(left_index == -1 || right_index == -1) {
-            printf("Round %2i: -inf\n", i);
-            fprintf(log_fp, "Round %2i: -inf\n", i);
-        }
-        else{
-            printf("Round %2i: %f\n", i, now(left_index, right_index).value);
-            fprintf(log_fp, "Round %2i: %f\n", i, now(left_index, right_index).value);
-        }
+        max_prob = print(now);
         fflush(stdout), fflush(log_fp);
     }
-    print(now);
+
+    printf("over.\n"), fprintf(log_fp, "over.\n");
     fflush(stdout), fflush(log_fp);
 
     now.unalloc();

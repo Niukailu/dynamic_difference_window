@@ -4,87 +4,68 @@
 
 
 /**
- * SIMECK64_FROM_0x0_0x1_TO_0x1_0x0_ROUND_39
- * SIMECK64_FROM_0x0_0x11_TO_0x5_0x2_ROUND_27
- * SIMON64_FROM_0x440_0x1880_TO_0x440_0x100_ROUND_22
- * SIMON64_FROM_0x4000000_0x11000000_TO_0x11000000_0x4000000_ROUND_21
- * SIMON48_FROM_0x80_0x222_TO_0x222_0x80_ROUND_17
- * SIMON32_FROM_0x0_0x40_TO_0x4000_0x0_ROUND_13
+ * SIMECK64_FROM_0x0_0x1_PRECISION_14
+ * SIMECK64_FROM_0x0_0x11_PRECISION_14
+ * SIMON32_FROM_0x0_0x40_PRECISION_14
+ * SIMON48_FROM_0x80_0x222_PRECISION_14
+ * SIMON64_FROM_0x440_0x1880_PRECISION_14
+ * SIMON64_FROM_0x4000000_0x11000000_PRECISION_14
 **/
 // 在这里定义启用哪一个实验
-#define SIMON64_FROM_0x440_0x1880_TO_0x440_0x100_ROUND_22
+#define SIMON64_FROM_0x4000000_0x11000000_PRECISION_14
 
-
-#ifdef SIMECK64_FROM_0x0_0x1_TO_0x1_0x0_ROUND_39
+#ifdef SIMECK64_FROM_0x0_0x1_PRECISION_14
     #define SIMECK64            // 使用SIMECK64
     #define PRECISION 14        // 窗口大小
-    #define ROUNDS 40           // 轮数
     #define LOAD_ROUND 0        // 程序断掉之后加载的轮数，0不加载
-    const std::string name = "SIMECK64_FROM_0x0_0x1_TO_0x1_0x0_ROUND_39";    // 程序保存的名字，将中间结果保存在 experiments/{name}/{round}/* 内
-    const uint32_t begin_left = 0;
-    const uint32_t begin_right = 1;
-    const uint32_t end_left = 1;
-    const uint32_t end_right = 0;
+    const std::string name = "SIMECK64_FROM_0x0_0x1_PRECISION_14";    // 程序保存的名字，将中间结果保存在 experiments/{name}/{round}/* 内
+    const uint32_t begin_left = 0x0;
+    const uint32_t begin_right = 0x1;
 #endif
 
-#ifdef SIMECK64_FROM_0x0_0x11_TO_0x5_0x2_ROUND_27
+#ifdef SIMECK64_FROM_0x0_0x11_PRECISION_14
     #define SIMECK64
     #define PRECISION 14
-    #define ROUNDS 28
     #define LOAD_ROUND 0
-    const std::string name = "SIMECK64_FROM_0x0_0x11_TO_0x5_0x2_ROUND_27";
-    const uint32_t begin_left = 0;
-    const uint32_t begin_right = 17;
-    const uint32_t end_left = 5;
-    const uint32_t end_right = 2;
+    const std::string name = "SIMECK64_FROM_0x0_0x11_PRECISION_14";
+    const uint32_t begin_left = 0x0;
+    const uint32_t begin_right = 0x11;
 #endif
 
-#ifdef SIMON64_FROM_0x440_0x1880_TO_0x440_0x100_ROUND_22
-    #define SIMON64
-    #define PRECISION 14
-    #define ROUNDS 25   // 多两轮
-    #define LOAD_ROUND 0
-    const std::string name = "SIMON64_FROM_0x440_0x1880_TO_0x440_0x100_ROUND_22";
-    const uint32_t begin_left = 1088;
-    const uint32_t begin_right = 6272;
-    const uint32_t end_left = 1088;
-    const uint32_t end_right = 256;
-#endif
-
-#ifdef SIMON64_FROM_0x4000000_0x11000000_TO_0x11000000_0x4000000_ROUND_21
-    #define SIMON64
-    #define PRECISION 14
-    #define ROUNDS 22
-    #define LOAD_ROUND 0
-    const std::string name = "SIMON64_FROM_0x4000000_0x11000000_TO_0x11000000_0x4000000_ROUND_21";
-    const uint32_t begin_left = 67108864;
-    const uint32_t begin_right = 285212672;
-    const uint32_t end_left = 285212672;
-    const uint32_t end_right = 67108864;
-#endif
-
-#ifdef SIMON48_FROM_0x80_0x222_TO_0x222_0x80_ROUND_17
-    #define SIMON48
-    #define PRECISION 14
-    #define ROUNDS 18
-    #define LOAD_ROUND 0
-    const std::string name = "SIMON48_FROM_0x80_0x222_TO_0x222_0x80_ROUND_17";
-    const uint32_t begin_left = 128;
-    const uint32_t begin_right = 546;
-    const uint32_t end_left = 546;
-    const uint32_t end_right = 128;
-#endif
-
-#ifdef SIMON32_FROM_0x0_0x40_TO_0x4000_0x0_ROUND_13
+#ifdef SIMON32_FROM_0x0_0x40_PRECISION_14
     #define SIMON32
     #define PRECISION 14
-    #define ROUNDS 14
     #define LOAD_ROUND 0
-    const std::string name = "SIMON32_FROM_0x0_0x40_TO_0x4000_0x0_ROUND_13";
-    const uint16_t begin_left = 0;
-    const uint16_t begin_right = 64;
-    const uint16_t end_left = 16384;
-    const uint16_t end_right = 0;
+    const std::string name = "SIMON32_FROM_0x0_0x40_PRECISION_14";
+    const uint16_t begin_left = 0x0;
+    const uint16_t begin_right = 0x40;
+#endif
+
+#ifdef SIMON48_FROM_0x80_0x222_PRECISION_14
+    #define SIMON48
+    #define PRECISION 14
+    #define LOAD_ROUND 0
+    const std::string name = "SIMON48_FROM_0x80_0x222_PRECISION_14";
+    const uint32_t begin_left = 0x80;
+    const uint32_t begin_right = 0x222;
+#endif
+
+#ifdef SIMON64_FROM_0x440_0x1880_PRECISION_14
+    #define SIMON64
+    #define PRECISION 14
+    #define LOAD_ROUND 0
+    const std::string name = "SIMON64_FROM_0x440_0x1880_PRECISION_14";
+    const uint32_t begin_left = 0x440;
+    const uint32_t begin_right = 0x1880;
+#endif
+
+#ifdef SIMON64_FROM_0x4000000_0x11000000_PRECISION_14
+    #define SIMON64
+    #define PRECISION 14
+    #define LOAD_ROUND 0
+    const std::string name = "SIMON64_FROM_0x4000000_0x11000000_PRECISION_14";
+    const uint32_t begin_left = 0x4000000;
+    const uint32_t begin_right = 0x11000000;
 #endif
 
 #if defined(SIMECK32)+defined(SIMECK48)+defined(SIMECK64)+defined(SIMECK96)+defined(SIMECK128)+defined(SIMON32)+defined(SIMON48)+defined(SIMON64)+defined(SIMON96)+defined(SIMON128) != 1
