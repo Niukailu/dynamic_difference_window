@@ -86,10 +86,8 @@ window_space get_dense_window(probability_matrix& now) {
 
     // 下面计算活跃位
     for(int i = 0; i < now.left_size; i++) {       // for l
-        dtype free = 0;
         int bits[BITS] = {0}; //统计A数组每个元素相应bit位的个数
         for(int j = 0; j < Matrix[i].num; j++) {        // for len( M[l].A )
-            free |= Matrix[i].A[j];
             for(int k = 0; k < BITS; k++) {
                 if(Matrix[i].A[j] & (1<<k)) bits[k]++;  //若为活跃位则++
             }
@@ -98,7 +96,6 @@ window_space get_dense_window(probability_matrix& now) {
         // 统计 r ^ m[l].base ^ base的非0位(非0位要作为活跃位)
         for(int j = 0; j < now.right_size; j++) {    // for r
             dtype brbase = now.right.data[j] ^ Matrix[i].base ^ base;
-            // brbase |= free;   // [*] free or no free
             for (int k = 0; k < BITS && brbase; k++) {
                 if(brbase & (1<<k)) free_prob[k] += now(i, j) * Matrix[i].proba; //权重now(i, j) * Matrix[i].proba
             }
