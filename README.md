@@ -41,10 +41,13 @@ g++ main.cpp -Wall -Wextra -O3 -march=native -fopenmp -lm -o bin/{name}
     </tr>
     <!-- SIMON64 -->
     <tr>
-	    <td rowspan="2">SIMON64</td>
+	    <td rowspan="3">SIMON64</td>
 	    <td>(0x4000000, 0x11000000)</td> <td>(0x11000000, 0x4000000)</td> <td>-57.57</td> <td>21</td> <td>(0x11000001, 0x40000000)</td> <td>-60.44</td> <td>23</td>
 	</tr>
     <tr>
 	    <td>(0x440, 0x1880)</td> <td>(0x440, 0x100)</td> <td>-61.32</td> <td>22</td> <td>(0x4440, 0x1000)</td> <td>-63.74</td> <td>24</td>
+	</tr>
+    <tr>
+	    <td>(0x1, 0x40000004)</td> <td>(0x40000044, 0x10)</td> <td>-61.93</td> <td>23</td> <td>(0x40000044, 0x10)</td> <td>-60.44</td> <td>23</td>
 	</tr>
 </table>
