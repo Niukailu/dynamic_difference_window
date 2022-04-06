@@ -24,13 +24,13 @@ public:
             assert(active_bits[i - 1] != active_bits[i]);
         mask = 0;
         for(int i = 0; i < active_bits_size; i++) 
-            mask |= 1<<active_bits[i];
+            mask |= 1ULL<<active_bits[i];
         inv_mask = ~mask;
-        int active_bits_size_power = 1<<active_bits_size;
+        int active_bits_size_power = 1ULL<<active_bits_size;
         dtype num = base;
         data.push_back(num);
         for(int i = 1; i < active_bits_size_power; i++) {
-            num ^= 1<<active_bits[__builtin_ctz(i)];
+            num ^= 1ULL<<active_bits[__builtin_ctz(i)];
             data.push_back(num);
         }
         std::sort(data.begin(), data.end());

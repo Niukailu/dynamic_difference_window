@@ -11,9 +11,10 @@
  * SIMON64_FROM_0x440_0x1880_PRECISION_14
  * SIMON64_FROM_0x4000000_0x11000000_PRECISION_14
  * SIMON64_FROM_0x1_0x40000004_PRECISION_14
+ * SIMON96_FROM_0x100000_0x444040_PRECISION_14
 **/
 // 在这里定义启用哪一个实验
-#define SIMON64_FROM_0x1_0x40000004_PRECISION_14
+#define SIMON96_FROM_0x100000_0x444040_PRECISION_14
 
 #ifdef SIMECK64_FROM_0x0_0x1_PRECISION_14
     #define SIMECK64            // 使用SIMECK64
@@ -78,6 +79,15 @@
     const uint32_t begin_right = 0x40000004;
 #endif
 
+#ifdef SIMON96_FROM_0x100000_0x444040_PRECISION_14
+    #define SIMON96
+    #define PRECISION 14
+    #define LOAD_ROUND 0
+    const std::string name = "SIMON96_FROM_0x100000_0x444040_PRECISION_14";
+    const uint64_t begin_left = 0x100000;
+    const uint64_t begin_right = 0x444040;
+#endif
+
 #if defined(SIMECK32)+defined(SIMECK48)+defined(SIMECK64)+defined(SIMECK96)+defined(SIMECK128)+defined(SIMON32)+defined(SIMON48)+defined(SIMON64)+defined(SIMON96)+defined(SIMON128) != 1
     #error Please only exactly one of SIMON and SIMECK
 #endif
@@ -103,7 +113,7 @@
 #if defined(SIMECK96) | defined(SIMON96)
     const int BITS = 48;
     typedef uint64_t dtype;
-    #define ROT(x, r) ((((x) << (r)) % (1 << 48)) | ((x) >> (48 - (r))))
+    #define ROT(x, r) ((((x) << (r)) % (1ULL << 48)) | ((x) >> (48 - (r))))
 #endif
 
 #if defined(SIMECK128) | defined(SIMON128)

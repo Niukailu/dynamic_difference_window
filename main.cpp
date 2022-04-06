@@ -29,17 +29,17 @@ void get_prob(window_space& x) {
         dtype delta = x.data[l];
         dtype base = f(0) ^ f(delta);
         dtype A[BITS];
-        for(int i = 0; i < BITS; i++) A[i] = f(1<<i) ^ f(delta^(1<<i)) ^ base;
+        for(int i = 0; i < BITS; i++) A[i] = f(1ULL<<i) ^ f(delta^(1ULL<<i)) ^ base;
         for(int i = 0, p = 0; i < BITS && p < BITS; i++, p++) {
             for(int j = i; j < BITS; j++) {
-                if(A[j] & (1<<p)) { swap(A[i], A[j]); break; }
+                if(A[j] & (1ULL<<p)) { swap(A[i], A[j]); break; }
             }
-            if(!(A[i] & (1<<p))) {i--; continue;}
+            if(!(A[i] & (1ULL<<p))) {i--; continue;}
             for (int j = 0; j < BITS; j++) {
                 if(i == j) continue;
-	            if (A[j] & (1<<p)) A[j] ^= A[i];
+	            if (A[j] & (1ULL<<p)) A[j] ^= A[i];
             }
-            if (base & (1<<p)) base ^= A[i];
+            if (base & (1ULL<<p)) base ^= A[i];
         }
         Matrix[l].num = 0;
         Matrix[l].proba = 1;
@@ -71,9 +71,9 @@ window_space get_dense_window(probability_matrix& now) {
         for(int j = 0; j < now.right_size; j++) {
             dtype br = now.right.data[j] ^ Matrix[i].base; // 计算 r^m[l].base
             for(int k = 0; k < BITS; k++) {
-                if(br & (1<<k)) base_prob[k] += now(i, j)(); //权重就是prob[l][r]
+                if(br & (1ULL<<k)) base_prob[k] += now(i, j)(); //权重就是prob[l][r]
                 else base_prob[k] -= now(i, j)();
-                // if(br & (1<<k)) base_prob[k] += now(i, j)() * Matrix[i].proba(); // [*] mdf1, 权重就是prob[l][r]
+                // if(br & (1ULL<<k)) base_prob[k] += now(i, j)() * Matrix[i].proba(); // [*] mdf1, 权重就是prob[l][r]
                 // else base_prob[k] -= now(i, j)() * Matrix[i].proba();
             }
         }
@@ -89,7 +89,7 @@ window_space get_dense_window(probability_matrix& now) {
         int bits[BITS] = {0}; //统计A数组每个元素相应bit位的个数
         for(int j = 0; j < Matrix[i].num; j++) {        // for len( M[l].A )
             for(int k = 0; k < BITS; k++) {
-                if(Matrix[i].A[j] & (1<<k)) bits[k]++;  //若为活跃位则++
+                if(Matrix[i].A[j] & (1ULL<<k)) bits[k]++;  //若为活跃位则++
             }
         }
         for(int j = 0; j < BITS; j++) bits[j] = bits[j] ? 1 : 0; // [*] repeat or no repeats
@@ -97,7 +97,7 @@ window_space get_dense_window(probability_matrix& now) {
         for(int j = 0; j < now.right_size; j++) {    // for r
             dtype brbase = now.right.data[j] ^ Matrix[i].base ^ base;
             for (int k = 0; k < BITS && brbase; k++) {
-                if(brbase & (1<<k)) free_prob[k] += now(i, j) * Matrix[i].proba; //权重now(i, j) * Matrix[i].proba
+                if(brbase & (1ULL<<k)) free_prob[k] += now(i, j) * Matrix[i].proba; //权重now(i, j) * Matrix[i].proba
             }
         }
         double all_bits_num = 0;
@@ -122,19 +122,19 @@ void simple_prob(window_space& x, window_space& dense_window) {
     int data_size = x.data.size();
     for(int l = 0; l < data_size; l++) {
         for(int i = 0, p = BITS - 1; i < Matrix[l].num && p >= 0; i++, p--) {
-            if(dense_window.mask & (1<<p)) { i--; continue; }
+            if(dense_window.mask & (1ULL<<p)) { i--; continue; }
             for(int j = i; j < Matrix[l].num; j++) {
-                if(Matrix[l].A[j] & (1<<p)) {
+                if(Matrix[l].A[j] & (1ULL<<p)) {
                     swap(Matrix[l].A[i], Matrix[l].A[j]);
                     break;
                 }
             }
-            if(!(Matrix[l].A[i] & (1<<p))) { i--; continue; }
+            if(!(Matrix[l].A[i] & (1ULL<<p))) { i--; continue; }
             for(int j = 0; j < Matrix[l].num; j++) {
                 if(j == i) continue;
-                if(Matrix[l].A[j] & (1<<p)) Matrix[l].A[j] ^= Matrix[l].A[i];
+                if(Matrix[l].A[j] & (1ULL<<p)) Matrix[l].A[j] ^= Matrix[l].A[i];
             }
-            if(Matrix[l].base & (1<<p)) Matrix[l].base ^= Matrix[l].A[i];
+            if(Matrix[l].base & (1ULL<<p)) Matrix[l].base ^= Matrix[l].A[i];
         }
         Matrix[l].out_num = 0;
         for(int i = 0; i < Matrix[l].num; i++) {
@@ -151,14 +151,14 @@ probability_matrix round_trans(probability_matrix& now) {
     printf("\twindow is ["), fprintf(log_fp, "\twindow is [");
     bool first = true;
     for(int i = 0; i < BITS; i++) {
-        if(dense_window.mask & (1<<i)) {
+        if(dense_window.mask & (1ULL<<i)) {
             if(!first) printf(", "), fprintf(log_fp, ", ");
             first = false;
             printf("%d", i), fprintf(log_fp, "%d", i);
         }
     }
     printf("]\n"), fprintf(log_fp, "]\n");
-    fflush(stdout);
+    fflush(stdout), fflush(log_fp);
     probability_matrix next(dense_window, now.left);
     simple_prob(now.left, dense_window);        // 化简概率
 
@@ -199,7 +199,12 @@ probability print(probability_matrix& now) {
     for (int i = 0; i < now.left_size; i++) {
 	    for (int j = 0; j < now.right_size; j++) {
 	        if (now(i, j) > max_prob*zo6) {
-	            printf(" (%#x,%#x)", now.left.data[i], now.right.data[j]), fprintf(log_fp, " (%#x,%#x)", now.left.data[i], now.right.data[j]);
+                #if defined(SIMECK96) | defined(SIMON96) | defined(SIMECK128) | defined(SIMON128)
+                    printf(" (%#lx,%#lx)", now.left.data[i], now.right.data[j]), fprintf(log_fp, " (%#lx,%#lx)", now.left.data[i], now.right.data[j]);
+                #endif
+                #if defined(SIMECK32) | defined(SIMON32) | defined(SIMECK48) | defined(SIMON48) | defined(SIMECK64) | defined(SIMON64)
+                    printf(" (%#x,%#x)", now.left.data[i], now.right.data[j]), fprintf(log_fp, " (%#x,%#x)", now.left.data[i], now.right.data[j]);
+                #endif
 	        }
 	    }
     }
@@ -225,8 +230,12 @@ int main() {
     else{
         log_fp = fopen(("experiments/" + name + "/info.log").c_str(), "w+");    // 配置输出
         now.save("experiments/" + name + "/" + to_string(begin_round - 1) + "/", begin_round - 1);
-        printf("Input: (%#x, %#x)\n", begin_left, begin_right);
-        fprintf(log_fp, "Input: (%#x, %#x)\n", begin_left, begin_right);
+        #if defined(SIMECK96) | defined(SIMON96) | defined(SIMECK128) | defined(SIMON128)
+            printf("Input: (%#lx, %#lx)\n", begin_left, begin_right), fprintf(log_fp, "Input: (%#lx, %#lx)\n", begin_left, begin_right);
+        #endif
+        #if defined(SIMECK32) | defined(SIMON32) | defined(SIMECK48) | defined(SIMON48) | defined(SIMECK64) | defined(SIMON64)
+            printf("Input: (%#x, %#x)\n", begin_left, begin_right), fprintf(log_fp, "Input: (%#x, %#x)\n", begin_left, begin_right);
+        #endif
     }
     probability max_prob = print(now);
     for (int i = begin_round; max_prob.value + 2 * BITS > 0; i++) {     // 一直计算到概率低于2^(-2*bits)
