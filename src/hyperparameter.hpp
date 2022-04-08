@@ -12,10 +12,12 @@
  * SIMON64_FROM_0x4000000_0x11000000_PRECISION_14
  * SIMON64_FROM_0x1_0x40000004_PRECISION_14
  * SIMON96_FROM_0x100000_0x444040_PRECISION_14
+ * SIMON96_FROM_0x4000_0x11101_PRECISION_14
 **/
 // 在这里定义启用哪一个实验
-#define SIMON96_FROM_0x100000_0x444040_PRECISION_14
+#define SIMON96_FROM_0x4000_0x11101_PRECISION_14
 
+/*************************** SIMECK64 ***************************/
 #ifdef SIMECK64_FROM_0x0_0x1_PRECISION_14
     #define SIMECK64            // 使用SIMECK64
     #define PRECISION 14        // 窗口大小
@@ -34,6 +36,7 @@
     const uint32_t begin_right = 0x11;
 #endif
 
+/*************************** SIMON32 ***************************/
 #ifdef SIMON32_FROM_0x0_0x40_PRECISION_14
     #define SIMON32
     #define PRECISION 14
@@ -43,6 +46,7 @@
     const uint16_t begin_right = 0x40;
 #endif
 
+/*************************** SIMON48 ***************************/
 #ifdef SIMON48_FROM_0x80_0x222_PRECISION_14
     #define SIMON48
     #define PRECISION 14
@@ -52,6 +56,7 @@
     const uint32_t begin_right = 0x222;
 #endif
 
+/*************************** SIMON64 ***************************/
 #ifdef SIMON64_FROM_0x440_0x1880_PRECISION_14
     #define SIMON64
     #define PRECISION 14
@@ -79,6 +84,7 @@
     const uint32_t begin_right = 0x40000004;
 #endif
 
+/*************************** SIMON96 ***************************/
 #ifdef SIMON96_FROM_0x100000_0x444040_PRECISION_14
     #define SIMON96
     #define PRECISION 14
@@ -86,6 +92,15 @@
     const std::string name = "SIMON96_FROM_0x100000_0x444040_PRECISION_14";
     const uint64_t begin_left = 0x100000;
     const uint64_t begin_right = 0x444040;
+#endif
+
+#ifdef SIMON96_FROM_0x4000_0x11101_PRECISION_14
+    #define SIMON96
+    #define PRECISION 14
+    #define LOAD_ROUND 0
+    const std::string name = "SIMON96_FROM_0x4000_0x11101_PRECISION_14";
+    const uint64_t begin_left = 0x4000;
+    const uint64_t begin_right = 0x11101;
 #endif
 
 #if defined(SIMECK32)+defined(SIMECK48)+defined(SIMECK64)+defined(SIMECK96)+defined(SIMECK128)+defined(SIMON32)+defined(SIMON48)+defined(SIMON64)+defined(SIMON96)+defined(SIMON128) != 1
