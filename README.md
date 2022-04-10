@@ -52,10 +52,13 @@ g++ main.cpp -Wall -Wextra -O3 -march=native -fopenmp -lm -o bin/{name}
 	</tr>
     <!-- SIMON96 -->
     <tr>
-	    <td rowspan="2">SIMON96</td>
+	    <td rowspan="3">SIMON96</td>
 	    <td>(0x100000, 0x444040)</td> <td>(0x10100, 0x4440)</td> <td>-92.2</td> <td>30</td> <td>(0x100000, 0x44040)</td> <td>-94.00</td> <td>32</td>
 	</tr>
     <tr>
 	    <td>(0x4000, 0x11101)</td> <td>(0x1101, 0x404)</td> <td>-95.34</td> <td>31</td> <td>(0x4000, 0x1101)</td> <td>-94.00</td> <td>32</td>
+	</tr>
+    <tr>
+	    <td>(0x1, 0x0)</td> <td>(0x0, 0x1)(<i style="color: red;">linear</i>)</td> <td>*</td> <td>33</td> <td>(0x1, 0)</td> <td>-95.20</td> <td>32</td>
 	</tr>
 </table>

@@ -13,9 +13,10 @@
  * SIMON64_FROM_0x1_0x40000004_PRECISION_14
  * SIMON96_FROM_0x100000_0x444040_PRECISION_14
  * SIMON96_FROM_0x4000_0x11101_PRECISION_14
+ * SIMON96_FROM_0x1_0x0_PRECISION_14
 **/
 // 在这里定义启用哪一个实验
-#define SIMON96_FROM_0x4000_0x11101_PRECISION_14
+#define SIMON96_FROM_0x1_0x0_PRECISION_14
 
 /*************************** SIMECK64 ***************************/
 #ifdef SIMECK64_FROM_0x0_0x1_PRECISION_14
@@ -101,6 +102,15 @@
     const std::string name = "SIMON96_FROM_0x4000_0x11101_PRECISION_14";
     const uint64_t begin_left = 0x4000;
     const uint64_t begin_right = 0x11101;
+#endif
+
+#ifdef SIMON96_FROM_0x1_0x0_PRECISION_14
+    #define SIMON96
+    #define PRECISION 14
+    #define LOAD_ROUND 0
+    const std::string name = "SIMON96_FROM_0x1_0x0_PRECISION_14";
+    const uint64_t begin_left = 0x1;
+    const uint64_t begin_right = 0x0;
 #endif
 
 #if defined(SIMECK32)+defined(SIMECK48)+defined(SIMECK64)+defined(SIMECK96)+defined(SIMECK128)+defined(SIMON32)+defined(SIMON48)+defined(SIMON64)+defined(SIMON96)+defined(SIMON128) != 1
