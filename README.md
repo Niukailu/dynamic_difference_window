@@ -61,4 +61,9 @@ g++ main.cpp -Wall -Wextra -O3 -march=native -fopenmp -lm -o bin/{name}
     <tr>
 	    <td>(0x1, 0x0)</td> <td>(0x0, 0x1)(<i style="color: red;">linear</i>)</td> <td>*</td> <td>33</td> <td>(0x1, 0)</td> <td>-95.20</td> <td>32</td>
 	</tr>
+    <!-- SIMON128 -->
+    <tr>
+	    <td rowspan="1">SIMON128</td>
+	    <td>(0x1000, 0x4440)</td> <td>(0x4440, 0x1000)</td> <td>-124.6</td> <td>41</td> <td>(0x100000,0x44040)</td> <td>-126.66</td> <td>44</td>
+	</tr>
 </table>
