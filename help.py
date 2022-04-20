@@ -82,7 +82,7 @@ def choice_experiments():
     return experiments[command - 1]
 
 
-def generate_log(experiment, max_step):
+def generate_log(experiment, max_step, pos=None):
     clear_console()
     info = load(experiment, 0)
     print(f"\033[0;34;40mInput: ({info['left'][0]:#x}, {info['right'][0]:#x})\033[0m")
@@ -98,6 +98,14 @@ def generate_log(experiment, max_step):
         for x, y in zip(xs, ys):
             print(f"\033[0;34;40m ({info['left'][x]:#x},{info['right'][y]:#x})\033[0m", end="")
         print("")
+        if pos is not None:
+            left = np.where(info['left'] == pos[0])[0]
+            right = np.where(info['right'] == pos[1])[0]
+            if len(left) == 0 or len(right) == 0:
+                prob = -math.inf
+            else:
+                prob = info['prob'][left[0], right[0]]
+            print(f"\033[0;34;40m\tprob[{pos[0]}, {pos[1]}] = {prob}\033[0m")
     print(f"\033[0;34;40mover.\033[0m")
     del info
     input("\n按回车继续...")
@@ -106,6 +114,10 @@ def generate_log(experiment, max_step):
 def tuple_active_bit(tp):
     l, r = tp
     return len(mask_to_list(l)) + len(mask_to_list(r))
+
+
+def bits(array):
+    return np.array([bin(x).count('1') for x in array])
 
 
 def analysis_experiment(experiment, step):
@@ -117,6 +129,8 @@ def analysis_experiment(experiment, step):
     print("2.\t输出base")
     print("3.\t输出概率最大值，活跃位从少到多排序")
     print("4.\t输出概率最大值附近，活跃位从少到多排序")
+    print("5.\t输出概率最大值，活跃位从少到多排序(限定活跃位数)")
+    print("6.\t查询固定位置概率")
     command = int(input("请输入实验编号："))
     if command == 0:
         return False
@@ -152,6 +166,36 @@ def analysis_experiment(experiment, step):
         for x, y in zip(xs, ys):
             print(f"\033[0;34;40m({info['left'][x]:#x},{info['right'][y]:#x})\033[0m", end=" ")
         print("")
+    elif command == 5:
+        info = load(experiment, step)
+        left_bits = bits(info['left'])
+        right_bits = bits(info['right'])
+        left_bits = np.tile(left_bits, (len(right_bits), 1)).T
+        right_bits = np.tile(right_bits, (len(left_bits), 1))
+        info_bits = left_bits + right_bits
+        bit = int(input(f"已知最少活跃位数为{info_bits.min()}，求最多的活跃位数？："))
+        map1, map2 = info_bits > bit, info_bits <= bit
+        info_bits[map1] = -1000000000
+        info_bits[map2] = 0
+        info['prob'] = info['prob'] + info_bits
+        max_prob = info['prob'].max()
+        print(f"\033[0;34;40mMax: {max_prob:06f}\033[0m")
+        xs, ys = np.where(info['prob'] >= max_prob + math.log2(0.999999))
+        pos = list(zip(xs, ys))
+        pos.sort(key=tuple_active_bit)
+        for x, y in zip(xs, ys):
+            print(f"\033[0;34;40m({info['left'][x]:#x},{info['right'][y]:#x})\033[0m", end=" ")
+        print("")
+    elif command == 6:
+        info = load(experiment, step)
+        left = int(input("请输入left的值(16进制): "), 16)
+        right = int(input("请输入right的值(16进制): "), 16)
+        left = np.where(info['left'] == left)[0]
+        right = np.where(info['right'] == right)[0]
+        if len(left) == 0 or len(right) == 0:
+            print("-Inf")
+        else:
+            print(info['prob'][left[0], right[0]])
     else:
         print("暂时还没有那么多功能")
     input("\n按回车继续...")
@@ -166,11 +210,16 @@ def choice_experiment_action(experiment):
     print("0.\t\033[0;31;40m返回上一级\033[0m")
     print("1.\t生成实验日志")
     print(f"2.\t单独分析某步结果（\033[0;32;40m请输入2-x来选择，如2-{steps[-1]}\033[0m）")
+    print("3.\t生成固定位置实验日志（\033[0;32;40m如3-x-x，请注意输入16进制\033[0m）")
     command = input("请输入实验编号：")
     if command == '0':
         return -2
     if command == '1':
         generate_log(experiment, steps[-1])
+        return -1
+    if command.startswith('3-'):
+        pos = [int(x, 16) for x in command.split('-')][1:]
+        generate_log(experiment, steps[-1], pos)
         return -1
     return int(command[2:])
         
