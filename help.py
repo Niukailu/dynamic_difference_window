@@ -2,6 +2,8 @@ import os
 import re
 import math
 import numpy as np
+import logging
+from aligo import Aligo
 
 
 def get_bit_by_num(experiment: str):
@@ -25,9 +27,17 @@ def mask_to_list(mask):
     return window
 
 
+def download(experiment, step):
+    ali = Aligo(name='falcon', level=logging.ERROR)
+    file = ali.get_file_by_path(f'experiments/{experiment}/{step}')
+    ali.download_folder(file.file_id, local_folder=f'experiments/{experiment}')
+
+
 def load(experiment: str, step: int):
     ''' load '''
-    root_path = f"experiments/{experiment}/{step}/"
+    root_path = f"experiments/{experiment}/{step}"
+    if not os.path.exists(root_path):
+        download(experiment, step)
     bit = get_bit_by_num(experiment)
     # 加载基础信息
     with open(os.path.join(root_path, "info.txt"), "r") as f:
@@ -71,8 +81,7 @@ def choice_experiments():
     ''' choice experiments '''
     clear_console()
     print("实验目录：")
-    experiments = os.listdir('experiments/')
-    # print(f"0.\t退出")
+    experiments = sorted(os.listdir('experiments/'))
     print(f"0.\t\033[0;31;40m退出\033[0m")
     for idx, experiment in enumerate(experiments):
         print(f"{idx+1:d}.\t{experiment}")
@@ -200,12 +209,14 @@ def analysis_experiment(experiment, step):
         print("暂时还没有那么多功能")
     input("\n按回车继续...")
     return True
-    
+
 
 def choice_experiment_action(experiment):
     ''' choice experiment action '''
     clear_console()
-    steps = sorted([int(step) for step in os.listdir(f"experiments/{experiment}") if step != "info.log"])
+    ali = Aligo(name='falcon', level=logging.ERROR)
+    steps = sorted(list(set([int(step) for step in os.listdir(f"experiments/{experiment}") if step != "info.log"] \
+        + [int(p.name) for p in ali.get_file_list(ali.get_file_by_path(f"experiments/{experiment}").file_id) if p.name != "info.log"])))
     print(f"当前实验：\033[0;32;40m{experiment}\033[0m，共运行\033[0;32;40m{steps[-1]}\033[0m步")
     print("0.\t\033[0;31;40m返回上一级\033[0m")
     print("1.\t生成实验日志")
