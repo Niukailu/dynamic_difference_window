@@ -27,9 +27,25 @@ void get_prob(window_space& x) {
     int data_size = x.data.size();
     for(int l = 0; l < data_size; l++) {
         dtype delta = x.data[l];
+
+        #ifdef DIFFERENCE
         dtype base = f(0) ^ f(delta);
         dtype A[BITS];
         for(int i = 0; i < BITS; i++) A[i] = f(1ULL<<i) ^ f(delta^(1ULL<<i)) ^ base;
+        #endif
+
+        #if defined(LINEAR) & defined(SIMON)
+        dtype base = ROT(delta,-2);
+        dtype A[BITS];
+        for(int i = 0; i < BITS; i++) A[i] = ROT((delta & ROT((1<<i),7)) ^ ROT(delta & (1<<i), -7), -1);
+        #endif
+
+        #if defined(LINEAR) & defined(SIMECK)
+        dtype base = ROT(delta,-1);
+        dtype A[BITS];
+        for(int i = 0; i < BITS; i++) A[i] = (delta & ROT((1<<i),5)) ^ ROT(delta & (1<<i), -5);
+        #endif
+
         for(int i = 0, p = 0; i < BITS && p < BITS; i++, p++) {
             for(int j = i; j < BITS; j++) {
                 if(A[j] & (1ULL<<p)) { swap(A[i], A[j]); break; }
