@@ -17,8 +17,8 @@ using namespace std;
 
 // 定义全局变量
 FILE* log_fp;
-transition_space Matrix[1U<<PRECISION];
-probability edge_prob[1<<PRECISION];
+transition_space Matrix[1ULL<<PRECISION];
+probability edge_prob[1ULL<<PRECISION];
 probability free_prob[BITS];
 double base_prob[BITS];
 
@@ -37,13 +37,13 @@ void get_prob(window_space& x) {
         #if defined(LINEAR) & defined(SIMON)
         dtype base = ROT(delta,-2);
         dtype A[BITS];
-        for(int i = 0; i < BITS; i++) A[i] = ROT((delta & ROT((1<<i),7)) ^ ROT(delta & (1<<i), -7), -1);
+        for(int i = 0; i < BITS; i++) A[i] = ROT((delta & ROT((1ULL<<i),7)) ^ ROT(delta & (1ULL<<i), -7), -1);
         #endif
 
         #if defined(LINEAR) & defined(SIMECK)
         dtype base = ROT(delta,-1);
         dtype A[BITS];
-        for(int i = 0; i < BITS; i++) A[i] = (delta & ROT((1<<i),5)) ^ ROT(delta & (1<<i), -5);
+        for(int i = 0; i < BITS; i++) A[i] = (delta & ROT((1ULL<<i),5)) ^ ROT(delta & (1ULL<<i), -5);
         #endif
 
         for(int i = 0, p = 0; i < BITS && p < BITS; i++, p++) {
