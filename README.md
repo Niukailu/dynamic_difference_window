@@ -18,11 +18,17 @@ g++ main.cpp -Wall -Wextra -O3 -march=native -fopenmp -lm -o bin/{name}
 ./bin/{name}
 ```
 
-### 4. 分析程序结果
+### 4. 将结果上传到云端，并更新README的表格
+```bash
+python3 backup.py {name}
+```
+> 请注意更新README表格
+
+### 5. 分析程序结果
 
 可以通过`experiments/{name}/info.log`来查看运行的日志，或者运行`python3 help.py`来对结果进行分析。
 
-### 5. 结果
+### 6. 结果
 
 <table>
 	<tr>
