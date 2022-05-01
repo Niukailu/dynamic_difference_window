@@ -30,4 +30,4 @@ python3 backup.py {name}
 
 ### 6. 结果
 
-[实验结果](https://ia9zk56a6c.feishu.cn/sheets/shtcnjMqiCpIk6EXckGuzb8gbKb)
+点击这里查询<a href="https://ia9zk56a6c.feishu.cn/sheets/shtcnjMqiCpIk6EXckGuzb8gbKb" target="_blank">实验结果</a>。
