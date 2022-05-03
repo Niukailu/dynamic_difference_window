@@ -1,3 +1,4 @@
 bin/*
 experiments/*
 .vscode/
+__pycache__/
