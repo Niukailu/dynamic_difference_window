@@ -7,27 +7,16 @@
 ### 1. 修改超参数
 修改[hyperparameter.hpp](./src/hyperparameter.hpp)，来确定初始点等信息
 
-### 2. 编译程序
+### 2. 运行程序
 ```bash
-g++ main.cpp -Wall -Wextra -O3 -march=native -fopenmp -lm -o bin/{name}
+bash scripts/run.sh {name}
 ```
+> 这个脚本会自动编译程序、运行程序、将结果上传到github以及阿里云，但是不会更新实验表格，所以请注意更新README表格！
 
-### 3. 运行程序
-
-```bash
-./bin/{name}
-```
-
-### 4. 将结果上传到云端，并更新README的表格
-```bash
-python3 backup.py {name}
-```
-> 请注意更新README表格
-
-### 5. 分析程序结果
+### 3. 分析程序结果
 
 可以通过`experiments/{name}/info.log`来查看运行的日志，或者运行`python3 help.py`来对结果进行分析。
 
-### 6. 结果
+### 4. 结果
 
 点击这里查询<a href="https://ia9zk56a6c.feishu.cn/sheets/shtcnjMqiCpIk6EXckGuzb8gbKb" target="_blank">实验结果</a>。
