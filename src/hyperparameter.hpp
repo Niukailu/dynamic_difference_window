@@ -9,6 +9,8 @@
  * SIMON64_DIFFERENCE_FROM_0x4000000_0x11000000_PRECISION_14
  * SIMON64_DIFFERENCE_FROM_0x440_0x1880_PRECISION_14
  * SIMON64_DIFFERENCE_FROM_0x80000_0x222000_PRECISION_14
+ * SIMON64_LINEAR_FROM_0x44400_0x1000_PRECISION_14
+ * SIMON64_LINEAR_FROM_0x40000004_0x1_PRECISION_14
  * SIMON96_DIFFERENCE_FROM_0x100000_0x444040_PRECISION_14
  * SIMON96_DIFFERENCE_FROM_0x4000_0x11101_PRECISION_14
  * SIMON96_LINEAR_FROM_0x1_0x0_PRECISION_14
@@ -73,6 +75,26 @@
     const std::string name = "SIMON64_DIFFERENCE_FROM_0x80000_0x222000_PRECISION_14";
     const uint32_t begin_left = 0x80000;
     const uint32_t begin_right = 0x222000;
+#endif
+
+#ifdef SIMON64_LINEAR_FROM_0x44400_0x1000_PRECISION_14
+    #define SIMON64
+    #define LINEAR
+    #define PRECISION 14
+    #define LOAD_ROUND 0
+    const std::string name = "SIMON64_LINEAR_FROM_0x44400_0x1000_PRECISION_14";
+    const uint64_t begin_left = 0x1000;
+    const uint64_t begin_right = 0x44400;
+#endif
+
+#ifdef SIMON64_LINEAR_FROM_0x40000004_0x1_PRECISION_14
+    #define SIMON64
+    #define LINEAR
+    #define PRECISION 14
+    #define LOAD_ROUND 0
+    const std::string name = "SIMON64_LINEAR_FROM_0x40000004_0x1_PRECISION_14";
+    const uint64_t begin_left = 0x1;
+    const uint64_t begin_right = 0x40000004;
 #endif
 
 /*************************** SIMON96 ***************************/
