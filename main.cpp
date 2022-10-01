@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -253,11 +254,16 @@ int main() {
             printf("Input: (%#x, %#x)\n", begin_left, begin_right), fprintf(log_fp, "Input: (%#x, %#x)\n", begin_left, begin_right);
         #endif
     }
+
+    auto start_time = clock();
     probability max_prob = print(now);
     for (int i = begin_round; max_prob.value + 2 * BITS > 0; i++) {     // 一直计算到概率低于2^(-2*bits)
         printf("Round %d:\n", i), fprintf(log_fp, "Round %d:\n", i);
         fflush(stdout), fflush(log_fp);
         now = round_trans(now);
+	auto end_time = clock();
+	printf("\t%f\n", (double)(end_time - start_time) / CLOCKS_PER_SEC / 60 / 60);
+	fprintf(log_fp, "\t%f\n", (double)(end_time - start_time) / CLOCKS_PER_SEC / 60 / 60);
         now.save("experiments/" + name + "/" + to_string(i) + "/", i);
         max_prob = print(now);
         fflush(stdout), fflush(log_fp);
