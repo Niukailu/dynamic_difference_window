@@ -29,12 +29,12 @@ int mkpath(std::string s,mode_t mode=0755) {
 }
 
 
-void *alloc_distribution(uint32_t size) {
+void *alloc_distribution(uint64_t size) {
     void *p = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS|MAP_NORESERVE, -1, 0);
     assert(p != MAP_FAILED);
     return p;
 }
-void free_distribution(void *p, uint32_t size) { munmap(p, size); }
+void free_distribution(void *p, uint64_t size) { munmap(p, size); }
 
 
 class probability_matrix {
@@ -47,9 +47,9 @@ public:
         this->left = left;
         this->right = right;
         left_size = left.data.size(), right_size = right.data.size();
-        int all_size = left_size * right_size;
+        uint64_t all_size = 1ULL * left_size * right_size;
         prob = (probability*) alloc_distribution(sizeof(probability) * all_size);
-        for(int i = 0; i < all_size; i++) prob[i] = 0;
+        for(uint64_t i = 0; i < all_size; i++) prob[i] = 0;
     }
     void unalloc() {
         free_distribution(prob, sizeof(probability) * left_size * right_size);
