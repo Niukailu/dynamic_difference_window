@@ -37,6 +37,16 @@
     const uint32_t begin_right = 0x1;
 #endif
 
+#ifdef SIMON64_DIFFERENCE_FROM_0x0_0x1_PRECISION_14
+    #define SIMON64
+    #define DIFFERENCE
+    #define PRECISION 14
+    #define LOAD_ROUND 0
+    const std::string name = "SIMON64_DIFFERENCE_FROM_0x0_0x1_PRECISION_14";
+    const uint32_t begin_left = 0x0;
+    const uint32_t begin_right = 0x1;
+#endif
+
 #ifdef SIMON64_DIFFERENCE_FROM_0x1_0x40000004_PRECISION_14
     #define SIMON64
     #define DIFFERENCE
