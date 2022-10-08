@@ -4,7 +4,7 @@
 
 
 /**
- * SIMON64_DIFFERENCE_FROM_0x0_0x1_PRECISION_10
+ * SIMON64_DIFFERENCE_FROM_0x0_0x1_PRECISION_14
  * SIMON64_DIFFERENCE_FROM_0x1_0x40000004_PRECISION_14
  * SIMON64_DIFFERENCE_FROM_0x4000000_0x11000000_PRECISION_14
  * SIMON64_DIFFERENCE_FROM_0x440_0x1880_PRECISION_14
@@ -24,7 +24,7 @@
  * SIMON128_LINEAR_FROM_0x200000_0x880000_PRECISION_14
 **/
 // 在这里定义启用哪一个实验
-#define SIMON64_DIFFERENCE_FROM_0x0_0x1_PRECISION_7
+#define SIMON64_DIFFERENCE_FROM_0x0_0x1_PRECISION_12
 
 /*************************** SIMON64 ***************************/
 #ifdef SIMON64_DIFFERENCE_FROM_0x0_0x1_PRECISION_7
@@ -73,6 +73,16 @@
     #define PRECISION 11
     #define LOAD_ROUND 0
     const std::string name = "SIMON64_DIFFERENCE_FROM_0x0_0x1_PRECISION_11";
+    const uint32_t begin_left = 0x0;
+    const uint32_t begin_right = 0x1;
+#endif
+
+#ifdef SIMON64_DIFFERENCE_FROM_0x0_0x1_PRECISION_12
+    #define SIMON64
+    #define DIFFERENCE
+    #define PRECISION 12
+    #define LOAD_ROUND 0
+    const std::string name = "SIMON64_DIFFERENCE_FROM_0x0_0x1_PRECISION_12";
     const uint32_t begin_left = 0x0;
     const uint32_t begin_right = 0x1;
 #endif
