@@ -1,7 +1,5 @@
 # 动态差分窗口
 
-[思路证明](https://ia9zk56a6c.feishu.cn/docs/doccnndtjyX7nHOSvjqdzRbc9rh)
-
 ## 用法
 
 ### 1. 修改超参数
