@@ -13,8 +13,6 @@ bash scripts/run.sh {name}
 
 ### 3. 分析程序结果
 
-可以通过`experiments/{name}/info.log`来查看运行的日志，或者运行`python3 help.py`来对结果进行分析。
+实验结果保存在目录`experiments/{name}/info.log`下，或者可以运行`python3 help.py`来对结果进行分析。
 
-### 4. 结果
 
-点击这里查询<a href="https://ia9zk56a6c.feishu.cn/sheets/shtcnjMqiCpIk6EXckGuzb8gbKb" target="_blank">实验结果</a>。
