@@ -24,7 +24,7 @@
  * SIMON128_LINEAR_FROM_0x200000_0x880000_PRECISION_14
 **/
 // 在这里定义启用哪一个实验
-#define SIMON64_DIFFERENCE_FROM_0x0_0x1_PRECISION_14
+#define SIMON96_LINEAR_FROM_0x1_0x0_PRECISION_14
 
 /*************************** SIMON64 ***************************/
 #ifdef SIMON64_DIFFERENCE_FROM_0x0_0x1_PRECISION_14
@@ -95,6 +95,16 @@
     const std::string name = "SIMON64_LINEAR_FROM_0x40000004_0x1_PRECISION_14";
     const uint64_t begin_left = 0x1;
     const uint64_t begin_right = 0x40000004;
+#endif
+
+#ifdef SIMON64_LINEAR_FROM_0x44400_0x1000_PRECISION_15
+    #define SIMON64
+    #define LINEAR
+    #define PRECISION 15
+    #define LOAD_ROUND 0
+    const std::string name = "SIMON64_LINEAR_FROM_0x44400_0x1000_PRECISION_15";
+    const uint64_t begin_left = 0x1000;
+    const uint64_t begin_right = 0x44400;
 #endif
 
 /*************************** SIMON96 ***************************/
