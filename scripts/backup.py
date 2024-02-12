@@ -31,7 +31,7 @@ def zip_folders(name):
 def upload(name):
     ''' upload top floder '''
     ali = Aligo(name='falcon', level=logging.ERROR)
-    ali.upload_folder(f'experiments/{name}', parent_file_id=ali.get_file_by_path("experiments/").file_id)
+    ali.upload_folder(f'experiments/{name}', parent_file_id=ali.get_folder_by_path("experiments/").file_id)
 
 
 def main():
