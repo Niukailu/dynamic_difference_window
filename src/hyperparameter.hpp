@@ -4,7 +4,10 @@
 
 
 /**
- * SIMECK64_FROM_0x0_0x1_PRECISION_14
+ * SIMECK64_DIFFERENCE_FROM_0x0_0x1_PRECISION_14
+ * SIMECK64_DIFFERENCE_FROM_0x1_0x2_PRECISION_14
+ * SIMECK64_DIFFERENCE_FROM_0x0_0x11_PRECISION_14
+ * 
  * SIMON64_DIFFERENCE_FROM_0x0_0x1_PRECISION_14
  * SIMON64_DIFFERENCE_FROM_0x1_0x40000004_PRECISION_14
  * SIMON64_DIFFERENCE_FROM_0x4000000_0x11000000_PRECISION_14
@@ -29,13 +32,34 @@
 #define SIMON64_LINEAR_FROM_0x40000004_0x1_PRECISION_13
 
 /*************************** SIMECK64 ***************************/
-#ifdef SIMECK64_FROM_0x0_0x1_PRECISION_14
+#ifdef SIMECK64_DIFFERENCE_FROM_0x0_0x1_PRECISION_14
     #define SIMECK64
+    #define DIFFERENCE
     #define PRECISION 14
     #define LOAD_ROUND 0
-    const std::string name = "SIMECK64_FROM_0x0_0x1_PERCISION_14";
+    const std::string name = "SIMECK64_DIFFERENCE_FROM_0x0_0x1_PRECISION_14";
     const uint32_t begin_left = 0x0;
     const uint32_t begin_right = 0x1;
+#endif
+
+#ifdef SIMECK64_DIFFERENCE_FROM_0x1_0x2_PRECISION_14
+    #define SIMECK64
+    #define DIFFERENCE
+    #define PRECISION 14
+    #define LOAD_ROUND 0
+    const std::string name = "SIMECK64_DIFFERENCE_FROM_0x1_0x2_PRECISION_14";
+    const uint32_t begin_left = 0x1;
+    const uint32_t begin_right = 0x2;
+#endif
+
+#ifdef SIMECK64_DIFFERENCE_FROM_0x0_0x11_PRECISION_14
+    #define SIMECK64
+    #define DIFFERENCE
+    #define PRECISION 14
+    #define LOAD_ROUND 0
+    const std::string name = "SIMECK64_DIFFERENCE_FROM_0x0_0x11_PRECISION_14";
+    const uint32_t begin_left = 0x0;
+    const uint32_t begin_right = 0x11;
 #endif
 
 /*************************** SIMON64 ***************************/
