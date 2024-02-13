@@ -8,7 +8,7 @@
  * SIMECK48_DIFFERENCE_FROM_0x40000_0xe00000_PRECISION_14
  * SIMECK48_DIFFERENCE_FROM_0x2_0x5_PRECISION_14
  * 
- * SIMECK48_LINEAR_FROM_0x0_0x1_PRECISION_14
+ * SIMECK48_LINEAR_FROM_0x1_0x0_PRECISION_14
  * SIMECK48_LINEAR_FROM_0x800000_0x1_PRECISION_14
  * SIMECK48_LINEAR_FROM_0x280000_0x100000_PRECISION_14
  * 
@@ -79,14 +79,14 @@
     const uint32_t begin_right = 0x5;
 #endif
 
-#ifdef SIMECK48_LINEAR_FROM_0x0_0x1_PRECISION_14
+#ifdef SIMECK48_LINEAR_FROM_0x1_0x0_PRECISION_14
     #define SIMECK48
     #define LINEAR
     #define PRECISION 14
     #define LOAD_ROUND 0
-    const std::string name = "SIMECK48_LINEAR_FROM_0x0_0x1_PRECISION_14";
-    const uint32_t begin_left = 0x1;
-    const uint32_t begin_right = 0x0;
+    const std::string name = "SIMECK48_LINEAR_FROM_0x1_0x0_PRECISION_14";
+    const uint32_t begin_left = 0x0;
+    const uint32_t begin_right = 0x1;
 #endif
 
 #ifdef SIMECK48_LINEAR_FROM_0x800000_0x1_PRECISION_14
