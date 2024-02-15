@@ -5,10 +5,8 @@
 
 /**
  * SIMECK48_DIFFERENCE_FROM_0x20000_0x470000_PRECISION_14
- * SIMECK48_DIFFERENCE_FROM_0x40000_0xe00000_PRECISION_14
  * SIMECK48_DIFFERENCE_FROM_0x2_0x5_PRECISION_14
  * 
- * SIMECK48_LINEAR_FROM_0x1_0x0_PRECISION_14
  * SIMECK48_LINEAR_FROM_0x800000_0x1_PRECISION_14
  * SIMECK48_LINEAR_FROM_0x280000_0x100000_PRECISION_14
  * 
@@ -17,7 +15,6 @@
  * SIMECK64_DIFFERENCE_FROM_0x0_0x11_PRECISION_14
  * 
  * SIMECK64_LINEAR_FROM_0x1_0x0_PRECISION_14
- * SIMECK64_LINEAR_FROM_0x22_0x0_PRECISION_14
  * SIMECK64_LINEAR_FROM_0x80000001_0x5_PRECISION_14
  * 
  * SIMON64_DIFFERENCE_FROM_0x0_0x1_PRECISION_14
@@ -59,16 +56,6 @@
     const uint32_t begin_right = 0x470000;
 #endif
 
-#ifdef SIMECK48_DIFFERENCE_FROM_0x40000_0xe00000_PRECISION_14
-    #define SIMECK48
-    #define DIFFERENCE
-    #define PRECISION 14
-    #define LOAD_ROUND 0
-    const std::string name = "SIMECK48_DIFFERENCE_FROM_0x40000_0xe00000_PRECISION_14";
-    const uint32_t begin_left = 0x40000;
-    const uint32_t begin_right = 0xe00000;
-#endif
-
 #ifdef SIMECK48_DIFFERENCE_FROM_0x2_0x5_PRECISION_14
     #define SIMECK48
     #define DIFFERENCE
@@ -77,16 +64,6 @@
     const std::string name = "SIMECK48_DIFFERENCE_FROM_0x2_0x5_PRECISION_14";
     const uint32_t begin_left = 0x2;
     const uint32_t begin_right = 0x5;
-#endif
-
-#ifdef SIMECK48_LINEAR_FROM_0x1_0x0_PRECISION_14
-    #define SIMECK48
-    #define LINEAR
-    #define PRECISION 14
-    #define LOAD_ROUND 0
-    const std::string name = "SIMECK48_LINEAR_FROM_0x1_0x0_PRECISION_14";
-    const uint32_t begin_left = 0x0;
-    const uint32_t begin_right = 0x1;
 #endif
 
 #ifdef SIMECK48_LINEAR_FROM_0x800000_0x1_PRECISION_14
@@ -148,16 +125,6 @@
     const std::string name = "SIMECK64_LINEAR_FROM_0x1_0x0_PRECISION_14";
     const uint32_t begin_left = 0x0;
     const uint32_t begin_right = 0x1;
-#endif
-
-#ifdef SIMECK64_LINEAR_FROM_0x22_0x0_PRECISION_14
-    #define SIMECK64
-    #define LINEAR
-    #define PRECISION 14
-    #define LOAD_ROUND 0
-    const std::string name = "SIMECK64_LINEAR_FROM_0x22_0x0_PRECISION_14";
-    const uint32_t begin_left = 0x0;
-    const uint32_t begin_right = 0x22;
 #endif
 
 #ifdef SIMECK64_LINEAR_FROM_0x80000001_0x5_PRECISION_14
