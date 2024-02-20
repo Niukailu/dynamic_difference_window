@@ -43,7 +43,7 @@
 **/
 // 在这里定义启用哪一个实验
 
-#define SIMON64_LINEAR_FROM_0x40000004_0x1_PRECISION_14
+#define SIMECK64_DIFFERENCE_FROM_0x1_0x2_PRECISION_14
 
 /*************************** SIMECK48 ***************************/
 #ifdef SIMECK48_DIFFERENCE_FROM_0x20000_0x470000_PRECISION_14
