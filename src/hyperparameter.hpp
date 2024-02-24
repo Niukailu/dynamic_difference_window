@@ -17,6 +17,8 @@
  * SIMECK64_LINEAR_FROM_0x1_0x0_PRECISION_14
  * SIMECK64_LINEAR_FROM_0x80000001_0x5_PRECISION_14
  * 
+ * SIMON48_LINEAR_FROM_0x400004_0x1_PRECISION_17
+ * 
  * SIMON64_DIFFERENCE_FROM_0x0_0x1_PRECISION_14
  * SIMON64_DIFFERENCE_FROM_0x1_0x40000004_PRECISION_14
  * SIMON64_DIFFERENCE_FROM_0x4000000_0x11000000_PRECISION_14
@@ -43,7 +45,7 @@
 **/
 // 在这里定义启用哪一个实验
 
-#define SIMON64_LINEAR_FROM_0x40000004_0x1_PRECISION_14
+#define SIMON64_LINEAR_FROM_0x40000004_0x1_PRECISION_16
 
 /*************************** SIMECK48 ***************************/
 #ifdef SIMECK48_DIFFERENCE_FROM_0x20000_0x470000_PRECISION_14
@@ -135,6 +137,17 @@
     const std::string name = "SIMECK64_LINEAR_FROM_0x80000001_0x5_PRECISION_14";
     const uint32_t begin_left = 0x5;
     const uint32_t begin_right = 0x80000001;
+#endif
+
+/*************************** SIMON48 ***************************/
+#ifdef SIMON48_LINEAR_FROM_0x400004_0x1_PRECISION_17
+    #define SIMON48
+    #define LINEAR
+    #define PRECISION 17
+    #define LOAD_ROUND 0
+    const std::string name = "SIMON48_LINEAR_FROM_0x400004_0x1_PRECISION_17";
+    const uint64_t begin_left = 0x1;
+    const uint64_t begin_right = 0x400004;
 #endif
 
 /*************************** SIMON64 ***************************/
@@ -325,6 +338,16 @@
     #define PRECISION 15
     #define LOAD_ROUND 0
     const std::string name = "SIMON64_LINEAR_FROM_0x40000004_0x1_PRECISION_15";
+    const uint64_t begin_left = 0x1;
+    const uint64_t begin_right = 0x40000004;
+#endif
+
+#ifdef SIMON64_LINEAR_FROM_0x40000004_0x1_PRECISION_16
+    #define SIMON64
+    #define LINEAR
+    #define PRECISION 16
+    #define LOAD_ROUND 0
+    const std::string name = "SIMON64_LINEAR_FROM_0x40000004_0x1_PRECISION_16";
     const uint64_t begin_left = 0x1;
     const uint64_t begin_right = 0x40000004;
 #endif
