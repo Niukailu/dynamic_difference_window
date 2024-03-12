@@ -14,8 +14,8 @@ def parse_options():
 
 def download(experiment):
     ''' download '''
-    ali = Aligo(name='falcon', level=logging.ERROR)
-    file = ali.get_file_by_path(f'experiments/{experiment}')
+    ali = Aligo(level=logging.ERROR)
+    file = ali.get_folder_by_path(f'experiments/{experiment}')
     ali.download_folder(file.file_id, local_folder='experiments')
 
 
