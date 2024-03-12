@@ -159,7 +159,7 @@ def generate_log(experiment):
         del info
         print(f"\033[0;34;40mRound {step}:\033[0m")
         info = load(experiment, step)
-        print(f"\033[0;34;40m\twindow is {info['left_window']}\033[0m")
+        print(f"\033[0;34;40m\twindow is ({hex(info['left_base'])}){info['left_window']}\033[0m")
         max_prob = info['prob'].max()
         print(f"\033[0;34;40m\tMax: {max_prob:06f}\033[0m", end="")
         xs, ys = np.where(info['prob'] >= max_prob + math.log2(0.999999))
