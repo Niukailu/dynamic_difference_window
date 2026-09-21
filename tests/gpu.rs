@@ -103,3 +103,60 @@ fn adjoint_projected_mass_and_sharding() -> anyhow::Result<()> {
     }
     Ok(())
 }
+
+#[test]
+#[ignore = "requires CUDA; validates virtual states against materialized FP64 states"]
+fn implicit_virtual_state_matches_dense() -> anyhow::Result<()> {
+    for n in [16, 24, 32, 48, 64] {
+        for cipher in ["simon", "simeck"] {
+            for mode in ["difference", "linear"] {
+                let config = Config {
+                    cipher: cipher.into(),
+                    mode: mode.into(),
+                    word_bits: n,
+                    left: 0,
+                    right: 1,
+                    width: 6,
+                    rounds: 5,
+                };
+                let mut engine = Engine::new(&config, devices()[0], 4.)?;
+                let (mut left, mut right) = config.initial();
+                let mut dense = engine.point(1, 1, 0)?;
+                let mut virtual_state = engine.compressed_point()?;
+                for _ in 0..5 {
+                    let target = engine
+                        .candidates(&dense, &left, &right, 6, None, 1)?
+                        .remove(0);
+                    let (next, stats) = engine.step(&dense, &left, &right, &target, None)?;
+                    let (implicit, actual) =
+                        engine.compressed_step(&virtual_state, &left, &right, &target)?;
+                    close(&[stats.peak, stats.total], &[actual.peak, actual.total]);
+                    assert_eq!(stats.index, actual.index);
+                    engine.scale(&next, 1. / stats.peak)?;
+                    let restored = engine.compressed_materialize(&implicit)?;
+                    close(
+                        &next.buffer.download::<f64>(next.size())?,
+                        &restored.buffer.download::<f64>(restored.size())?,
+                    );
+                    let options = engine.compressed_candidates(
+                        &implicit,
+                        &target,
+                        &left,
+                        6,
+                        Some(&target),
+                    )?;
+                    assert_eq!(options[0].mask() & target.mask(), target.mask());
+                    close(
+                        &[engine.compressed_value(&implicit, 0, 0)?],
+                        &[next.value(0, 0)?],
+                    );
+                    dense = next;
+                    virtual_state = implicit;
+                    right = left;
+                    left = target;
+                }
+            }
+        }
+    }
+    Ok(())
+}

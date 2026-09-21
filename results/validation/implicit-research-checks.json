@@ -1,0 +1,28 @@
+{
+  "python_tests": 25,
+  "rust_unit_tests": 3,
+  "rust_explicit_gpu_tests": 3,
+  "all_passed": true,
+  "new_complete_jsonl_files": 96,
+  "implicit_equivalence_cases": {
+    "word_bits": [
+      16,
+      24,
+      32,
+      48,
+      64
+    ],
+    "cipher": [
+      "simon",
+      "simeck"
+    ],
+    "mode": [
+      "difference",
+      "linear"
+    ],
+    "rounds_per_case": 5,
+    "comparison": "entire normalized FP64 matrix, peak, mass, and argmax"
+  },
+  "old_w17_union_log2_error": 0.0,
+  "scope": "Numerical model validation; no interval arithmetic or fixed-key long-round experiment"
+}

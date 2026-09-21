@@ -206,6 +206,37 @@ impl Plan {
             records: rounds,
         })
     }
+    /// Reflect a half schedule into a (2h+1)-round path set ending at the swapped input.
+    /// The central transition joins (l,r) and (t,l); its weight is symmetric in r,t.
+    pub fn mirrored(&self, half: usize, reverse: bool) -> Result<Self> {
+        ensure!(
+            half > 0 && half <= self.windows.len(),
+            "invalid half length"
+        );
+        let (left, right) = self.config.initial();
+        let prefix = if reverse {
+            ensure!(
+                2 * half < self.windows.len(),
+                "reverse seed needs a full odd-round schedule"
+            );
+            let mut reflected = vec![right.clone(), left.clone()];
+            reflected.extend_from_slice(&self.windows[..2 * half - 1]);
+            reflected.reverse();
+            reflected[..half].to_vec()
+        } else {
+            self.windows[..half].to_vec()
+        };
+        let mut windows = prefix.clone();
+        windows.extend(prefix[..half - 1].iter().rev().cloned());
+        windows.extend([left, right]);
+        let mut config = self.config.clone();
+        config.rounds = 2 * half + 1;
+        Ok(Self {
+            config,
+            windows,
+            records: vec![],
+        })
+    }
     pub fn endpoint(&self) -> Result<(u64, u64)> {
         let last = self.records.last().context("no final endpoint")?;
         Ok((

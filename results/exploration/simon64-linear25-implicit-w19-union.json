@@ -1,0 +1,25 @@
+{
+  "above_threshold": false,
+  "config": {
+    "cipher": "simon",
+    "left": 279552,
+    "mode": "linear",
+    "right": 4096,
+    "rounds": 25,
+    "width": 19,
+    "word_bits": 32
+  },
+  "endpoint": [
+    4096,
+    279552
+  ],
+  "intersection_file": "results/exploration/simon64-linear25-implicit-w19-union.intersection.jsonl",
+  "log2_a": -64.1470726828834,
+  "log2_intersection": -64.18569162809318,
+  "log2_union": -64.10946061900967,
+  "method": "2P(A)-P(A intersection reflected(A)); exact virtual FP64 replay",
+  "reference": "results/exploration/simon64-linear25-implicit-w19.jsonl",
+  "rounds": 25,
+  "seconds": 53.020158814,
+  "threshold_log2": -64.0
+}

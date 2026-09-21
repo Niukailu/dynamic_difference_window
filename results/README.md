@@ -3,7 +3,7 @@
 | 目录 | 内容 |
 |---|---|
 | `baselines/` | 历史日志转换、CPU 对照和扩窗基线 |
-| `best/` | 已通过独立内核复核的端点优化结果 |
+| `best/` | 当前最佳端点优化/路径并集；验证范围见对应研究文档 |
 | `validation/` | 独立内核、Rust 和多卡复核 |
 | `benchmarks/` | 共享 GPU 下的计时原始记录、阶段诊断与旧 C++ 原型对照 |
 | `exploration/` | 候选搜索、输入扫描、续搜、路径并集及失败尝试 |
@@ -14,7 +14,7 @@
 - [SIMON128，45 轮，w14，−127.859300186727](best/simon128-w14-endpoint-refined.jsonl)。
 - [SIMON64，23 轮，w10，−65.590628604365](best/simon64-w10-endpoint-refined.jsonl)。
 - [SIMON128 继续至 48 轮](exploration/simon128-best-continuation48.jsonl)：46 轮未达到 2^-128。
-- [SIMON64 线性 25 轮反射路径并集](exploration/simon64-linear25-symmetric-union.json)：−64.134564031949，未达到 2^-64。
+- [SIMON64 线性 25 轮最新并集](best/simon64-linear25-implicit-union.json)：**−64.105767763312**，未达到 2^-64；[此前结果](exploration/simon64-linear25-symmetric-union.json)为 −64.134564031949。方法与验证见[隐式矩阵搜索](../docs/implicit-search.md)。
 
 JSONL 首行为配置，其后是逐轮记录，可带末尾汇总。`legacy-*` 的概率来自原日志六位小数；其余结果使用修正后的投影消元。`exploration/simon64-diff-w10-marginal.jsonl` 第 18 轮丢失全部路径，是失败证据，不能当作完整 23 轮运行。
 

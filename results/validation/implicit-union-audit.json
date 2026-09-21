@@ -1,0 +1,14 @@
+[
+  {
+    "file": "results/best/simon64-linear25-implicit-union.json",
+    "terms": 15,
+    "math_fsum_log2": -64.10576776331175,
+    "error": 0.0
+  },
+  {
+    "file": "results/exploration/simon64-linear25-implicit-four-way.json",
+    "terms": 15,
+    "math_fsum_log2": -64.10770332552568,
+    "error": 0.0
+  }
+]

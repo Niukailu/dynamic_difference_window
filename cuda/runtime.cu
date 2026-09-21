@@ -143,3 +143,46 @@ extern "C" __global__ void dot_tiles(const double *a, const double *b, U count,
     result[blockIdx.x] = total;
   }
 }
+
+// Endpoint posterior over the changed scalar coordinate, without a product
+// matrix.
+extern "C" __global__ void posterior_rows(const double *forward,
+                                          const double *backward, U cols,
+                                          double *rows) {
+  U row = blockIdx.x;
+  double sum = 0;
+  for (U col = threadIdx.x; col < cols; col += 256)
+    sum += forward[row * cols + col] * backward[row * cols + col];
+  __shared__ double warp[8];
+  for (int d = 16; d; d >>= 1)
+    sum += __shfl_down_sync(0xffffffff, sum, d);
+  if (!(threadIdx.x & 31))
+    warp[threadIdx.x >> 5] = sum;
+  __syncthreads();
+  if (!threadIdx.x) {
+    double total = 0;
+    for (int w = 0; w < 8; w++)
+      total += warp[w];
+    rows[row] = total;
+  }
+}
+extern "C" __global__ void posterior_halves(const double *rows, U count,
+                                            double *result) {
+  int bit = blockIdx.x >> 1, value = blockIdx.x & 1;
+  double sum = 0;
+  for (U row = threadIdx.x; row < count; row += 256)
+    if (((row >> bit) & 1) == value)
+      sum += rows[row];
+  __shared__ double warp[8];
+  for (int d = 16; d; d >>= 1)
+    sum += __shfl_down_sync(0xffffffff, sum, d);
+  if (!(threadIdx.x & 31))
+    warp[threadIdx.x >> 5] = sum;
+  __syncthreads();
+  if (!threadIdx.x) {
+    double total = 0;
+    for (int w = 0; w < 8; w++)
+      total += warp[w];
+    result[blockIdx.x] = total;
+  }
+}

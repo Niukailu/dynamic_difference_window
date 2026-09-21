@@ -7,13 +7,17 @@ use crate::{
 use anyhow::{ensure, Result};
 use serde_json::{json, Value};
 use std::{path::Path, time::Instant};
-struct Message {
-    values: Vec<f64>,
-    rows: usize,
-    cols: usize,
-    scale: f64,
+pub(crate) struct Message {
+    pub(crate) values: Vec<f64>,
+    pub(crate) rows: usize,
+    pub(crate) cols: usize,
+    pub(crate) scale: f64,
 }
-fn windows(initial: &(Window, Window), schedule: &[Window], completed: usize) -> (Window, Window) {
+pub(crate) fn windows(
+    initial: &(Window, Window),
+    schedule: &[Window],
+    completed: usize,
+) -> (Window, Window) {
     let left = if completed == 0 {
         initial.0.clone()
     } else {
@@ -28,13 +32,18 @@ fn windows(initial: &(Window, Window), schedule: &[Window], completed: usize) ->
     };
     (left, right)
 }
-fn endpoint(prob: &Matrix, left: &Window, right: &Window, point: (u64, u64)) -> Result<f64> {
+pub(crate) fn endpoint(
+    prob: &Matrix,
+    left: &Window,
+    right: &Window,
+    point: (u64, u64),
+) -> Result<f64> {
     match (left.index(point.0), right.index(point.1)) {
         (Some(i), Some(j)) => prob.value(i, j),
         _ => Ok(0.),
     }
 }
-fn backward(
+pub(crate) fn backward(
     engine: &mut Engine,
     initial: &(Window, Window),
     schedule: &[Window],
@@ -72,7 +81,7 @@ fn backward(
     messages.reverse();
     Ok(messages)
 }
-fn score(
+pub(crate) fn score(
     engine: &mut Engine,
     prob: &Matrix,
     state: (&Window, &Window),

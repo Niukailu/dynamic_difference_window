@@ -152,3 +152,114 @@ class Rust(unittest.TestCase):
                     check=True,
                     stdout=subprocess.DEVNULL,
                 )
+
+    def test_mirror_posterior_and_implicit_union(self):
+        binary = os.environ["DDW_RUST"]
+        device = os.environ.get("DDW_TEST_DEVICE", "0")
+        with tempfile.TemporaryDirectory() as directory:
+            for mode in ("difference", "linear"):
+                source = Path(directory) / (mode + "-source.jsonl")
+                mirror = Path(directory) / (mode + "-mirror.jsonl")
+                refined = Path(directory) / (mode + "-refined.jsonl")
+                virtual = Path(directory) / (mode + "-virtual.jsonl")
+                union = Path(directory) / (mode + "-union.json")
+                union4 = Path(directory) / (mode + "-union4.json")
+                # A nonzero self-loop with a known swapped endpoint. Short mirrors
+                # of (0,1) can legitimately have no paths, so they are not fixtures.
+                config = {
+                    "cipher": "simon",
+                    "mode": mode,
+                    "word_bits": 16,
+                    "left": 65535,
+                    "right": 65535,
+                    "width": 4,
+                    "rounds": 5,
+                }
+                point = Window(65535)
+                probability = np.ones((1, 1))
+                records = [{"config": config}]
+                for round_number in range(1, 6):
+                    probability = cpu_step(
+                        probability, point, point, point, 16, "simon", mode
+                    )
+                    records.append(
+                        {
+                            "round": round_number,
+                            "window_base": "0xffff",
+                            "window_bits": [],
+                            "output": ["0xffff", "0xffff"],
+                            "log2_max": math.log2(probability[0, 0]),
+                            "log2_mass": math.log2(probability.sum()),
+                        }
+                    )
+                source.write_text("\n".join(map(json.dumps, records)) + "\n")
+                commands = [
+                    [
+                        "mirror",
+                        str(source),
+                        "--half-rounds",
+                        "2",
+                        "--devices",
+                        device,
+                        "--output",
+                        str(mirror),
+                    ],
+                    [
+                        "refine",
+                        str(mirror),
+                        "--strategy",
+                        "posterior",
+                        "--passes",
+                        "1",
+                        "--device",
+                        device,
+                        "--output",
+                        str(refined),
+                    ],
+                    [
+                        "compressed",
+                        str(refined),
+                        "--width",
+                        "2",
+                        "--device",
+                        device,
+                        "--output",
+                        str(virtual),
+                    ],
+                    [
+                        "symmetric-union",
+                        str(mirror),
+                        "--device",
+                        device,
+                        "--output",
+                        str(union),
+                    ],
+                ]
+                commands.append(
+                    [
+                        "path-union",
+                        str(mirror),
+                        str(mirror),
+                        "--reflect",
+                        "--device",
+                        device,
+                        "--output",
+                        str(union4),
+                    ]
+                )
+                for command in commands:
+                    subprocess.run(
+                        [binary, *command], check=True, stdout=subprocess.DEVNULL
+                    )
+                for path in (source, mirror, refined, virtual):
+                    self.check_cpu(path)
+                rows = self.check_cpu(mirror)
+                self.assertEqual(rows[-1]["output"], ["0xffff", "0xffff"])
+                summary4 = json.loads(union4.read_text())
+                self.assertAlmostEqual(
+                    summary4["log2_union"], rows[-1]["log2_max"], places=10
+                )
+                summary = json.loads(union.read_text())
+                self.assertAlmostEqual(
+                    summary["log2_union"], rows[-1]["log2_max"], places=10
+                )

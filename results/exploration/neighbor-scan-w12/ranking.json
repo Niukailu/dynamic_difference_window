@@ -1,0 +1,796 @@
+{
+  "config": {
+    "cipher": "simon",
+    "left": 279552,
+    "mode": "linear",
+    "right": 4096,
+    "rounds": 25,
+    "width": 14,
+    "word_bits": 32
+  },
+  "width": 12,
+  "rounds": 25,
+  "inputs": 65,
+  "ranking": [
+    {
+      "input": [
+        "0x113",
+        "0x4"
+      ],
+      "log2_max": -66.0433200923818,
+      "output": [
+        "0x4",
+        "0x111"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-036.jsonl"
+    },
+    {
+      "input": [
+        "0x4441",
+        "0x100"
+      ],
+      "log2_max": -66.0433200923818,
+      "output": [
+        "0x100",
+        "0x4440"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-053.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x4"
+      ],
+      "log2_max": -66.0433200923818,
+      "output": [
+        "0x4",
+        "0x111"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-004.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0xc"
+      ],
+      "log2_max": -68.04093740487558,
+      "output": [
+        "0x4",
+        "0x111"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-007.jsonl"
+    },
+    {
+      "input": [
+        "0x445",
+        "0x10"
+      ],
+      "log2_max": -68.04327957839203,
+      "output": [
+        "0x10",
+        "0x444"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-044.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x10000004"
+      ],
+      "log2_max": -68.0432796273252,
+      "output": [
+        "0x4",
+        "0x111"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-032.jsonl"
+    },
+    {
+      "input": [
+        "0x131",
+        "0x4"
+      ],
+      "log2_max": -68.04601419544795,
+      "output": [
+        "0x4",
+        "0x111"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-039.jsonl"
+    },
+    {
+      "input": [
+        "0x11",
+        "0x4"
+      ],
+      "log2_max": -68.13767771251153,
+      "output": [
+        "0x4000004",
+        "0x11000010"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-000.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x5"
+      ],
+      "log2_max": -69.80623626702324,
+      "output": [
+        "0x4",
+        "0x111"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-005.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x84"
+      ],
+      "log2_max": -69.80880586725367,
+      "output": [
+        "0x4",
+        "0x111"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-011.jsonl"
+    },
+    {
+      "input": [
+        "0x10111",
+        "0x4"
+      ],
+      "log2_max": -71.84759194275476,
+      "output": [
+        "0x0",
+        "0x10000"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-056.jsonl"
+    },
+    {
+      "input": [
+        "0x311",
+        "0x4"
+      ],
+      "log2_max": -75.04793012238382,
+      "output": [
+        "0x4",
+        "0x311"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-043.jsonl"
+    },
+    {
+      "input": [
+        "0x8111",
+        "0x4"
+      ],
+      "log2_max": -75.71049308182857,
+      "output": [
+        "0x2",
+        "0x80008088"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-054.jsonl"
+    },
+    {
+      "input": [
+        "0x911",
+        "0x4"
+      ],
+      "log2_max": -76.43421181259782,
+      "output": [
+        "0x20000000",
+        "0x88000808"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-047.jsonl"
+    },
+    {
+      "input": [
+        "0x115",
+        "0x4"
+      ],
+      "log2_max": -76.69744638885669,
+      "output": [
+        "0x4",
+        "0x115"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-037.jsonl"
+    },
+    {
+      "input": [
+        "0x191",
+        "0x4"
+      ],
+      "log2_max": -77.28569046873507,
+      "output": [
+        "0x0",
+        "0x180"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-041.jsonl"
+    },
+    {
+      "input": [
+        "0x40111",
+        "0x4"
+      ],
+      "log2_max": -78.31172732336672,
+      "output": [
+        "0x10",
+        "0x40444"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-060.jsonl"
+    },
+    {
+      "input": [
+        "0x4111",
+        "0x4"
+      ],
+      "log2_max": -80.27079565343703,
+      "output": [
+        "0x0",
+        "0x4100"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-052.jsonl"
+    },
+    {
+      "input": [
+        "0x44401",
+        "0x1000"
+      ],
+      "log2_max": -80.34251778964422,
+      "output": [
+        "0x40000",
+        "0x1110001"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-061.jsonl"
+    },
+    {
+      "input": [
+        "0x2111",
+        "0x4"
+      ],
+      "log2_max": -80.77665980976712,
+      "output": [
+        "0x0",
+        "0x2100"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-050.jsonl"
+    },
+    {
+      "input": [
+        "0x119",
+        "0x4"
+      ],
+      "log2_max": -80.8936817322329,
+      "output": [
+        "0x0",
+        "0x118"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-038.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x204"
+      ],
+      "log2_max": -81.50131421305417,
+      "output": [
+        "0x20000202",
+        "0x8000080"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-013.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x10004"
+      ],
+      "log2_max": -82.21296607295557,
+      "output": [
+        "0x10110",
+        "0x4004"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-020.jsonl"
+    },
+    {
+      "input": [
+        "0x11",
+        "0x40000000"
+      ],
+      "log2_max": -82.50132896754863,
+      "output": [
+        "0x40000000",
+        "0x11"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-001.jsonl"
+    },
+    {
+      "input": [
+        "0x20111",
+        "0x4"
+      ],
+      "log2_max": -82.61362601957998,
+      "output": [
+        "0x8",
+        "0x20222"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-058.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x2004"
+      ],
+      "log2_max": -82.61913876094323,
+      "output": [
+        "0x2022",
+        "0x80000800"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-017.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x20004"
+      ],
+      "log2_max": -84.45070508597455,
+      "output": [
+        "0x20220",
+        "0x8008"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-021.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x804"
+      ],
+      "log2_max": -85.65854189318121,
+      "output": [
+        "0x804",
+        "0x311"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-015.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x100004"
+      ],
+      "log2_max": -85.98298673265928,
+      "output": [
+        "0x101100",
+        "0x40040"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-024.jsonl"
+    },
+    {
+      "input": [
+        "0x223",
+        "0x8"
+      ],
+      "log2_max": -86.6395374438368,
+      "output": [
+        "0x8",
+        "0x222"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-042.jsonl"
+    },
+    {
+      "input": [
+        "0x2221",
+        "0x80"
+      ],
+      "log2_max": -86.93726887513705,
+      "output": [
+        "0x80",
+        "0x2220"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-051.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x24"
+      ],
+      "log2_max": -86.97100543566755,
+      "output": [
+        "0x20",
+        "0x108"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-009.jsonl"
+    },
+    {
+      "input": [
+        "0x151",
+        "0x4"
+      ],
+      "log2_max": -87.50516892972517,
+      "output": [
+        "0x0",
+        "0x140"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-040.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x14"
+      ],
+      "log2_max": -87.76097882866078,
+      "output": [
+        "0x14",
+        "0x115"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-008.jsonl"
+    },
+    {
+      "input": [
+        "0x88801",
+        "0x2000"
+      ],
+      "log2_max": -88.06786916177651,
+      "output": [
+        "0x40000",
+        "0x1110001"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-063.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x1000004"
+      ],
+      "log2_max": -88.2008200711303,
+      "output": [
+        "0x1011000",
+        "0x400400"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-028.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x80004"
+      ],
+      "log2_max": -88.28458814794337,
+      "output": [
+        "0x80880",
+        "0x20020"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-023.jsonl"
+    },
+    {
+      "input": [
+        "0x511",
+        "0x4"
+      ],
+      "log2_max": -88.99011820503227,
+      "output": [
+        "0x0",
+        "0x510"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-045.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x1004"
+      ],
+      "log2_max": -89.7429203806698,
+      "output": [
+        "0x1000",
+        "0x500"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-016.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x20000004"
+      ],
+      "log2_max": -91.69057431835719,
+      "output": [
+        "0x4",
+        "0x111"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-033.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x104"
+      ],
+      "log2_max": -93.01300707027298,
+      "output": [
+        "0x140",
+        "0x150"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-012.jsonl"
+    },
+    {
+      "input": [
+        "0x101",
+        "0x4"
+      ],
+      "log2_max": -94.47076250161132,
+      "output": [
+        "0x4",
+        "0x101"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-002.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x8004"
+      ],
+      "log2_max": -94.59230468239517,
+      "output": [
+        "0x8040",
+        "0x2110"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-019.jsonl"
+    },
+    {
+      "input": [
+        "0x1111",
+        "0x4"
+      ],
+      "log2_max": -95.23558892979345,
+      "output": [
+        "0x40000004",
+        "0x10001100"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-048.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x404"
+      ],
+      "log2_max": -98.7370414926806,
+      "output": [
+        "0x44000400",
+        "0x1000010"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-014.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x40004"
+      ],
+      "log2_max": -101.02656782899469,
+      "output": [
+        "0x40440",
+        "0x10010"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-022.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x44"
+      ],
+      "log2_max": -101.18037109891492,
+      "output": [
+        "0x44000044",
+        "0x11000101"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-010.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x6"
+      ],
+      "log2_max": -104.54766942683578,
+      "output": [
+        "0x6",
+        "0x80000110"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-006.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x4000004"
+      ],
+      "log2_max": -105.38732036356346,
+      "output": [
+        "0x4044000",
+        "0x1001000"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-030.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x40000004"
+      ],
+      "log2_max": -105.72074479868638,
+      "output": [
+        "0x40000004",
+        "0x10000111"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-034.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x0"
+      ],
+      "log2_max": -107.09679683973377,
+      "output": [
+        "0x4000000",
+        "0x1000110"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-003.jsonl"
+    },
+    {
+      "input": [
+        "0x1111",
+        "0x40"
+      ],
+      "log2_max": -107.92143405118824,
+      "output": [
+        "0x40",
+        "0x1111"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-049.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x4004"
+      ],
+      "log2_max": -108.14726018720842,
+      "output": [
+        "0x40004040",
+        "0x10001101"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-018.jsonl"
+    },
+    {
+      "input": [
+        "0x100111",
+        "0x4"
+      ],
+      "log2_max": -110.15355046699875,
+      "output": [
+        "0x40",
+        "0x101010"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-064.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x80000004"
+      ],
+      "log2_max": -117.55983897355335,
+      "output": [
+        "0x80800004",
+        "0x2200111"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-035.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x400004"
+      ],
+      "log2_max": -118.89480978462424,
+      "output": [
+        "0x404400",
+        "0x101100"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-026.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x800004"
+      ],
+      "log2_max": -121.67403721069229,
+      "output": [
+        "0x818981",
+        "0x40206424"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-027.jsonl"
+    },
+    {
+      "input": [
+        "0x80111",
+        "0x4"
+      ],
+      "log2_max": -132.53765445938086,
+      "output": [
+        "0x400000",
+        "0x80000"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-062.jsonl"
+    },
+    {
+      "input": [
+        "0x11101",
+        "0x400"
+      ],
+      "log2_max": -133.33043616609535,
+      "output": [
+        "0x400400",
+        "0x30101111"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-057.jsonl"
+    },
+    {
+      "input": [
+        "0x8881",
+        "0x200"
+      ],
+      "log2_max": -133.75983046967104,
+      "output": [
+        "0x2020000",
+        "0x8088000"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-055.jsonl"
+    },
+    {
+      "input": [
+        "0x889",
+        "0x20"
+      ],
+      "log2_max": -134.93443933057586,
+      "output": [
+        "0x40400020",
+        "0x1100899"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-046.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x200004"
+      ],
+      "log2_max": -142.93967206216016,
+      "output": [
+        "0x602224",
+        "0x80809"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-025.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x8000004"
+      ],
+      "log2_max": -146.6269936491627,
+      "output": [
+        "0x48804",
+        "0x1310311"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-031.jsonl"
+    },
+    {
+      "input": [
+        "0x22201",
+        "0x800"
+      ],
+      "log2_max": -148.85971070869743,
+      "output": [
+        "0x40200",
+        "0x1100081"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-059.jsonl"
+    },
+    {
+      "input": [
+        "0x111",
+        "0x2000004"
+      ],
+      "log2_max": -176.74043974491204,
+      "output": [
+        "0x40202000",
+        "0x10000111"
+      ],
+      "path": "results/exploration/neighbor-scan-w12/input-029.jsonl"
+    }
+  ]
+}

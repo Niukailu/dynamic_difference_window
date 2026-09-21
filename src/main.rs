@@ -42,6 +42,20 @@ enum Command {
         #[command(flatten)]
         selection: Selection,
     },
+    /// Lossless single-GPU virtual matrix replay or nested expansion.
+    Compressed {
+        plan: PathBuf,
+        #[arg(long)]
+        width: Option<usize>,
+        #[arg(long)]
+        rounds: Option<usize>,
+        #[arg(long, default_value_t = 0)]
+        device: i32,
+        #[arg(long, default_value_t = 40.)]
+        memory_gib: f64,
+        #[arg(long)]
+        output: PathBuf,
+    },
     Search {
         #[arg(long, default_value_t = 32)]
         word_bits: u32,
@@ -62,8 +76,22 @@ enum Command {
         #[command(flatten)]
         selection: Selection,
     },
+    /// Join a saved half schedule to its reflection, targeting swapped endpoints.
+    Mirror {
+        plan: PathBuf,
+        #[arg(long, default_value_t = 12)]
+        half_rounds: usize,
+        #[arg(long)]
+        reverse: bool,
+        #[arg(long)]
+        compressed: bool,
+        #[command(flatten)]
+        hardware: Hardware,
+    },
     Refine {
         plan: PathBuf,
+        #[arg(long, default_value="local", value_parser=["local","posterior"])]
+        strategy: String,
         #[arg(long, default_value_t = 0)]
         device: i32,
         #[arg(long, default_value_t = 28.)]
@@ -74,6 +102,31 @@ enum Command {
         candidates: usize,
         #[arg(long, default_value_t = 2)]
         passes: usize,
+        #[arg(long)]
+        output: PathBuf,
+    },
+    /// Exact union with a reflected schedule, for swapped endpoints.
+    SymmetricUnion {
+        plan: PathBuf,
+        #[arg(long)]
+        rounds: Option<usize>,
+        #[arg(long, default_value_t = 0)]
+        device: i32,
+        #[arg(long, default_value_t = 40.)]
+        memory_gib: f64,
+        #[arg(long)]
+        output: PathBuf,
+    },
+    /// Inclusion-exclusion over up to four path sets with swapped endpoints.
+    PathUnion {
+        #[arg(required = true)]
+        plans: Vec<PathBuf>,
+        #[arg(long)]
+        reflect: bool,
+        #[arg(long, default_value_t = 0)]
+        device: i32,
+        #[arg(long, default_value_t = 40.)]
+        memory_gib: f64,
         #[arg(long)]
         output: PathBuf,
     },
@@ -113,6 +166,21 @@ fn main() -> Result<()> {
             };
             run::execute(&config, Some(&plan), &options, &hardware.output)
         }
+        Command::Compressed {
+            plan,
+            width,
+            rounds,
+            device,
+            memory_gib,
+            output,
+        } => ddw::compressed::execute(
+            &Plan::read(&plan)?,
+            width,
+            rounds,
+            device,
+            memory_gib,
+            &output,
+        ),
         Command::Search {
             word_bits,
             cipher,
@@ -143,23 +211,83 @@ fn main() -> Result<()> {
             };
             run::execute(&config, None, &options, &hardware.output)
         }
+        Command::Mirror {
+            plan,
+            half_rounds,
+            reverse,
+            compressed,
+            hardware,
+        } => {
+            let plan = Plan::read(&plan)?.mirrored(half_rounds, reverse)?;
+            if compressed {
+                anyhow::ensure!(
+                    hardware.devices.len() == 1,
+                    "compressed mirror currently uses one device"
+                );
+                return ddw::compressed::execute(
+                    &plan,
+                    None,
+                    None,
+                    hardware.devices[0],
+                    hardware.memory_gib,
+                    &hardware.output,
+                );
+            }
+            let options = Options {
+                devices: hardware.devices,
+                memory_gib: hardware.memory_gib,
+                candidates: 1,
+                objective: "mass".into(),
+                extend: false,
+                expand: false,
+            };
+            run::execute(&plan.config, Some(&plan), &options, &hardware.output)
+        }
         Command::Refine {
             plan,
+            strategy,
             device,
             memory_gib,
             host_memory_gib,
             candidates,
             passes,
             output,
-        } => ddw::refine::execute(
-            &Plan::read(&plan)?,
+        } => {
+            if strategy == "posterior" {
+                ddw::posterior::execute(
+                    &Plan::read(&plan)?,
+                    device,
+                    memory_gib,
+                    host_memory_gib,
+                    passes,
+                    &output,
+                )
+            } else {
+                ddw::refine::execute(
+                    &Plan::read(&plan)?,
+                    device,
+                    memory_gib,
+                    host_memory_gib,
+                    candidates,
+                    passes,
+                    &output,
+                )
+            }
+        }
+        Command::SymmetricUnion {
+            plan,
+            rounds,
             device,
             memory_gib,
-            host_memory_gib,
-            candidates,
-            passes,
-            &output,
-        ),
+            output,
+        } => ddw::union::execute(&plan, rounds, device, memory_gib, &output),
+        Command::PathUnion {
+            plans,
+            reflect,
+            device,
+            memory_gib,
+            output,
+        } => ddw::union::multiple(&plans, reflect, device, memory_gib, &output),
         Command::Validate {
             file,
             reference,

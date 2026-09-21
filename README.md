@@ -56,6 +56,12 @@ CUDA_HOME=/usr/local/cuda cargo build --release
 
 满窗口单张 FP64 矩阵大小为 `8 × 2^(2w)` 字节：w14 为 2 GiB，w15 为 8 GiB，w17 为 128 GiB。还需要输出矩阵、陪集与统计缓存。`--memory-gib` 限制每卡由程序分配的缓冲，并检查剩余显存；预算不是独占预留。计时来自共享 B300，不能当作硬件上限。
 
+## 更宽窗口与端点后验搜索
+
+新增 `compressed` 无损隐式矩阵后端：保持 FP64，把转移输出保存为陪集值和仿射映射，而非完整矩阵。已在共享单卡上完成 w19；对应稠密单状态为 2 TiB，实际表示约 14 GiB，另需工作区和前后状态。它降低显存需求，计算仍随窗口宽度指数增长。
+
+`refine --strategy posterior` 用最终端点后验质量评价全部单比特换位；`mirror` 构造对称计划；`symmetric-union` / `path-union` 对同端点路径集合进行精确去重。本轮 SIMON64 线性 25 轮候选达到 **−64.105767763312**，仍低于 −64 阈值。方法、限制、结果与命令见[隐式矩阵与 25 轮搜索](docs/implicit-search.md)。
+
 ## 仓库结构
 
 | 目录 | 用途 |
@@ -78,7 +84,7 @@ cargo fmt --check
 cargo clippy --all-targets -- -D warnings
 cargo test
 # 显式指定共享测试卡；测试只分配少量显存
-DDW_TEST_DEVICES=0,1 cargo test --test gpu -- --ignored --test-threads=1
+DDW_TEST_DEVICE=0 DDW_TEST_DEVICES=0,1 cargo test -- --ignored --test-threads=1
 
 # 独立 CPU / Python / CUDA 回归
 python -m pip install -e 'reference/python[cuda13]'

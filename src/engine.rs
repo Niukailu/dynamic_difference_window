@@ -7,12 +7,41 @@ use anyhow::{ensure, Result};
 use sha2::{Digest, Sha256};
 use std::{collections::HashMap, sync::Arc};
 pub const KERNELS: &str = include_str!("../cuda/kernels.cu");
+pub const IMPLICIT: &str = include_str!("../cuda/implicit.cu");
 pub const HELPERS: &str = include_str!("../cuda/runtime.cu");
 pub fn kernel_hash() -> String {
     format!(
         "{:x}",
-        Sha256::digest(format!("{KERNELS}\n{HELPERS}").as_bytes())
+        Sha256::digest(format!("{KERNELS}\n{HELPERS}\n{IMPLICIT}").as_bytes())
     )
+}
+#[derive(Debug)]
+pub struct EmptyDistribution;
+impl std::fmt::Display for EmptyDistribution {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "implicit transition retained no paths")
+    }
+}
+impl std::error::Error for EmptyDistribution {}
+/// Lossless representation of an FP64 matrix by its preceding transition's cosets.
+pub struct Compressed {
+    pub rows: usize,
+    pub cols: usize,
+    view: Buffer,
+    owned: Vec<Buffer>,
+    descriptor: Vec<u64>,
+    marginal: Buffer,
+}
+impl Compressed {
+    pub fn bytes(&self) -> usize {
+        self.view.bytes + self.marginal.bytes + self.owned.iter().map(|b| b.bytes).sum::<usize>()
+    }
+    pub fn buckets(&self) -> usize {
+        self.owned.last().unwrap().bytes / 8
+    }
+    pub fn normalization(&self) -> f64 {
+        f64::from_bits(self.descriptor[7])
+    }
 }
 pub struct Matrix {
     pub buffer: Buffer,
@@ -60,7 +89,7 @@ impl Engine {
         } else {
             (5, 0, 1)
         };
-        let source=format!("#define BITS {n}\n#define WORD_MASK {mask}ULL\n#define RA {a}\n#define RB {b}\n#define RC {c}\n#define LINEAR_MODE {}\n{KERNELS}\n{HELPERS}",u8::from(config.mode=="linear"));
+        let source=format!("#define BITS {n}\n#define WORD_MASK {mask}ULL\n#define RA {a}\n#define RB {b}\n#define RC {c}\n#define LINEAR_MODE {}\n{KERNELS}\n{HELPERS}\n{IMPLICIT}",u8::from(config.mode=="linear"));
         let module = Module::new(context.clone(), &source)?;
         Ok(Self {
             context,
@@ -468,6 +497,261 @@ impl Engine {
             args![a.ptr(), b.ptr(), a.size(), partial],
         )?;
         Ok(self.summary(partial, groups)?.total)
+    }
+    pub fn compressed_point(&self) -> Result<Compressed> {
+        let mut owned = vec![];
+        let mut make = |values: &[u64]| -> Result<u64> {
+            let b = Buffer::new(self.context.clone(), values.len() * 8)?;
+            b.upload(values)?;
+            let p = b.ptr;
+            owned.push(b);
+            Ok(p)
+        };
+        let tables = make(&[0u64; 256])?;
+        let sizes = make(&[1])?;
+        let offsets = make(&[0])?;
+        let ranks = make(&[0])?;
+        let sums = make(&[1f64.to_bits()])?;
+        let descriptor = vec![1, 1, tables, sizes, offsets, ranks, sums, 1f64.to_bits()];
+        let view = Buffer::new(self.context.clone(), 64)?;
+        view.upload(&descriptor)?;
+        let marginal = Buffer::new(self.context.clone(), 8)?;
+        marginal.upload(&[1f64])?;
+        Ok(Compressed {
+            marginal,
+            rows: 1,
+            cols: 1,
+            view,
+            owned,
+            descriptor,
+        })
+    }
+    pub fn compressed_step(
+        &mut self,
+        prob: &Compressed,
+        left: &Window,
+        right: &Window,
+        target: &Window,
+    ) -> Result<(Compressed, Stats)> {
+        ensure!(
+            (prob.rows, prob.cols) == (left.size(), right.size()),
+            "implicit shape mismatch"
+        );
+        let nl = left.size();
+        let nr = right.size();
+        let nt = target.size();
+        let n = self.config.word_bits as usize;
+        let (bases, vectors, ranks, _) = self.basis(left)?;
+        let outside = self.reserve("outside", nl * 4)?;
+        let packed = self.reserve("packed", nl * n * 8)?;
+        self.module.launch(
+            "restrict_basis",
+            blocks(nl, 128),
+            128,
+            args![nl, right.mask(), bases, vectors, ranks, outside],
+        )?;
+        self.module.launch(
+            "pack_basis",
+            blocks(nl * n, 128).min(65535),
+            128,
+            args![nl, right.mask(), vectors, packed],
+        )?;
+        let mass = self.reserve("row_mass", nl * 8)?;
+        // A zero row may allocate empty buckets; it never changes numerical results.
+        self.module
+            .launch("fill_one", blocks(nl, 128), 128, args![mass, nl])?;
+        let reducers = self.reserve("reducers", nl * 20 * 8)?;
+        let masks = self.reserve("masks", nl * 8)?;
+        let sizes = self.reserve("sizes", nl * 8)?;
+        let offsets = self.reserve("offsets", nl * 8)?;
+        self.module.launch(
+            "coset_plan",
+            blocks(nl, 128),
+            128,
+            args![nl, nr, packed, ranks, outside, mass, reducers, masks, sizes],
+        )?;
+        self.prefix(sizes, nl, offsets, 0)?;
+        let buckets = (self.read_u64(offsets + (nl as u64 - 1) * 8)?
+            + self.read_u64(sizes + (nl as u64 - 1) * 8)?) as usize;
+        let sums = self.reserve("coset_sums", buckets * 8)?;
+        self.module.launch(
+            "implicit_reduce",
+            nl,
+            256,
+            args![
+                prob.view.ptr,
+                nr,
+                ranks,
+                outside,
+                reducers,
+                masks,
+                offsets,
+                sizes,
+                sums
+            ],
+        )?;
+        let width = target.bits.len() as i32;
+        let chunks = ((width + 7) / 8).max(1);
+        let bits = self.upload("target_bits", &target.bits)?;
+        let columns = self.reserve("columns", (width as usize + 1) * nl * 8)?;
+        let tables = self.reserve("tables", chunks as usize * 256 * nl * 8)?;
+        self.module.launch(
+            "affine_columns",
+            blocks(nl * (width as usize + 1), 128),
+            128,
+            args![
+                nl,
+                width,
+                bits,
+                target.base,
+                right.mask(),
+                right.base,
+                bases,
+                vectors,
+                ranks,
+                outside,
+                reducers,
+                masks,
+                columns
+            ],
+        )?;
+        self.module.launch(
+            "affine_tables",
+            blocks(nl * 256 * chunks as usize, 128).min(65535),
+            128,
+            args![nl, width, chunks, columns, tables],
+        )?;
+        let owned = ["tables", "sizes", "offsets", "ranks", "coset_sums"]
+            .iter()
+            .map(|key| self.workspace.remove(*key).unwrap())
+            .collect();
+        let mut descriptor = vec![
+            nl as u64,
+            chunks as u64,
+            tables,
+            sizes,
+            offsets,
+            ranks,
+            sums,
+            1f64.to_bits(),
+        ];
+        let view = Buffer::new(self.context.clone(), 64)?;
+        view.upload(&descriptor)?;
+        let row_width = nl.trailing_zeros() as usize;
+        let marginal = Buffer::new(self.context.clone(), nt * (row_width + 1) * 8)?;
+        let groups = nt;
+        let maxima = self.reserve("maxima", groups * 8)?;
+        let indices = self.reserve("indices", groups * 8)?;
+        let totals = self.reserve("totals", groups * 8)?;
+        self.module.launch(
+            "implicit_marginal_stats",
+            nt,
+            256,
+            args![
+                view.ptr,
+                nl,
+                row_width as i32,
+                marginal.ptr,
+                maxima,
+                indices,
+                totals
+            ],
+        )?;
+        let stats = self.finish(groups, maxima, indices, totals)?;
+        if stats.peak <= 0. {
+            return Err(EmptyDistribution.into());
+        }
+        descriptor[7] = (1. / stats.peak).to_bits();
+        view.upload(&descriptor)?;
+        Ok((
+            Compressed {
+                marginal,
+                rows: nt,
+                cols: nl,
+                view,
+                owned,
+                descriptor,
+            },
+            stats,
+        ))
+    }
+    pub fn compressed_value(&mut self, prob: &Compressed, row: usize, col: usize) -> Result<f64> {
+        ensure!(
+            row < prob.rows && col < prob.cols,
+            "implicit index out of bounds"
+        );
+        let value = self.reserve("implicit_value", 8)?;
+        self.module.launch(
+            "implicit_scalar",
+            1,
+            1,
+            args![prob.view.ptr, row, col, value],
+        )?;
+        self.workspace["implicit_value"].scalar_f64(0)
+    }
+    pub fn compressed_materialize(&mut self, prob: &Compressed) -> Result<Matrix> {
+        let matrix = self.allocate(prob.rows, prob.cols)?;
+        self.module.launch(
+            "implicit_materialize",
+            blocks(matrix.size(), 256).min(65535),
+            256,
+            args![prob.view.ptr, prob.rows, prob.cols, matrix.ptr()],
+        )?;
+        Ok(matrix)
+    }
+    pub fn compressed_candidates(
+        &mut self,
+        prob: &Compressed,
+        left: &Window,
+        right: &Window,
+        width: usize,
+        include: Option<&Window>,
+    ) -> Result<Vec<Window>> {
+        let nl = left.size();
+        let rw = right.bits.len();
+        let n = self.config.word_bits as usize;
+        let (bases, _, ranks, support) = self.basis(left)?;
+        let marginal = prob.marginal.ptr;
+        let mut mapping = vec![-1i32; n];
+        for (i, &bit) in right.bits.iter().enumerate() {
+            mapping[bit as usize] = i as i32;
+        }
+        let mapping = self.upload("mapping", &mapping)?;
+        let output = self.reserve("moments", 5 * n * 8)?;
+        self.module.launch(
+            "window_moments",
+            n,
+            256,
+            args![marginal, nl, rw as i32, mapping, right.base, bases, ranks, support, output],
+        )?;
+        let moments = self.workspace["moments"].download::<f64>(5 * n)?;
+        select(&moments, n, width, include, 1)
+    }
+    /// For each packed row bit, return endpoint mass in its zero and one halves.
+    /// Both halves are summed directly to avoid cancellation for rare endpoint paths.
+    pub fn posterior_halves(&mut self, forward: &Matrix, backward: &Matrix) -> Result<Vec<f64>> {
+        ensure!(
+            (forward.rows, forward.cols) == (backward.rows, backward.cols)
+                && forward.rows.is_power_of_two()
+                && forward.rows > 1,
+            "invalid posterior shape"
+        );
+        let width = forward.rows.trailing_zeros() as usize;
+        let rows = self.reserve("posterior_rows", forward.rows * 8)?;
+        let halves = self.reserve("posterior_halves", width * 2 * 8)?;
+        self.module.launch(
+            "posterior_rows",
+            forward.rows,
+            256,
+            args![forward.ptr(), backward.ptr(), forward.cols, rows],
+        )?;
+        self.module.launch(
+            "posterior_halves",
+            width * 2,
+            256,
+            args![rows, forward.rows, halves],
+        )?;
+        self.workspace["posterior_halves"].download(width * 2)
     }
     pub fn unpack(
         &mut self,
