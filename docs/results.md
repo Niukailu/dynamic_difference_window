@@ -1,5 +1,7 @@
 # GPU 重构实测（2026-09-21）
 
+> 这是 Python/CuPy 阶段的研究记录。旧命令需先安装 `reference/python`；当前 Rust 入口见[根目录 README](../README.md)。结果链接已按新目录更新。
+
 所有实验位于 `gpt-6-astra` 分支，历史基准来自仓库已有日志。硬件为共享的 NVIDIA B300；没有独占 GPU，没有修改其他训练进程。以下“概率”均为论文转移模型下的 FP64 路径聚集估计，不是对真实密码长轮数概率的直接穷举验证。
 
 ## 算法效率
@@ -14,12 +16,12 @@ SIMON64 差分、输入 (0,1)、宽度 15、23 轮，固定完全相同的窗口
 
 这里包含基构造、转移、统计及内存池清理，使用同步墙钟；固定计划不重新选窗。逐轮 log₂ 最大概率的跨内核最大误差 1.4211e-14。共享 GPU 上单次对照不能替代独占、重复运行的性能基准，也不能将 49 倍称为相对原 CPU 程序的加速比。
 
-原始记录：[coset](../results/kernel-benchmark/coset.jsonl)、[gather](../results/kernel-benchmark/gather.jsonl)、[scatter](../results/kernel-benchmark/scatter.jsonl)。复现：
+原始记录：[coset](../results/benchmarks/kernel-benchmark/coset.jsonl)、[gather](../results/benchmarks/kernel-benchmark/gather.jsonl)、[scatter](../results/benchmarks/kernel-benchmark/scatter.jsonl)。复现：
 
 ```bash
-python scripts/benchmark_kernels.py results/simon64-diff-w15.jsonl \
+python reference/python/scripts/benchmark_kernels.py results/baselines/simon64-diff-w15.jsonl \
   --device 0 --output-dir results/my-kernel-benchmark
-python scripts/check_results.py results/my-kernel-benchmark/scatter.jsonl \
+python tools/check_results.py results/my-kernel-benchmark/scatter.jsonl \
   --reference results/my-kernel-benchmark/coset.jsonl --tolerance 1e-10
 ```
 
@@ -46,19 +48,19 @@ SIMON128 线性壳输入为 `(0x4000000000000044, 0x1)`；45 轮输出为 `(0x10
 
 主要证据：
 
-- [SIMON128 差分 w15](../results/simon128-diff-w15.jsonl)、[另一内核复核](../results/simon128-diff-w15-independent.jsonl)、[w16](../results/simon128-diff-w16.jsonl)
-- [SIMON128 线性 w16](../results/simon128-linear-w16.jsonl)
-- [SIMON64 线性 w15](../results/simon64-linear-w15.jsonl)
+- [SIMON128 差分 w15](../results/baselines/simon128-diff-w15.jsonl)、[另一内核复核](../results/validation/simon128-diff-w15-independent.jsonl)、[w16](../results/baselines/simon128-diff-w16.jsonl)
+- [SIMON128 线性 w16](../results/baselines/simon128-linear-w16.jsonl)
+- [SIMON64 线性 w15](../results/baselines/simon64-linear-w15.jsonl)
 
 复现最强差分结果时，直接固定已保存的窗口计划，可避免浮点平局导致自适应选窗变化：
 
 ```bash
 python -m ddw --device 0 --word-bits 64 --left 0x1000 --right 0x4440 \
   --width 16 --rounds 45 --memory-gib 74 \
-  --replay-windows results/simon128-diff-w16.jsonl \
+  --replay-windows results/baselines/simon128-diff-w16.jsonl \
   --output results/my-simon128-w16.jsonl
-python scripts/check_results.py results/my-simon128-w16.jsonl \
-  --reference results/simon128-diff-w16.jsonl --tolerance 1e-10
+python tools/check_results.py results/my-simon128-w16.jsonl \
+  --reference results/baselines/simon128-diff-w16.jsonl --tolerance 1e-10
 ```
 
 ## 放开窗口启发式的探索
@@ -78,7 +80,7 @@ SIMON64、输入 (0,1)、w10、23 轮，修正后的转移算法：
 
 初版 12 项自动测试通过：16 位穷举差分分布、16 位 Walsh 谱、五种字长和两种密码及两种模式的完整短窗 CPU/GPU 对照、随机稠密差分、消元缺陷回归、大交空间上的均匀分布、窗口索引、嵌套性质和日志校验。三个 CUDA 内核共享基构造代码；它们是不同转移实现，不等于三个完全独立的密码分析程序。
 
-修正前的原型记录和因资源预算中止的实验放在 `results/prototype/`，不作为最终结论的依据。没有进行最新文献的全面排查、真实 SIMON 45 轮的明文对统计或密钥恢复实验，因此这里不宣称新的公开最佳纪录。
+修正前的原型记录已从当前树移除，可从提交 `c260b76` 的 `results/prototype/` 恢复，不作为最终结论的依据。没有进行最新文献的全面排查、真实 SIMON 45 轮的明文对统计或密钥恢复实验，因此这里不宣称新的公开最佳纪录。
 
 
 ## 后续硬件优化

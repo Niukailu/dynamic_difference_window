@@ -1,0 +1,44 @@
+[
+  {
+    "backend": "cpp",
+    "repeat": 0,
+    "process_wall_seconds": 3.0106884692795575,
+    "rounds_seconds": 0.691309443,
+    "file": "results/native-benchmark/cpp-0.jsonl"
+  },
+  {
+    "backend": "python",
+    "repeat": 0,
+    "process_wall_seconds": 3.2898005447350442,
+    "rounds_seconds": 0.8053617938421667,
+    "file": "results/native-benchmark/python-0.jsonl"
+  },
+  {
+    "backend": "python",
+    "repeat": 1,
+    "process_wall_seconds": 3.168913227971643,
+    "rounds_seconds": 0.683720319531858,
+    "file": "results/native-benchmark/python-1.jsonl"
+  },
+  {
+    "backend": "cpp",
+    "repeat": 1,
+    "process_wall_seconds": 3.4765931419096887,
+    "rounds_seconds": 0.637553195,
+    "file": "results/native-benchmark/cpp-1.jsonl"
+  },
+  {
+    "backend": "cpp",
+    "repeat": 2,
+    "process_wall_seconds": 2.523292306344956,
+    "rounds_seconds": 0.655372809,
+    "file": "results/native-benchmark/cpp-2.jsonl"
+  },
+  {
+    "backend": "python",
+    "repeat": 2,
+    "process_wall_seconds": 3.0005007069557905,
+    "rounds_seconds": 0.7317406185902655,
+    "file": "results/native-benchmark/python-2.jsonl"
+  }
+]

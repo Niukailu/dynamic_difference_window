@@ -1,0 +1,160 @@
+{
+  "reference": "results/simon64-linear26-refined-w17.jsonl",
+  "rotation_deduplicated": true,
+  "results": [
+    {
+      "left": "0x111",
+      "right": "0x4",
+      "round": 25,
+      "log2_max": -66.0433200923818,
+      "file": "results/input-search-linear25/input-013.jsonl"
+    },
+    {
+      "left": "0x11",
+      "right": "0x4",
+      "round": 25,
+      "log2_max": -68.13767771251153,
+      "file": "results/input-search-linear25/input-009.jsonl"
+    },
+    {
+      "left": "0x1",
+      "right": "0x44",
+      "round": 25,
+      "log2_max": -68.95147085749514,
+      "file": "results/input-search-linear25/input-003.jsonl"
+    },
+    {
+      "left": "0x101",
+      "right": "0x444",
+      "round": 25,
+      "log2_max": -68.96355140330066,
+      "file": "results/input-search-linear25/input-011.jsonl"
+    },
+    {
+      "left": "0x1011",
+      "right": "0x404",
+      "round": 25,
+      "log2_max": -69.28082893298333,
+      "file": "results/input-search-linear25/input-016.jsonl"
+    },
+    {
+      "left": "0x1",
+      "right": "0x0",
+      "round": 25,
+      "log2_max": -70.19709233473813,
+      "file": "results/input-search-linear25/input-001.jsonl"
+    },
+    {
+      "left": "0x1",
+      "right": "0x4",
+      "round": 25,
+      "log2_max": -70.19731358514304,
+      "file": "results/input-search-linear25/input-002.jsonl"
+    },
+    {
+      "left": "0x1",
+      "right": "0x4044",
+      "round": 25,
+      "log2_max": -71.35743936004499,
+      "file": "results/input-search-linear25/input-004.jsonl"
+    },
+    {
+      "left": "0x10111",
+      "right": "0x4",
+      "round": 25,
+      "log2_max": -71.84759194275476,
+      "file": "results/input-search-linear25/input-019.jsonl"
+    },
+    {
+      "left": "0x0",
+      "right": "0x1",
+      "round": 25,
+      "log2_max": -77.54188390425506,
+      "file": "results/input-search-linear25/input-000.jsonl"
+    },
+    {
+      "left": "0x10101",
+      "right": "0x40444",
+      "round": 25,
+      "log2_max": -79.09382246329804,
+      "file": "results/input-search-linear25/input-018.jsonl"
+    },
+    {
+      "left": "0x1",
+      "right": "0x40000000",
+      "round": 25,
+      "log2_max": -80.36702653262391,
+      "file": "results/input-search-linear25/input-005.jsonl"
+    },
+    {
+      "left": "0x11111",
+      "right": "0x4004",
+      "round": 25,
+      "log2_max": -81.79432124814792,
+      "file": "results/input-search-linear25/input-021.jsonl"
+    },
+    {
+      "left": "0x101",
+      "right": "0x40000404",
+      "round": 25,
+      "log2_max": -81.9845126649492,
+      "file": "results/input-search-linear25/input-012.jsonl"
+    },
+    {
+      "left": "0x11",
+      "right": "0x40000000",
+      "round": 25,
+      "log2_max": -82.50132896754863,
+      "file": "results/input-search-linear25/input-010.jsonl"
+    },
+    {
+      "left": "0x111",
+      "right": "0x40000040",
+      "round": 25,
+      "log2_max": -83.57181774010617,
+      "file": "results/input-search-linear25/input-014.jsonl"
+    },
+    {
+      "left": "0x1",
+      "right": "0x40000004",
+      "round": 25,
+      "log2_max": -84.21940246032145,
+      "file": "results/input-search-linear25/input-006.jsonl"
+    },
+    {
+      "left": "0x1",
+      "right": "0x40000044",
+      "round": 25,
+      "log2_max": -85.07632373804105,
+      "file": "results/input-search-linear25/input-007.jsonl"
+    },
+    {
+      "left": "0x10111",
+      "right": "0x40004040",
+      "round": 25,
+      "log2_max": -99.23615366117787,
+      "file": "results/input-search-linear25/input-020.jsonl"
+    },
+    {
+      "left": "0x1",
+      "right": "0x40004044",
+      "round": 25,
+      "log2_max": -100.85520881393018,
+      "file": "results/input-search-linear25/input-008.jsonl"
+    },
+    {
+      "left": "0x1011",
+      "right": "0x40000000",
+      "round": 25,
+      "log2_max": -108.4582705401351,
+      "file": "results/input-search-linear25/input-017.jsonl"
+    },
+    {
+      "left": "0x1001",
+      "right": "0x40004444",
+      "round": 25,
+      "log2_max": -120.91952138982205,
+      "file": "results/input-search-linear25/input-015.jsonl"
+    }
+  ]
+}

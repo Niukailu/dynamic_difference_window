@@ -1,5 +1,7 @@
 # 共享 B300 上的第二轮优化（2026-09-21）
 
+> 这是 Python/CuPy 阶段的研究记录。旧命令需先安装 `reference/python`；当前 Rust 入口见[根目录 README](../README.md)。结果链接已按新目录更新。
+
 所有工作在 `gpt-6-astra` 完成，未独占 GPU 或调整其他训练进程。比较对象是上一版 GPU 重构提交 `0f62945`，不是原始 CPU 程序。
 
 ## 单卡完整流程
@@ -11,7 +13,7 @@ SIMON64 差分、输入 `(0,1)`、w15、23 轮、GPU 0，固定包含已有同�
 | 上一版 | 7.207 s | 7.285 s | 7.918 s | 7.285 s |
 | 新版 | 2.561 s | 1.702 s | 1.637 s | 1.702 s |
 
-中位数比值 **4.28 倍**。仅统计第 6–23 轮，中位数由 6.897 s 降到 1.511 s，约 4.57 倍。所有运行的每轮 log₂ 最大概率与原窗口计划误差不超过 1.4211e-14。原始文件在 [hardware-benchmark](../results/hardware-benchmark/) 的 `before-*` / `after-*`。
+中位数比值 **4.28 倍**。仅统计第 6–23 轮，中位数由 6.897 s 降到 1.511 s，约 4.57 倍。所有运行的每轮 log₂ 最大概率与原窗口计划误差不超过 1.4211e-14。原始文件在 [hardware-benchmark](../results/benchmarks/hardware-benchmark/) 的 `before-*` / `after-*`。
 
 这与之前 2.211 秒的 coset 基准不是同一口径：之前只重放、不评分，GPU 编号和共享负载也不同。不能把两批时间直接作加速比。
 
@@ -19,7 +21,7 @@ SIMON64 差分、输入 `(0,1)`、w15、23 轮、GPU 0，固定包含已有同�
 
 ```bash
 git worktree add --detach /tmp/ddw-baseline-0f62945 0f62945
-python scripts/benchmark_hardware.py --baseline-root /tmp/ddw-baseline-0f62945 \
+python reference/python/scripts/benchmark_hardware.py --baseline-root /tmp/ddw-baseline-0f62945 \
   --device 0 --repeats 3 --output-dir results/my-hardware-benchmark
 ```
 
@@ -33,7 +35,7 @@ python scripts/benchmark_hardware.py --baseline-root /tmp/ddw-baseline-0f62945 \
 4. **统计与归一化**：在输出内核中顺便计算峰值、首次 argmax 和总质量；避免重新扫完整矩阵。归一化用一次标量倒数加逐元素乘法，替代逐元素 FP64 除法。
 5. **分配**：窗口大小稳定后复用两张概率矩阵，减少大块分配和内存池反复清理。
 
-`results/profile-*.json` 是逐步实现时的诊断快照，包含 CUDA event 的阶段和内核时间。它们对应不同开发阶段，不能当成最终代码的严格消融实验。`scripts/profile_gpu.py` 可重测阶段；其中 `--fused` 指独立的合并统计扫描，完整 CLI 还进一步将统计融合进输出写入。性能结论使用上面的完整流程交替对照。
+`results/benchmarks/profile-*.json` 是逐步实现时的诊断快照，包含 CUDA event 的阶段和内核时间。它们对应不同开发阶段，不能当成最终代码的严格消融实验。`reference/python/scripts/profile_gpu.py` 可重测阶段；其中 `--fused` 指独立的合并统计扫描，完整 CLI 还进一步将统计融合进输出写入。性能结论使用上面的完整流程交替对照。
 
 ## 真正的多卡单任务
 
@@ -55,11 +57,11 @@ SIMON128 差分 w16、同一固定窗口、45 轮，两次交替测量（八卡/
 ```bash
 python -m ddw --device 0 --word-bits 64 --left 0x1000 --right 0x4440 \
   --width 16 --rounds 45 --memory-gib 80 \
-  --replay-windows results/simon128-diff-w16.jsonl --output results/my-single16.jsonl
-python -m ddw.multigpu results/simon128-diff-w16.jsonl \
+  --replay-windows results/baselines/simon128-diff-w16.jsonl --output results/my-single16.jsonl
+python -m ddw.multigpu results/baselines/simon128-diff-w16.jsonl \
   --devices 0,1,2,3,4,5,6,7 --memory-gib 20 --output results/my-eight16.jsonl
-python scripts/check_results.py results/my-eight16.jsonl \
-  --reference results/simon128-diff-w16.jsonl --tolerance 1e-10
+python tools/check_results.py results/my-eight16.jsonl \
+  --reference results/baselines/simon128-diff-w16.jsonl --tolerance 1e-10
 ```
 
 ## 正确性与剩余空间

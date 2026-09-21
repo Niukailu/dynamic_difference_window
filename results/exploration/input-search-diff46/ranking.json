@@ -1,0 +1,160 @@
+{
+  "reference": "results/simon128-best-continuation48.jsonl",
+  "rotation_deduplicated": true,
+  "results": [
+    {
+      "left": "0x111",
+      "right": "0x404",
+      "round": 46,
+      "log2_max": -134.27677933359445,
+      "file": "results/input-search-diff46/input-014.jsonl"
+    },
+    {
+      "left": "0x1",
+      "right": "0x4404000000000004",
+      "round": 46,
+      "log2_max": -134.34074922915588,
+      "file": "results/input-search-diff46/input-008.jsonl"
+    },
+    {
+      "left": "0x101",
+      "right": "0x4000000000000440",
+      "round": 46,
+      "log2_max": -135.89293641389358,
+      "file": "results/input-search-diff46/input-012.jsonl"
+    },
+    {
+      "left": "0x1101",
+      "right": "0x4000",
+      "round": 46,
+      "log2_max": -135.9335100517657,
+      "file": "results/input-search-diff46/input-017.jsonl"
+    },
+    {
+      "left": "0x11101",
+      "right": "0x40404",
+      "round": 46,
+      "log2_max": -136.30886192248786,
+      "file": "results/input-search-diff46/input-020.jsonl"
+    },
+    {
+      "left": "0x1",
+      "right": "0x4400000000000004",
+      "round": 46,
+      "log2_max": -136.73156353676922,
+      "file": "results/input-search-diff46/input-006.jsonl"
+    },
+    {
+      "left": "0x11",
+      "right": "0x40",
+      "round": 46,
+      "log2_max": -138.6977926120658,
+      "file": "results/input-search-diff46/input-010.jsonl"
+    },
+    {
+      "left": "0x1001",
+      "right": "0x4000000000004444",
+      "round": 46,
+      "log2_max": -138.99467955527854,
+      "file": "results/input-search-diff46/input-015.jsonl"
+    },
+    {
+      "left": "0x1101",
+      "right": "0x404",
+      "round": 46,
+      "log2_max": -139.57820834996045,
+      "file": "results/input-search-diff46/input-016.jsonl"
+    },
+    {
+      "left": "0x1",
+      "right": "0x4",
+      "round": 46,
+      "log2_max": -139.88663156625125,
+      "file": "results/input-search-diff46/input-002.jsonl"
+    },
+    {
+      "left": "0x101",
+      "right": "0x4000000000000044",
+      "round": 46,
+      "log2_max": -140.2396981272207,
+      "file": "results/input-search-diff46/input-011.jsonl"
+    },
+    {
+      "left": "0x1",
+      "right": "0x4400000000000000",
+      "round": 46,
+      "log2_max": -140.41658776006378,
+      "file": "results/input-search-diff46/input-005.jsonl"
+    },
+    {
+      "left": "0x1",
+      "right": "0x4000000000000004",
+      "round": 46,
+      "log2_max": -140.60460838919445,
+      "file": "results/input-search-diff46/input-004.jsonl"
+    },
+    {
+      "left": "0x0",
+      "right": "0x1",
+      "round": 46,
+      "log2_max": -140.78688222098626,
+      "file": "results/input-search-diff46/input-000.jsonl"
+    },
+    {
+      "left": "0x11",
+      "right": "0x4",
+      "round": 46,
+      "log2_max": -141.14205571542388,
+      "file": "results/input-search-diff46/input-009.jsonl"
+    },
+    {
+      "left": "0x111",
+      "right": "0x40",
+      "round": 46,
+      "log2_max": -141.19548518101692,
+      "file": "results/input-search-diff46/input-013.jsonl"
+    },
+    {
+      "left": "0x1",
+      "right": "0x0",
+      "round": 46,
+      "log2_max": -142.33391849756805,
+      "file": "results/input-search-diff46/input-001.jsonl"
+    },
+    {
+      "left": "0x1",
+      "right": "0x4000000000000000",
+      "round": 46,
+      "log2_max": -142.34983205979898,
+      "file": "results/input-search-diff46/input-003.jsonl"
+    },
+    {
+      "left": "0x10101",
+      "right": "0x4000000000004440",
+      "round": 46,
+      "log2_max": -188.88743724896787,
+      "file": "results/input-search-diff46/input-018.jsonl"
+    },
+    {
+      "left": "0x11101",
+      "right": "0x4000",
+      "round": 46,
+      "log2_max": -189.73896170769444,
+      "file": "results/input-search-diff46/input-019.jsonl"
+    },
+    {
+      "left": "0x11111",
+      "right": "0x4004",
+      "round": 46,
+      "log2_max": -206.22010339414112,
+      "file": "results/input-search-diff46/input-021.jsonl"
+    },
+    {
+      "left": "0x1",
+      "right": "0x4404000000000000",
+      "round": 46,
+      "log2_max": -291.5238993096598,
+      "file": "results/input-search-diff46/input-007.jsonl"
+    }
+  ]
+}

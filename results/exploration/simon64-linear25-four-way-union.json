@@ -1,0 +1,157 @@
+{
+  "config": {
+    "cipher": "simon",
+    "mode": "linear",
+    "word_bits": 32,
+    "left": 279552,
+    "right": 4096,
+    "width": 15,
+    "rounds": 25,
+    "kernel": "coset",
+    "strategy": "legacy",
+    "lookahead_candidates": 1,
+    "lookahead_objective": "peak",
+    "device": 2,
+    "memory_gib": 24.0,
+    "output": "results/simon64-linear-w15.jsonl",
+    "include_windows": "results/legacy-simon64-linear-w14.jsonl"
+  },
+  "references": [
+    "results/simon64-linear26-refined-w17.jsonl",
+    "results/simon64-linear-w15.jsonl"
+  ],
+  "reflected": true,
+  "rounds": 25,
+  "endpoint": [
+    "0x1000",
+    "0x44400"
+  ],
+  "terms": [
+    {
+      "subset": [
+        0
+      ],
+      "sign": 1,
+      "log2_probability": -64.16947298748028
+    },
+    {
+      "subset": [
+        1
+      ],
+      "sign": 1,
+      "log2_probability": -64.16947298748028
+    },
+    {
+      "subset": [
+        2
+      ],
+      "sign": 1,
+      "log2_probability": -64.2699553383018
+    },
+    {
+      "subset": [
+        3
+      ],
+      "sign": 1,
+      "log2_probability": -64.2699553383018
+    },
+    {
+      "subset": [
+        0,
+        1
+      ],
+      "sign": -1,
+      "log2_probability": -64.20524762682153
+    },
+    {
+      "subset": [
+        0,
+        2
+      ],
+      "sign": -1,
+      "log2_probability": -64.2699553383018
+    },
+    {
+      "subset": [
+        0,
+        3
+      ],
+      "sign": -1,
+      "log2_probability": -64.29053637517003
+    },
+    {
+      "subset": [
+        1,
+        2
+      ],
+      "sign": -1,
+      "log2_probability": -64.29053637517003
+    },
+    {
+      "subset": [
+        1,
+        3
+      ],
+      "sign": -1,
+      "log2_probability": -64.26995533830181
+    },
+    {
+      "subset": [
+        2,
+        3
+      ],
+      "sign": -1,
+      "log2_probability": -64.34884963288442
+    },
+    {
+      "subset": [
+        0,
+        1,
+        2
+      ],
+      "sign": 1,
+      "log2_probability": -64.29053637517003
+    },
+    {
+      "subset": [
+        0,
+        1,
+        3
+      ],
+      "sign": 1,
+      "log2_probability": -64.29053637517003
+    },
+    {
+      "subset": [
+        0,
+        2,
+        3
+      ],
+      "sign": 1,
+      "log2_probability": -64.34884963288442
+    },
+    {
+      "subset": [
+        1,
+        2,
+        3
+      ],
+      "sign": 1,
+      "log2_probability": -64.34884963288442
+    },
+    {
+      "subset": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "sign": -1,
+      "log2_probability": -64.34884963288442
+    }
+  ],
+  "log2_union": -64.13456403194898,
+  "threshold_log2": -64,
+  "seconds": 6.328977310098708,
+  "above_threshold": false
+}

@@ -1,5 +1,7 @@
 # 用最终端点指导窗口优化（2026-09-21）
 
+> 这是 Python/CuPy 阶段的研究记录。旧命令需先安装 `reference/python`；当前 Rust 入口见[根目录 README](../README.md)。结果链接已按新目录更新。
+
 本轮不再用下一轮质量或峰值代替最终目标，而是固定原结果的最后一轮端点，利用前向分布和反向权重优化整条窗口计划。所有运行仍在共享 B300 环境进行，未调整训练任务。
 
 ## 新结果
@@ -16,9 +18,9 @@ SIMON128 输入和输出保持 `(0x1000, 0x4440)` → `(0x444040, 0x100000)`。�
 
 原始记录：
 
-- [SIMON64 优化](../results/simon64-w10-endpoint-refined.jsonl)、[gather 复核](../results/simon64-w10-endpoint-refined-check.jsonl)
-- [SIMON128 w14 优化](../results/simon128-w14-endpoint-refined.jsonl)、[gather 复核](../results/simon128-w14-endpoint-refined-check.jsonl)
-- [SIMON128 w17 扩窗](../results/simon128-w17-endpoint-expanded.jsonl)、[coset 复核](../results/simon128-w17-endpoint-expanded-check.jsonl)
+- [SIMON64 优化](../results/best/simon64-w10-endpoint-refined.jsonl)、[gather 复核](../results/validation/simon64-w10-endpoint-refined-check.jsonl)
+- [SIMON128 w14 优化](../results/best/simon128-w14-endpoint-refined.jsonl)、[gather 复核](../results/validation/simon128-w14-endpoint-refined-check.jsonl)
+- [SIMON128 w17 扩窗](../results/best/simon128-w17-endpoint-expanded.jsonl)、[coset 复核](../results/validation/simon128-w17-endpoint-expanded-check.jsonl)
 
 优化日志包含每次接受的窗口修改、修改前后的最终端点 log₂ 概率和最终重放结果。最早两份优化日志继承了源配置中的旧 kernel 名称；已显式记录 `metadata_correction` 并改为实际使用的 `coset_lut`，数值和计时未改动。
 
@@ -61,10 +63,10 @@ SIMON128 输入和输出保持 `(0x1000, 0x4440)` → `(0x444040, 0x100000)`。�
 ## 复现
 
 ```bash
-python -m ddw.refine results/simon64-diff-w10-beam-replay.jsonl \
+python -m ddw.refine results/validation/simon64-diff-w10-beam-replay.jsonl \
   --device 0 --candidates 12 --passes 3 --output results/my-refined64.jsonl
 
-python -m ddw.refine results/simon128-diff-w14.jsonl \
+python -m ddw.refine results/baselines/simon128-diff-w14.jsonl \
   --device 1 --cache host --host-memory-gib 128 --memory-gib 20 \
   --candidates 8 --passes 2 --output results/my-refined128.jsonl
 
@@ -73,7 +75,7 @@ python -m ddw.multigpu results/my-refined128.jsonl --width 17 \
 
 python -m ddw.multigpu results/my-expanded128.jsonl --kernel coset \
   --memory-gib 60 --devices 7,6,5,4,3,2,1,0 --output results/my-expanded128-check.jsonl
-python scripts/check_results.py results/my-expanded128-check.jsonl \
+python tools/check_results.py results/my-expanded128-check.jsonl \
   --reference results/my-expanded128.jsonl --tolerance 1e-10
 ```
 

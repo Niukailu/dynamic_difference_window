@@ -5,8 +5,9 @@ __pycache__/
 build/
 dist/
 .vscode/
-legacy/bin/
 experiments/*/*/
 *.npz
 
 .ruff_cache/
+
+/target/

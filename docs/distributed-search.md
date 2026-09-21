@@ -1,5 +1,7 @@
 # 跨卡动态选窗与 w17 实验（2026-09-21）
 
+> 这是 Python/CuPy 阶段的研究记录。旧命令需先安装 `reference/python`；当前 Rust 入口见[根目录 README](../README.md)。结果链接已按新目录更新。
+
 继续使用共享的 8 张 B300，没有独占、停止或调整其他训练任务。工作基于 `aa812ac`，保持 FP64 和论文的转移模型。
 
 ## 让多卡容量用于更大的搜索
@@ -19,8 +21,8 @@ w16 的满矩阵为 32 GiB，w17 为 **128 GiB**。八卡按行分片后，每�
 
 两次扩窗完整运行各约 11 秒（共享环境下单次记录，不是独占性能基准）。逐轮检查参考端点的概率不下降、峰值不超过保留质量、质量不随轮数增加。
 
-- [差分 w17](../results/simon128-diff-w17.jsonl)，[coset 复核](../results/simon128-diff-w17-coset-check.jsonl)：全部 45 轮 log₂ 峰值最大误差 2.8422e-14。
-- [线性 w17](../results/simon128-linear-w17.jsonl)，[coset 复核](../results/simon128-linear-w17-coset-check.jsonl)：全部 46 轮最大误差 1.4211e-14。
+- [差分 w17](../results/baselines/simon128-diff-w17.jsonl)，[coset 复核](../results/validation/simon128-diff-w17-coset-check.jsonl)：全部 45 轮 log₂ 峰值最大误差 2.8422e-14。
+- [线性 w17](../results/baselines/simon128-linear-w17.jsonl)，[coset 复核](../results/validation/simon128-linear-w17-coset-check.jsonl)：全部 46 轮最大误差 1.4211e-14。
 
 复核同时反转卡号分配。coset 使用原子陪集求和与消元查询，主实验使用子组归约与仿射查表；两者共享基构造，不是完全独立的密码分析程序。
 
@@ -40,7 +42,7 @@ SIMON64 w15，第 12 轮同一固定输入与目标，GPU 0，预热后五组交
 | 生成完整输出后求和（输出缓冲复用） | 29.43 ms |
 | 投影约束直接求和 | **6.07 ms** |
 
-此阶段加速 **4.85 倍**。两种方法的归一化质量分别为 1556.716705026710 / 1556.7167050267099（输入按峰值归一化，因此该数值不是绝对概率）。原始数据：[projected-mass-benchmark.json](../results/projected-mass-benchmark.json)。此加速不能当作完整搜索的加速比。
+此阶段加速 **4.85 倍**。两种方法的归一化质量分别为 1556.716705026710 / 1556.7167050267099（输入按峰值归一化，因此该数值不是绝对概率）。原始数据：[projected-mass-benchmark.json](../results/benchmarks/projected-mass-benchmark.json)。此加速不能当作完整搜索的加速比。
 
 w17 四候选完整搜索从 26.31 秒降至 16.06 秒，逐轮峰值完全一致。这两次完整运行没有重复交替，因此只作辅助记录，不用来推断稳定加速比。
 
@@ -61,16 +63,16 @@ w17 四候选完整搜索从 26.31 秒降至 16.06 秒，逐轮峰值完全一�
 ## 复现
 
 ```bash
-python -m ddw.multigpu results/simon128-diff-w16.jsonl --width 17 \
+python -m ddw.multigpu results/baselines/simon128-diff-w16.jsonl --width 17 \
   --memory-gib 60 --output results/my-difference17.jsonl
-python -m ddw.multigpu results/simon128-linear-w16.jsonl --width 17 \
+python -m ddw.multigpu results/baselines/simon128-linear-w16.jsonl --width 17 \
   --memory-gib 60 --output results/my-linear17.jsonl
-python scripts/check_results.py results/my-difference17.jsonl
+python tools/check_results.py results/my-difference17.jsonl
 python -m ddw.multigpu results/my-difference17.jsonl --kernel coset \
   --devices 7,6,5,4,3,2,1,0 --memory-gib 60 --output results/my-crosscheck17.jsonl
-python scripts/check_results.py results/my-crosscheck17.jsonl \
+python tools/check_results.py results/my-crosscheck17.jsonl \
   --reference results/my-difference17.jsonl --tolerance 1e-10
-python scripts/benchmark_candidate_mass.py results/simon64-diff-w15.jsonl \
+python reference/python/scripts/benchmark_candidate_mass.py results/baselines/simon64-diff-w15.jsonl \
   --device 0 --output results/my-mass-benchmark.json
 ```
 

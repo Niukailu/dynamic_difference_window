@@ -1,11 +1,21 @@
-# 实验记录
+# 实验结果索引
 
-`legacy-*.jsonl`：从原仓库日志导出的窗口计划和六位小数概率；原日志保持不变。
+| 目录 | 内容 |
+|---|---|
+| `baselines/` | 历史日志转换、CPU 对照和扩窗基线 |
+| `best/` | 已通过独立内核复核的端点优化结果 |
+| `validation/` | 独立内核、Rust 和多卡复核 |
+| `benchmarks/` | 共享 GPU 下的计时原始记录、阶段诊断与旧 C++ 原型对照 |
+| `exploration/` | 候选搜索、输入扫描、续搜、路径并集及失败尝试 |
 
-`simon*.jsonl`：修正投影消元后的最终实验，首行为配置，其后逐轮记录。`kernel-benchmark/` 是同一张卡、同一窗口计划下三种 CUDA 算法的顺序对照。每个 GPU 运行记录内核源文件 SHA-256，便于区分代码版本（束搜索日志除外）。
+重点记录：
 
-`simon64-diff-w10-marginal.jsonl` 在第 18 轮没有保留路径，因此明确记录停止；它是策略失败的证据，而不是完整 23 轮结果。验证工具默认拒绝将其作为完整实验。
+- [SIMON128，45 轮，w17，−127.574478192099](best/simon128-w17-endpoint-expanded.jsonl)；[Rust 八卡逐轮复核](validation/rust-eight-gpu-w17.jsonl)。
+- [SIMON128，45 轮，w14，−127.859300186727](best/simon128-w14-endpoint-refined.jsonl)。
+- [SIMON64，23 轮，w10，−65.590628604365](best/simon64-w10-endpoint-refined.jsonl)。
+- [SIMON128 继续至 48 轮](exploration/simon128-best-continuation48.jsonl)：46 轮未达到 2^-128。
+- [SIMON64 线性 25 轮反射路径并集](exploration/simon64-linear25-symmetric-union.json)：−64.134564031949，未达到 2^-64。
 
-`prototype/`：消元修正前的探索，含主动停止和内存不足的部分运行，仅用于追溯。不要把这些文件混入最终对照。
+JSONL 首行为配置，其后是逐轮记录，可带末尾汇总。`legacy-*` 的概率来自原日志六位小数；其余结果使用修正后的投影消元。`exploration/simon64-diff-w10-marginal.jsonl` 第 18 轮丢失全部路径，是失败证据，不能当作完整 23 轮运行。
 
-耗时是在共享 B300 上测得，具体统计口径见 `../docs/results.md`。旧 CPU 基准由 `scripts/benchmark_legacy.py` 隔离编译运行，无保存矩阵和发布操作。
+整理目录时未改写既有记录中的配置、概率、计时和源码哈希。元数据中的输入路径可能是搬迁前的位置，可按文件名在上述分类查找。消元修正前的 `prototype/` 无效中间结果已移除，可从提交 `c260b76` 恢复。性能诊断快照不代表最终实现的严格消融实验；共享训练负载下的计时不能视为独占峰值。

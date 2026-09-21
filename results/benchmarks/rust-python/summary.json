@@ -1,0 +1,59 @@
+{
+  "plan": "results/baselines/simon64-diff-w15.jsonl",
+  "device": 0,
+  "shared_gpu": true,
+  "runs": [
+    {
+      "host": "rust",
+      "repeat": 0,
+      "wall_seconds": 3.596471250988543,
+      "round_seconds": 1.536384979,
+      "max_log2_error": 1.4210854715202004e-14
+    },
+    {
+      "host": "python",
+      "repeat": 0,
+      "wall_seconds": 4.274917204864323,
+      "round_seconds": 1.0776001187041402,
+      "max_log2_error": 1.4210854715202004e-14
+    },
+    {
+      "host": "python",
+      "repeat": 1,
+      "wall_seconds": 3.3604735801927745,
+      "round_seconds": 0.9078808566555381,
+      "max_log2_error": 1.4210854715202004e-14
+    },
+    {
+      "host": "rust",
+      "repeat": 1,
+      "wall_seconds": 3.0186933539807796,
+      "round_seconds": 0.93722034,
+      "max_log2_error": 1.4210854715202004e-14
+    },
+    {
+      "host": "rust",
+      "repeat": 2,
+      "wall_seconds": 3.462222969625145,
+      "round_seconds": 1.014904757,
+      "max_log2_error": 1.4210854715202004e-14
+    },
+    {
+      "host": "python",
+      "repeat": 2,
+      "wall_seconds": 2.8899875367060304,
+      "round_seconds": 0.8876745500601828,
+      "max_log2_error": 1.4210854715202004e-14
+    }
+  ],
+  "medians": {
+    "rust": {
+      "wall_seconds": 3.462222969625145,
+      "round_seconds": 1.014904757
+    },
+    "python": {
+      "wall_seconds": 3.3604735801927745,
+      "round_seconds": 0.9078808566555381
+    }
+  }
+}

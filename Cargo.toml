@@ -1,0 +1,17 @@
+[package]
+name = "ddw"
+version = "0.2.0"
+edition = "2021"
+description = "GPU window-based differential and linear hull research for SIMON/SIMECK"
+build = "build.rs"
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
