@@ -1,0 +1,42 @@
+{
+  "device": 0,
+  "shared_gpu": true,
+  "plan": "results/exploration/simon64-linear25-implicit-w18.jsonl",
+  "baseline_commit": "a4c663a",
+  "baseline": {
+    "file": "results/benchmarks/implicit-zero-baseline-w18.jsonl",
+    "rounds": 25,
+    "max_log2_error": null,
+    "total_seconds": 81.331222495
+  },
+  "optimized": {
+    "file": "results/benchmarks/implicit-zero-pruned-w18.jsonl",
+    "rounds": 25,
+    "max_log2_error": 0.0,
+    "total_seconds": 80.305855994
+  },
+  "max_absolute_log2_errors": {
+    "log2_max": 0.0,
+    "log2_mass": 0.0,
+    "log2_at_reference_output": 0.0
+  },
+  "same_argmax_all_rounds": true,
+  "bucket_reductions": [
+    {
+      "round": 3,
+      "before": 1024,
+      "after": 640
+    },
+    {
+      "round": 4,
+      "before": 2293760,
+      "after": 634880
+    },
+    {
+      "round": 5,
+      "before": 234823680,
+      "after": 117527808
+    }
+  ],
+  "note": "Single sequential pair on shared GPU; timings are descriptive, not a stable speedup claim. No bucket reduction after round 5."
+}

@@ -557,9 +557,14 @@ impl Engine {
             args![nl, right.mask(), vectors, packed],
         )?;
         let mass = self.reserve("row_mass", nl * 8)?;
-        // A zero row may allocate empty buckets; it never changes numerical results.
-        self.module
-            .launch("fill_one", blocks(nl, 128), 128, args![mass, nl])?;
+        // Nonnegative row marginals identify exact zeros without scanning the
+        // virtual matrix. Their common normalization does not affect this test.
+        self.module.launch(
+            "implicit_row_mass",
+            blocks(nl, 128),
+            128,
+            args![prob.marginal.ptr, right.bits.len(), mass, nl],
+        )?;
         let reducers = self.reserve("reducers", nl * 20 * 8)?;
         let masks = self.reserve("masks", nl * 8)?;
         let sizes = self.reserve("sizes", nl * 8)?;

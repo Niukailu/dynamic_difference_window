@@ -18,10 +18,11 @@ __device__ __forceinline__ double implicit_value(const U *view, U row, U col) {
          __longlong_as_double((U)(1023 - ranks[col]) << 52) *
          __longlong_as_double(view[7]);
 }
-extern "C" __global__ void fill_one(double *value, U count) {
+extern "C" __global__ void implicit_row_mass(const double *marginal, U width,
+                                             double *value, U count) {
   U i = (U)blockIdx.x * blockDim.x + threadIdx.x;
   if (i < count)
-    value[i] = 1;
+    value[i] = marginal[i * (width + 1) + width];
 }
 extern "C" __global__ void implicit_scalar(const U *view, U row, U col,
                                            double *value) {

@@ -62,6 +62,8 @@ CUDA_HOME=/usr/local/cuda cargo build --release
 
 `refine --strategy posterior` 用最终端点后验质量评价全部单比特换位；`mirror` 构造对称计划；`symmetric-union` / `path-union` 对同端点路径集合进行精确去重。本轮 SIMON64 线性 25 轮候选达到 **−64.105767763312**，仍低于 −64 阈值。方法、限制、结果与命令见[隐式矩阵与 25 轮搜索](docs/implicit-search.md)。
 
+进一步的算法检查、已实现的零行消除，以及面向新增路径权重和联合换窗的研究方案见[算法优化方向](docs/algorithm-directions.md)。
+
 ## 仓库结构
 
 | 目录 | 用途 |
