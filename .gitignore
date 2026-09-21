@@ -1,4 +1,12 @@
-bin/*
-experiments/*
-.vscode/
 __pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+build/
+dist/
+.vscode/
+legacy/bin/
+experiments/*/*/
+*.npz
+
+.ruff_cache/

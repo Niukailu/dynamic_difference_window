@@ -1,0 +1,3 @@
+# CUDA 13; for a CUDA 12 host install cupy-cuda12x instead.
+numpy>=2,<3
+cupy-cuda13x>=14,<15

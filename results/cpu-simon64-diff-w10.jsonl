@@ -1,0 +1,13 @@
+{"config": {"width": 10, "rounds": 12, "cipher": "simon", "mode": "difference", "word_bits": 32, "left": 0, "right": 1}, "implementation": "original C++ -O3 -march=native, without save/print", "timing": "wall time including window selection, transfer, max scan"}
+{"round": 1, "log2_max": 0.0, "seconds": 2.4306e-05}
+{"round": 2, "log2_max": -2.0, "seconds": 1.0955e-05}
+{"round": 3, "log2_max": -4.0, "seconds": 1.9592e-05}
+{"round": 4, "log2_max": -7.299560281859, "seconds": 0.001192437}
+{"round": 5, "log2_max": -9.299560281859, "seconds": 0.047634698}
+{"round": 6, "log2_max": -14.375211682254, "seconds": 2.932399131}
+{"round": 7, "log2_max": -17.975248202763, "seconds": 1.03593082}
+{"round": 8, "log2_max": -22.165239044911, "seconds": 1.257380043}
+{"round": 9, "log2_max": -24.165239044911, "seconds": 0.932718955}
+{"round": 10, "log2_max": -31.734206180992, "seconds": 3.781610186}
+{"round": 11, "log2_max": -35.711141048387, "seconds": 1.431861616}
+{"round": 12, "log2_max": -41.151442755358, "seconds": 1.650538128}
