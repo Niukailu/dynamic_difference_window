@@ -86,7 +86,7 @@ class GPU(unittest.TestCase):
                             2, tuple(sorted({0, 1, 2, 3, 4, 5, 7, 8, 9, n - 1}))
                         )
                         expected = cpu_step(prob, left, right, target, n, cipher, mode)
-                        for kernel in ("gather", "scatter", "coset"):
+                        for kernel in ("gather", "scatter", "coset", "coset_lut"):
                             engine.kernel = kernel
                             actual = engine.step(
                                 cp.asarray(prob), left, right, target
@@ -114,7 +114,7 @@ class GPU(unittest.TestCase):
         target = Window(33368, (0, 1, 2, 5, 8, 11, 13, 14))
         expected = cpu_step(np.ones((1, 1)), left, right, target, 16)
         self.assertEqual(expected.sum(), 1 / 256)
-        for kernel in ("scatter", "gather", "coset"):
+        for kernel in ("scatter", "gather", "coset", "coset_lut"):
             engine = Engine(16, kernel=kernel)
             np.testing.assert_array_equal(
                 engine.step(cp.ones((1, 1)), left, right, target).get(), expected
@@ -136,7 +136,7 @@ class GPU(unittest.TestCase):
             prob = rng.random((1, 4))
             prob /= prob.sum()
             expected = cpu_step(prob, left, right, target, 16)
-            for kernel in ("scatter", "gather", "coset"):
+            for kernel in ("scatter", "gather", "coset", "coset_lut"):
                 engine.kernel = kernel
                 np.testing.assert_allclose(
                     engine.step(cp.asarray(prob), left, right, target).get(),
@@ -149,7 +149,7 @@ class GPU(unittest.TestCase):
         from ddw.gpu import Engine
 
         cp = self.cp
-        engine = Engine(16, kernel="coset")
+        engine = Engine(16, kernel="coset_lut")
         left = Window(0xFFFF)
         right = target = Window(0, tuple(range(16)))
         prob = cp.full((1, 1 << 16), 1 / (1 << 16), dtype=cp.float64)
@@ -157,6 +157,61 @@ class GPU(unittest.TestCase):
         # XOR convolution of any normalized transition with a uniform full word
         # must be uniform, including large-dimensional intersections.
         np.testing.assert_array_equal(actual, np.full((1 << 16, 1), 1 / (1 << 16)))
+
+    def test_bit_marginals_against_exact_dyadic_sums(self):
+        from ddw.gpu import Engine
+
+        cp = self.cp
+        engine = Engine(64)
+        rng = np.random.default_rng(21)
+        positions = (0, 2, 4, 7, 8, 11, 13, 16, 19, 23, 29, 33, 40, 50, 63)
+        for width in (0, 2, 8, 9, 10, 11, 15):
+            right = Window(0x123456, tuple(sorted(positions[:width])))
+            prob = rng.integers(0, 16, size=(3, 1 << width)).astype(np.float64) / 4096
+            bits = (
+                (right.values()[:, None] >> np.arange(64, dtype=np.uint64)) & 1
+            ).astype(np.float64)
+            for method in ("gemm", "tiled", "bitwise", "hierarchical"):
+                engine.statistics = method
+                ones, edge = engine.marginals(cp.asarray(prob), right)
+                np.testing.assert_array_equal(ones.get(), prob @ bits)
+                np.testing.assert_array_equal(edge.get(), prob.sum(axis=1))
+
+    def test_fused_summary_and_first_tie(self):
+        from ddw.gpu import Engine
+
+        cp = self.cp
+        engine = Engine(32)
+        rng = np.random.default_rng(24)
+        for size in (1, 19, 257, 2049, 3000001):
+            prob = rng.integers(0, 16, size=size).astype(np.float64) / 4096
+            peak, total, index = engine.summary(cp.asarray(prob))
+            self.assertEqual(peak, prob.max())
+            self.assertEqual(total, prob.sum())
+            self.assertEqual(index, int(prob.argmax()))
+        self.assertEqual(engine.summary(cp.zeros(19)), (0.0, 0.0, 0))
+
+    def test_fused_transition_and_reused_output(self):
+        from ddw.gpu import Engine
+
+        cp = self.cp
+        engine = Engine(16, kernel="coset_lut", statistics="hierarchical")
+        left, right = Window(0xE9AE), Window(0xF24A)
+        target = Window(33368, (0, 1, 2, 5, 8, 11, 13, 14))
+        prob = cp.ones((1, 1))
+        expected = cpu_step(np.ones((1, 1)), left, right, target, 16)
+        out = cp.full(expected.shape, 999.0)
+        for _ in range(2):
+            actual, (peak, total, index) = engine.step_and_summary(
+                prob, left, right, target, out=out
+            )
+            self.assertIs(actual, out)
+            np.testing.assert_array_equal(actual.get(), expected)
+            self.assertEqual(peak, expected.max())
+            self.assertEqual(total, expected.sum())
+            self.assertEqual(index, int(expected.argmax()))
+        with self.assertRaises(ValueError):
+            engine.step(prob, left, right, Window(0), out=prob)
 
     def test_nested_windows(self):
         from ddw.gpu import Engine

@@ -1,0 +1,23 @@
+round= 1 log2_max=0.000000000 mass=0.000000 shape=[1, 1] seconds=0.172
+round= 2 log2_max=-2.000000000 mass=0.000000 shape=[4, 1] seconds=0.019
+round= 3 log2_max=-4.000000000 mass=0.000000 shape=[32, 4] seconds=0.041
+round= 4 log2_max=-7.299560282 mass=0.000000 shape=[2048, 32] seconds=0.030
+round= 5 log2_max=-9.299560282 mass=-0.568502 shape=[32768, 2048] seconds=0.091
+round= 6 log2_max=-14.375211682 mass=-2.618027 shape=[32768, 32768] seconds=0.499
+round= 7 log2_max=-17.975248203 mass=-5.039169 shape=[32768, 32768] seconds=0.245
+round= 8 log2_max=-22.165067214 mass=-8.982912 shape=[32768, 32768] seconds=0.083
+round= 9 log2_max=-24.165067214 mass=-12.641518 shape=[32768, 32768] seconds=0.087
+round=10 log2_max=-31.013254033 mass=-16.954785 shape=[32768, 32768] seconds=0.111
+round=11 log2_max=-35.649327409 mass=-20.642453 shape=[32768, 32768] seconds=0.108
+round=12 log2_max=-40.062672308 mass=-25.045037 shape=[32768, 32768] seconds=0.102
+round=13 log2_max=-41.349096798 mass=-28.738569 shape=[32768, 32768] seconds=0.093
+round=14 log2_max=-44.265325756 mass=-32.967250 shape=[32768, 32768] seconds=0.107
+round=15 log2_max=-45.808698690 mass=-36.356041 shape=[32768, 32768] seconds=0.096
+round=16 log2_max=-47.065648214 mass=-39.729741 shape=[32768, 32768] seconds=0.086
+round=17 log2_max=-47.065648214 mass=-42.374344 shape=[32768, 32768] seconds=0.087
+round=18 log2_max=-49.065277902 mass=-44.531234 shape=[32768, 32768] seconds=0.082
+round=19 log2_max=-51.065238272 mass=-45.658575 shape=[32768, 32768] seconds=0.092
+round=20 log2_max=-54.364789205 mass=-46.806700 shape=[32768, 32768] seconds=0.085
+round=21 log2_max=-56.364788341 mass=-47.616319 shape=[32768, 32768] seconds=0.086
+round=22 log2_max=-61.439909982 mass=-49.676751 shape=[32768, 32768] seconds=0.080
+round=23 log2_max=-65.039887460 mass=-52.100940 shape=[32768, 32768] seconds=0.080

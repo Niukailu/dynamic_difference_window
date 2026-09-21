@@ -1,0 +1,128 @@
+{
+  "reference": "results/simon64-diff-w15.jsonl",
+  "round": 12,
+  "device": 0,
+  "kernel": "coset_lut",
+  "statistics": "bitwise",
+  "normalization": "multiply",
+  "fused": true,
+  "matrix_bytes": 8589934592,
+  "output_bytes": 8589934592,
+  "runs": [
+    {
+      "stages_ms": {
+        "basis": 2.5183041095733643,
+        "choose": 65.88288116455078,
+        "step": 25.084064483642578,
+        "summary": 11.8755521774292,
+        "normalize": 11.466239929199219
+      },
+      "kernels_ms": {
+        "basis": 1.8704639673233032,
+        "bit_marginal_rows": 59.7657585144043,
+        "restrict_basis": 0.03791999816894531,
+        "pack_basis": 0.019200000911951065,
+        "coset_plan": 0.033952001482248306,
+        "coset_reduce": 9.807711601257324,
+        "affine_columns": 0.03782400116324425,
+        "affine_tables": 0.1443839967250824,
+        "coset_lookup_lut": 7.4218878746032715,
+        "distribution_stats": 11.78377628326416,
+        "finish_stats": 0.039903998374938965
+      },
+      "wall_ms": 122.01026314869523
+    },
+    {
+      "stages_ms": {
+        "basis": 2.519263982772827,
+        "choose": 74.22748565673828,
+        "step": 29.32598304748535,
+        "summary": 14.049823760986328,
+        "normalize": 11.545120239257812
+      },
+      "kernels_ms": {
+        "basis": 1.7727680206298828,
+        "bit_marginal_rows": 59.76572799682617,
+        "restrict_basis": 0.03788800165057182,
+        "pack_basis": 0.01945599913597107,
+        "coset_plan": 0.034015998244285583,
+        "coset_reduce": 10.643584251403809,
+        "affine_columns": 0.03788800165057182,
+        "affine_tables": 0.14431999623775482,
+        "coset_lookup_lut": 9.534432411193848,
+        "distribution_stats": 13.958399772644043,
+        "finish_stats": 0.039903998374938965
+      },
+      "wall_ms": 136.83274993672967
+    },
+    {
+      "stages_ms": {
+        "basis": 2.5418879985809326,
+        "choose": 89.52134704589844,
+        "step": 33.48643112182617,
+        "summary": 10.649696350097656,
+        "normalize": 8.975263595581055
+      },
+      "kernels_ms": {
+        "basis": 1.590559959411621,
+        "bit_marginal_rows": 59.82377624511719,
+        "restrict_basis": 0.037856001406908035,
+        "pack_basis": 0.019360000267624855,
+        "coset_plan": 0.035840000957250595,
+        "coset_reduce": 11.584256172180176,
+        "affine_columns": 0.03782400116324425,
+        "affine_tables": 0.1443839967250824,
+        "coset_lookup_lut": 9.590784072875977,
+        "distribution_stats": 10.55123233795166,
+        "finish_stats": 0.03968000039458275
+      },
+      "wall_ms": 151.85749484226108
+    },
+    {
+      "stages_ms": {
+        "basis": 2.565023899078369,
+        "choose": 68.31228637695312,
+        "step": 31.483423233032227,
+        "summary": 11.171263694763184,
+        "normalize": 8.908255577087402
+      },
+      "kernels_ms": {
+        "basis": 1.815168023109436,
+        "bit_marginal_rows": 59.90822219848633,
+        "restrict_basis": 0.03791999816894531,
+        "pack_basis": 0.019392000511288643,
+        "coset_plan": 0.03379200026392937,
+        "coset_reduce": 12.513504028320312,
+        "affine_columns": 0.038176000118255615,
+        "affine_tables": 0.14431999623775482,
+        "coset_lookup_lut": 9.557984352111816,
+        "distribution_stats": 11.084992408752441,
+        "finish_stats": 0.039903998374938965
+      },
+      "wall_ms": 128.05770989507437
+    },
+    {
+      "stages_ms": {
+        "basis": 2.5146560668945312,
+        "choose": 94.22672271728516,
+        "step": 33.66873550415039,
+        "summary": 14.010208129882812,
+        "normalize": 11.504480361938477
+      },
+      "kernels_ms": {
+        "basis": 1.6398719549179077,
+        "bit_marginal_rows": 59.722686767578125,
+        "restrict_basis": 0.03782400116324425,
+        "pack_basis": 0.01942400075495243,
+        "coset_plan": 0.03577600046992302,
+        "coset_reduce": 11.304800033569336,
+        "affine_columns": 0.0379519984126091,
+        "affine_tables": 0.1443520039319992,
+        "coset_lookup_lut": 9.499360084533691,
+        "distribution_stats": 13.918527603149414,
+        "finish_stats": 0.04012800008058548
+      },
+      "wall_ms": 161.1393177881837
+    }
+  ]
+}

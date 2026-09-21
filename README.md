@@ -68,7 +68,7 @@ python scripts/check_results.py results/my-wider.jsonl
 | 16 | 64 GiB |
 | 17 | 256 GiB |
 
-还需要陪集聚合缓存（最坏可达一张输入矩阵）、内核数据、统计缓存和 CUDA 上下文。`--memory-gib` 限制 CuPy 内存池，并在转移前检查矩阵预算和可用显存。它不预留 GPU，也不能保证其他进程增加显存后仍有空间。多卡目前用于并行独立实验，单次搜索不跨卡拆矩阵。
+还需要陪集聚合缓存（最坏可达一张输入矩阵）、内核数据、统计缓存和 CUDA 上下文。`--memory-gib` 限制 CuPy 内存池，并在转移前检查矩阵预算和可用显存。它不预留 GPU，也不能保证其他进程增加显存后仍有空间。固定窗口计划支持 NVLink 多卡分片重放，见下文；动态选窗和束搜索目前仍在单卡执行。
 
 ## 探索其他策略
 
@@ -87,7 +87,7 @@ python -m ddw.search --device 0 --width 10 --rounds 23 \
   --beam-size 8 --candidates 8 --objective peak --output results/my-beam.jsonl
 ```
 
-替代策略属于实验功能，没有普遍优于原策略的保证。束搜索为控制显存限制宽度至 12。默认 `--kernel coset` 先按陪集聚合，再查询输出，避免指数级枚举。`--kernel gather` 按输出求前像，`--kernel scatter` 按输入分发；三者在固定窗口下计算相同的转移。
+替代策略属于实验功能，没有普遍优于原策略的保证。束搜索为控制显存限制宽度至 12。默认 `--kernel coset_lut` 按陪集归约后通过仿射查表查询输出，避免指数级枚举和逐输出消元；`--kernel coset` 保留上一版实现用于对照。`--kernel gather` 按输出求前像，`--kernel scatter` 按输入分发；四者在固定窗口下计算相同的转移。默认 `--statistics hierarchical` 用共享内存归约树计算位边缘分布，`gemm` 保留矩阵乘法对照。
 
 ## 验证
 
@@ -96,6 +96,23 @@ DDW_TEST_DEVICE=0 python -m unittest discover -s tests -v
 python scripts/benchmark_legacy.py --width 10 --rounds 12 --output results/my-cpu.jsonl
 ```
 
-测试覆盖差分穷举真值表、线性 Walsh 谱、三种 GPU 内核与 CPU 的数值一致性、64 位窗口索引、历史日志及非法结果检测。没有 CuPy/GPU 时 GPU 测试明确跳过。CPU 基准在临时目录编译旧递推，关闭检查点和发布操作。
+测试覆盖差分穷举真值表、线性 Walsh 谱、四种 GPU 内核与 CPU 的数值一致性、64 位窗口索引、历史日志及非法结果检测。没有 CuPy/GPU 时 GPU 测试明确跳过。CPU 基准在临时目录编译旧递推，关闭检查点和发布操作。
 
 [实测结果](docs/results.md)汇总速度与概率改进；[实现与研究判断](docs/research-notes.md)记录模型、数值边界和后续方向。实测原始记录放在 `results/`，修正前的探索记录单独存放在 `results/prototype/`。
+
+## NVLink 多卡重放
+
+```bash
+python -m ddw.multigpu results/simon128-diff-w16.jsonl \
+  --devices 0,1,2,3,4,5,6,7 --memory-gib 20 \
+  --output results/my-eight-gpu.jsonl
+python scripts/check_results.py results/my-eight-gpu.jsonl \
+  --reference results/simon128-diff-w16.jsonl --tolerance 1e-10
+
+# 多卡完整分布测试，可用任意支持 peer access 的两卡
+DDW_TEST_DEVICE=1 DDW_TEST_DEVICES=1,2 python -m unittest discover -s tests -v
+```
+
+设备数必须为 2 的幂，且支持彼此的 CUDA peer access。输入按行分片，每卡计算不相交的输出列；下一轮通过 NVLink 直接读取远端列并重排为行分片，同时归一化。概率不跨卡重复计数。小窗口先用首卡运行，窗口足够大后启用全部指定卡。分片后不支持窗口缩小到小于卡数。
+
+默认 `--exchange peer` 使用直接远端读取；`--exchange staged` 保留先复制到中间缓冲的对照实现。`--memory-gib` 是每卡预算，默认实现需约两张矩阵分片加陪集缓存与工作区，中间缓冲模式再增加一张分片。当前实现重放已有计划，不执行跨卡动态选窗。共享训练负载下的实测与具体限制见 [硬件优化记录](docs/hardware-optimization.md)。

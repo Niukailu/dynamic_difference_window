@@ -1,0 +1,134 @@
+{
+  "reference": "results/simon64-diff-w15.jsonl",
+  "round": 12,
+  "device": 0,
+  "kernel": "coset_lut",
+  "statistics": "hierarchical",
+  "normalization": "multiply",
+  "fused": true,
+  "density": 0.7824953496456146,
+  "matrix_bytes": 8589934592,
+  "output_bytes": 8589934592,
+  "runs": [
+    {
+      "stages_ms": {
+        "basis": 2.5406720638275146,
+        "choose": 37.521759033203125,
+        "step": 29.329792022705078,
+        "summary": 14.118783950805664,
+        "normalize": 11.608480453491211
+      },
+      "kernels_ms": {
+        "basis": 0.5365440249443054,
+        "hierarchical_marginal_tiles": 29.080480575561523,
+        "hierarchical_marginal_finish": 0.033695999532938004,
+        "restrict_basis": 0.03788800165057182,
+        "pack_basis": 0.019328000023961067,
+        "coset_plan": 0.03379200026392937,
+        "coset_reduce": 11.894368171691895,
+        "affine_columns": 0.038015998899936676,
+        "affine_tables": 0.14419199526309967,
+        "coset_lookup_lut": 9.619296073913574,
+        "distribution_stats": 14.03279972076416,
+        "finish_stats": 0.03964800015091896
+      },
+      "wall_ms": 100.20167706534266
+    },
+    {
+      "stages_ms": {
+        "basis": 2.4992640018463135,
+        "choose": 40.26927947998047,
+        "step": 29.455936431884766,
+        "summary": 11.75823974609375,
+        "normalize": 8.590592384338379
+      },
+      "kernels_ms": {
+        "basis": 2.4758079051971436,
+        "hierarchical_marginal_tiles": 29.033536911010742,
+        "hierarchical_marginal_finish": 0.033535998314619064,
+        "restrict_basis": 0.03788800165057182,
+        "pack_basis": 0.019168000668287277,
+        "coset_plan": 0.03379200026392937,
+        "coset_reduce": 12.389439582824707,
+        "affine_columns": 0.03798399865627289,
+        "affine_tables": 0.1443520039319992,
+        "coset_lookup_lut": 9.603839874267578,
+        "distribution_stats": 11.665663719177246,
+        "finish_stats": 0.03977600112557411
+      },
+      "wall_ms": 98.39118365198374
+    },
+    {
+      "stages_ms": {
+        "basis": 2.5396480560302734,
+        "choose": 37.71843338012695,
+        "step": 25.20729637145996,
+        "summary": 14.037919998168945,
+        "normalize": 11.526559829711914
+      },
+      "kernels_ms": {
+        "basis": 2.3483200073242188,
+        "hierarchical_marginal_tiles": 29.18841552734375,
+        "hierarchical_marginal_finish": 0.03590400144457817,
+        "restrict_basis": 0.03791999816894531,
+        "pack_basis": 0.019392000511288643,
+        "coset_plan": 0.03379200026392937,
+        "coset_reduce": 9.199359893798828,
+        "affine_columns": 0.03824000060558319,
+        "affine_tables": 0.1443520039319992,
+        "coset_lookup_lut": 9.563136100769043,
+        "distribution_stats": 13.95695972442627,
+        "finish_stats": 0.03964800015091896
+      },
+      "wall_ms": 96.57988091930747
+    },
+    {
+      "stages_ms": {
+        "basis": 2.5345280170440674,
+        "choose": 42.3704948425293,
+        "step": 29.367807388305664,
+        "summary": 14.059552192687988,
+        "normalize": 7.325471878051758
+      },
+      "kernels_ms": {
+        "basis": 1.7398079633712769,
+        "hierarchical_marginal_tiles": 28.98975944519043,
+        "hierarchical_marginal_finish": 0.03587200120091438,
+        "restrict_basis": 0.03779200091958046,
+        "pack_basis": 0.019360000267624855,
+        "coset_plan": 0.03379200026392937,
+        "coset_reduce": 11.85200023651123,
+        "affine_columns": 0.038176000118255615,
+        "affine_tables": 0.1443839967250824,
+        "coset_lookup_lut": 9.590751647949219,
+        "distribution_stats": 13.969951629638672,
+        "finish_stats": 0.039903998374938965
+      },
+      "wall_ms": 100.79068411141634
+    },
+    {
+      "stages_ms": {
+        "basis": 2.5010879039764404,
+        "choose": 37.906463623046875,
+        "step": 29.42959976196289,
+        "summary": 9.76416015625,
+        "normalize": 9.43008041381836
+      },
+      "kernels_ms": {
+        "basis": 1.7948479652404785,
+        "hierarchical_marginal_tiles": 29.07187271118164,
+        "hierarchical_marginal_finish": 0.03404799848794937,
+        "restrict_basis": 0.03776000067591667,
+        "pack_basis": 0.01945599913597107,
+        "coset_plan": 0.03379200026392937,
+        "coset_reduce": 11.492256164550781,
+        "affine_columns": 0.038015998899936676,
+        "affine_tables": 0.1443839967250824,
+        "coset_lookup_lut": 9.58556842803955,
+        "distribution_stats": 9.675840377807617,
+        "finish_stats": 0.039872001856565475
+      },
+      "wall_ms": 93.97467598319054
+    }
+  ]
+}

@@ -28,7 +28,16 @@ def main():
     p.add_argument("--right", type=lambda x: int(x, 0), default=1)
     p.add_argument("--width", type=int, default=10)
     p.add_argument("--rounds", type=int, default=23)
-    p.add_argument("--kernel", choices=["gather", "scatter", "coset"], default="coset")
+    p.add_argument(
+        "--kernel",
+        choices=["gather", "scatter", "coset", "coset_lut"],
+        default="coset_lut",
+    )
+    p.add_argument(
+        "--statistics",
+        choices=["hierarchical", "bitwise", "gemm"],
+        default="hierarchical",
+    )
     p.add_argument("--strategy", choices=["legacy", "marginal"], default="legacy")
     p.add_argument(
         "--lookahead-candidates",
@@ -94,7 +103,12 @@ def main():
     cp.cuda.Device(args.device).use()
     cp.get_default_memory_pool().set_limit(size=int(args.memory_gib * 2**30))
     engine = Engine(
-        args.word_bits, args.cipher, args.mode, args.memory_gib, args.kernel
+        args.word_bits,
+        args.cipher,
+        args.mode,
+        args.memory_gib,
+        args.kernel,
+        args.statistics,
     )
     # Linear recurrence uses swapped branches internally; logs always use physical order.
     initial_left, initial_right = (
@@ -103,6 +117,7 @@ def main():
     left, right = Window(initial_left), Window(initial_right)
     prob = cp.ones((1, 1), dtype=cp.float64)
     log_scale = 0.0
+    spare = None
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("x") as output:
         config = vars(args).copy()
@@ -153,7 +168,13 @@ def main():
                 )
             )
             target = candidates[0]
+            if spare is not None and spare.shape != (
+                1 << len(target.bits),
+                prob.shape[0],
+            ):
+                spare = None
             if len(candidates) > 1:
+                spare = None
                 # Evaluate sequentially and release each full matrix before the next.
                 # Recompute the winning candidate to keep the two-matrix memory bound.
                 best_score = -1.0
@@ -167,8 +188,9 @@ def main():
                     if score > best_score:
                         best_score, target = score, candidate
                     del trial
-            next_prob = engine.step(prob, left, right, target, basis)
-            peak = float(next_prob.max())
+            next_prob, (peak, total, index) = engine.step_and_summary(
+                prob, left, right, target, basis, out=spare
+            )
             if not math.isfinite(peak) or peak < 0:
                 raise FloatingPointError("invalid probability")
             if peak == 0:
@@ -184,8 +206,8 @@ def main():
                 print("No paths remain in window.", flush=True)
                 break
             log_scale += math.log2(peak)
-            next_prob /= peak
-            index = int(cp.argmax(next_prob))
+            next_prob *= 1.0 / peak
+
             row, col = divmod(index, next_prob.shape[1])
             endpoint = (int(target.values()[row]), int(left.values()[col]))
             if args.mode == "linear":
@@ -197,7 +219,7 @@ def main():
                 "window_base": hex(target.base),
                 "window_bits": list(target.bits),
                 "shape": list(next_prob.shape),
-                "log2_mass": log_scale + math.log2(float(next_prob.sum())),
+                "log2_mass": log_scale + math.log2(total / peak),
                 "candidates_evaluated": len(candidates),
             }
             if ref:
@@ -212,11 +234,12 @@ def main():
                 record["log2_at_reference_output"] = (
                     log_scale + math.log2(value) if value > 0 else None
                 )
-            prob, right, left = next_prob, left, target
+            spare, prob, right, left = prob, next_prob, left, target
             del basis
             # Return free giant matrix blocks before small next-round allocations
             # can split them and prevent reuse under the configured pool limit.
-            if args.width >= 15:
+            if spare.shape != prob.shape:
+                spare = None
                 cp.get_default_memory_pool().free_all_blocks()
             cp.cuda.Stream.null.synchronize()
             record["seconds"] = time.perf_counter() - start

@@ -1,0 +1,113 @@
+{
+  "reference": "results/simon64-diff-w15.jsonl",
+  "round": 12,
+  "device": 0,
+  "kernel": "coset_lut",
+  "statistics": "bitwise",
+  "normalization": "multiply",
+  "fused": true,
+  "matrix_bytes": 8589934592,
+  "output_bytes": 8589934592,
+  "runs": [
+    {
+      "stages_ms": {
+        "basis": 2.4777920246124268,
+        "choose": 64.22930908203125,
+        "step": 56.9780158996582,
+        "summary": 10.186911582946777,
+        "normalize": 8.543968200683594
+      },
+      "kernels_ms": {
+        "basis": 0.43219199776649475,
+        "restrict_basis": 0.03814399987459183,
+        "pack_basis": 0.019168000668287277,
+        "coset_plan": 0.03388800099492073,
+        "coset_sum": 23.071584701538086,
+        "affine_columns": 0.037696000188589096,
+        "affine_tables": 0.1443839967250824,
+        "coset_lookup_lut": 9.518048286437988
+      },
+      "wall_ms": 148.1382711790502
+    },
+    {
+      "stages_ms": {
+        "basis": 6.7393598556518555,
+        "choose": 74.41027069091797,
+        "step": 36.71376037597656,
+        "summary": 9.375840187072754,
+        "normalize": 9.411328315734863
+      },
+      "kernels_ms": {
+        "basis": 0.48262399435043335,
+        "restrict_basis": 0.03996799886226654,
+        "pack_basis": 0.01942400075495243,
+        "coset_plan": 0.03590400144457817,
+        "coset_sum": 18.022432327270508,
+        "affine_columns": 0.03824000060558319,
+        "affine_tables": 0.1443520039319992,
+        "coset_lookup_lut": 9.611295700073242
+      },
+      "wall_ms": 141.7658720165491
+    },
+    {
+      "stages_ms": {
+        "basis": 2.486560106277466,
+        "choose": 54.16169738769531,
+        "step": 35.29487991333008,
+        "summary": 14.096896171569824,
+        "normalize": 11.566847801208496
+      },
+      "kernels_ms": {
+        "basis": 1.6796799898147583,
+        "restrict_basis": 0.03788800165057182,
+        "pack_basis": 0.01942400075495243,
+        "coset_plan": 0.03379200026392937,
+        "coset_sum": 16.112640380859375,
+        "affine_columns": 0.038176000118255615,
+        "affine_tables": 0.14441600441932678,
+        "coset_lookup_lut": 9.590784072875977
+      },
+      "wall_ms": 123.55549214407802
+    },
+    {
+      "stages_ms": {
+        "basis": 4.605311870574951,
+        "choose": 75.05017852783203,
+        "step": 69.94012451171875,
+        "summary": 11.044608116149902,
+        "normalize": 11.551136016845703
+      },
+      "kernels_ms": {
+        "basis": 2.087775945663452,
+        "restrict_basis": 0.03791999816894531,
+        "pack_basis": 0.01942400075495243,
+        "coset_plan": 0.03376000002026558,
+        "coset_sum": 23.126079559326172,
+        "affine_columns": 0.038015998899936676,
+        "affine_tables": 0.14419199526309967,
+        "coset_lookup_lut": 7.6091837882995605
+      },
+      "wall_ms": 174.33302383869886
+    },
+    {
+      "stages_ms": {
+        "basis": 15.574560165405273,
+        "choose": 64.89055633544922,
+        "step": 95.14006042480469,
+        "summary": 14.055551528930664,
+        "normalize": 11.525343894958496
+      },
+      "kernels_ms": {
+        "basis": 1.3479039669036865,
+        "restrict_basis": 0.04009599983692169,
+        "pack_basis": 0.01929599978029728,
+        "coset_plan": 0.03379200026392937,
+        "coset_sum": 23.017536163330078,
+        "affine_columns": 0.03759999945759773,
+        "affine_tables": 0.1443839967250824,
+        "coset_lookup_lut": 9.534432411193848
+      },
+      "wall_ms": 205.75649524107575
+    }
+  ]
+}

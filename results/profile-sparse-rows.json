@@ -1,0 +1,129 @@
+{
+  "reference": "results/simon64-diff-w15.jsonl",
+  "round": 12,
+  "device": 0,
+  "kernel": "coset_lut",
+  "statistics": "bitwise",
+  "normalization": "multiply",
+  "fused": true,
+  "density": 0.7824953496456146,
+  "matrix_bytes": 8589934592,
+  "output_bytes": 8589934592,
+  "runs": [
+    {
+      "stages_ms": {
+        "basis": 2.5110719203948975,
+        "choose": 64.15673828125,
+        "step": 29.243488311767578,
+        "summary": 14.04633617401123,
+        "normalize": 11.495231628417969
+      },
+      "kernels_ms": {
+        "basis": 1.8835840225219727,
+        "bit_marginal_rows": 55.68012619018555,
+        "restrict_basis": 0.03807999938726425,
+        "pack_basis": 0.019231999292969704,
+        "coset_plan": 0.03788800165057182,
+        "coset_reduce": 12.085824012756348,
+        "affine_columns": 0.038176000118255615,
+        "affine_tables": 0.1443520039319992,
+        "coset_lookup_lut": 9.509856224060059,
+        "distribution_stats": 13.952256202697754,
+        "finish_stats": 0.04092799872159958
+      },
+      "wall_ms": 126.9401116296649
+    },
+    {
+      "stages_ms": {
+        "basis": 2.5646400451660156,
+        "choose": 58.768768310546875,
+        "step": 29.26041603088379,
+        "summary": 14.014464378356934,
+        "normalize": 11.466431617736816
+      },
+      "kernels_ms": {
+        "basis": 1.3223040103912354,
+        "bit_marginal_rows": 50.39072036743164,
+        "restrict_basis": 0.03791999816894531,
+        "pack_basis": 0.01942400075495243,
+        "coset_plan": 0.03372799977660179,
+        "coset_reduce": 11.819456100463867,
+        "affine_columns": 0.03622400015592575,
+        "affine_tables": 0.14431999623775482,
+        "coset_lookup_lut": 9.533408164978027,
+        "distribution_stats": 13.922623634338379,
+        "finish_stats": 0.03984000161290169
+      },
+      "wall_ms": 121.51013081893325
+    },
+    {
+      "stages_ms": {
+        "basis": 0.18889600038528442,
+        "choose": 66.1539535522461,
+        "step": 27.849088668823242,
+        "summary": 11.325183868408203,
+        "normalize": 11.498368263244629
+      },
+      "kernels_ms": {
+        "basis": 0.16326400637626648,
+        "bit_marginal_rows": 55.56230545043945,
+        "restrict_basis": 0.03798399865627289,
+        "pack_basis": 0.019328000023961067,
+        "coset_plan": 0.03580800071358681,
+        "coset_reduce": 12.319583892822266,
+        "affine_columns": 0.03807999938726425,
+        "affine_tables": 0.1443520039319992,
+        "coset_lookup_lut": 8.078207969665527,
+        "distribution_stats": 11.228704452514648,
+        "finish_stats": 0.03964800015091896
+      },
+      "wall_ms": 119.04646130278707
+    },
+    {
+      "stages_ms": {
+        "basis": 2.507551908493042,
+        "choose": 64.29023742675781,
+        "step": 29.19910430908203,
+        "summary": 14.077568054199219,
+        "normalize": 11.53286361694336
+      },
+      "kernels_ms": {
+        "basis": 2.477663993835449,
+        "bit_marginal_rows": 55.77289581298828,
+        "restrict_basis": 0.03807999938726425,
+        "pack_basis": 0.019231999292969704,
+        "coset_plan": 0.035840000957250595,
+        "coset_reduce": 11.891712188720703,
+        "affine_columns": 0.038015998899936676,
+        "affine_tables": 0.14428800344467163,
+        "coset_lookup_lut": 9.601856231689453,
+        "distribution_stats": 13.984671592712402,
+        "finish_stats": 0.0398080013692379
+      },
+      "wall_ms": 128.05045815184712
+    },
+    {
+      "stages_ms": {
+        "basis": 2.1328959465026855,
+        "choose": 65.83821105957031,
+        "step": 29.29324722290039,
+        "summary": 14.056063652038574,
+        "normalize": 10.939231872558594
+      },
+      "kernels_ms": {
+        "basis": 2.1088640689849854,
+        "bit_marginal_rows": 55.377952575683594,
+        "restrict_basis": 0.03788800165057182,
+        "pack_basis": 0.019360000267624855,
+        "coset_plan": 0.033504001796245575,
+        "coset_reduce": 12.006752014160156,
+        "affine_columns": 0.03728000074625015,
+        "affine_tables": 0.1443520039319992,
+        "coset_lookup_lut": 9.577407836914062,
+        "distribution_stats": 13.962944030761719,
+        "finish_stats": 0.03984000161290169
+      },
+      "wall_ms": 125.90073514729738
+    }
+  ]
+}

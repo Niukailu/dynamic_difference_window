@@ -63,7 +63,7 @@ def main():
     cp.cuda.Device(args.device).use()
     cp.get_default_memory_pool().set_limit(size=int(args.memory_gib * 2**30))
     engine = Engine(
-        args.word_bits, args.cipher, args.mode, args.memory_gib, kernel="coset"
+        args.word_bits, args.cipher, args.mode, args.memory_gib, kernel="coset_lut"
     )
     initial_left, initial_right = (
         (args.right, args.left) if args.mode == "linear" else (args.left, args.right)
@@ -95,7 +95,8 @@ def main():
                 {
                     "config": config,
                     "search": "window-history beam; no cross-beam summation",
-                    "kernel": "coset",
+                    "kernel": "coset_lut",
+                    "statistics": "hierarchical",
                     "gpu": cp.cuda.runtime.getDeviceProperties(args.device)[
                         "name"
                     ].decode(),
@@ -114,23 +115,22 @@ def main():
                     state.prob, state.right, basis, args.width, count=args.candidates
                 )
                 for target in windows:
-                    prob = engine.step(
+                    prob, (peak, total, index) = engine.step_and_summary(
                         state.prob, state.left, state.right, target, basis
                     )
-                    peak = float(prob.max())
                     if peak == 0:
                         del prob
                         continue
                     scale = state.scale + math.log2(peak)
-                    mass = state.scale + math.log2(float(prob.sum()))
-                    i, j = divmod(int(cp.argmax(prob)), prob.shape[1])
+                    mass = state.scale + math.log2(total)
+                    i, j = divmod(index, prob.shape[1])
                     endpoint = [
                         hex(int(target.values()[i])),
                         hex(int(state.left.values()[j])),
                     ]
                     if args.mode == "linear":
                         endpoint.reverse()
-                    prob /= peak
+                    prob *= 1.0 / peak
                     record = dict(
                         round=round_no,
                         log2_max=scale,
