@@ -127,3 +127,16 @@ python -m ddw.multigpu results/simon128-diff-w16.jsonl --width 17 \
 ```
 
 w17 矩阵含 2^34 个 FP64 值，合计 128 GiB，八卡每份 16 GiB。完整流程还需输出矩阵和工作区；上述 60 GiB 是每卡内存池上限，不是固定占用承诺。`--kernel coset` / `gather` 可用于固定计划的其他内核复核。扩窗和候选搜索不保证增加区分器轮数。
+
+
+## 按最终端点优化窗口
+
+`python -m ddw.refine` 固定参考计划最后一轮的端点，用反向权重评价窗口修改对最终概率的影响。主机缓存允许在较小 GPU 显存预算下优化较长计划：
+
+```bash
+python -m ddw.refine results/simon128-diff-w14.jsonl \
+  --device 1 --cache host --host-memory-gib 128 --memory-gib 20 \
+  --candidates 8 --passes 2 --output results/my-refined128.jsonl
+```
+
+本次 w14 优化后再用八卡扩到 w17，SIMON128 差分 45 轮达到 **log₂ 概率 −127.574478192099**，比此前最好 w17 提高约 11%。方法、时间和验证见 [端点优化记录](docs/endpoint-refinement.md)。优化仍是候选集合上的局部搜索，不保证全局最优；主机缓存也需要足够 RAM。

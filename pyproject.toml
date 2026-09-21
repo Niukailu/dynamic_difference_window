@@ -17,6 +17,7 @@ cuda12 = ["cupy-cuda12x>=13,<15"]
 ddw = "ddw.__main__:main"
 ddw-beam = "ddw.search:main"
 ddw-multigpu = "ddw.multigpu:main"
+ddw-refine = "ddw.refine:main"
 
 [tool.setuptools]
 packages = ["ddw"]

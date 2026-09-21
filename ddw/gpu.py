@@ -227,6 +227,18 @@ class Engine:
             windows.append(Window(base, tuple(sorted(bits))))
         return windows
 
+    def adjoint(self, value, left, right, target):
+        """Transpose of a fixed-window transition, without changing its weights.
+
+        The forward weight depends on target XOR right and the unchanged left
+        word, so exchange the target/right windows and transpose both matrices.
+        """
+        if value.shape != (1 << len(target.bits), 1 << len(left.bits)):
+            raise ValueError("adjoint value does not match forward output windows")
+        transposed = cp.ascontiguousarray(value.T)
+        result = self.step(transposed, left, target, right)
+        return cp.ascontiguousarray(result.T)
+
     def retained_mass(self, prob, left, right, target, basis=None):
         """Exact projected-affine mass; no output matrix or cross-device exchange."""
         if (
