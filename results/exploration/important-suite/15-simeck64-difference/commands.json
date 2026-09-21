@@ -1,0 +1,78 @@
+[
+  {
+    "stage": "replay",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "replay",
+      "results/exploration/important-suite/15-simeck64-difference/original.jsonl",
+      "--devices",
+      "6",
+      "--memory-gib",
+      "52",
+      "--output",
+      "results/exploration/important-suite/15-simeck64-difference/replay.jsonl"
+    ],
+    "status": "passed",
+    "seconds": 5.279948293231428
+  },
+  {
+    "stage": "refined",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "refine",
+      "results/exploration/important-suite/15-simeck64-difference/replay.jsonl",
+      "--device",
+      "6",
+      "--memory-gib",
+      "52",
+      "--host-memory-gib",
+      "128",
+      "--passes",
+      "2",
+      "--output",
+      "results/exploration/important-suite/15-simeck64-difference/refined.jsonl"
+    ],
+    "status": "passed",
+    "seconds": 143.46670088917017
+  },
+  {
+    "stage": "expanded",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "compressed",
+      "results/exploration/important-suite/15-simeck64-difference/refined.jsonl",
+      "--width",
+      "16",
+      "--device",
+      "6",
+      "--memory-gib",
+      "52",
+      "--output",
+      "results/exploration/important-suite/15-simeck64-difference/expanded.jsonl"
+    ],
+    "status": "passed",
+    "seconds": 16.43728128587827
+  },
+  {
+    "stage": "novel",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "block-refine",
+      "results/exploration/important-suite/15-simeck64-difference/refined.jsonl",
+      "--reference",
+      "results/exploration/important-suite/15-simeck64-difference/expanded.jsonl",
+      "--round",
+      "16",
+      "--pool",
+      "16",
+      "--device",
+      "6",
+      "--memory-gib",
+      "52",
+      "--output",
+      "results/exploration/important-suite/15-simeck64-difference/novel.jsonl"
+    ],
+    "status": "passed",
+    "seconds": 97.07508356170729
+  }
+]

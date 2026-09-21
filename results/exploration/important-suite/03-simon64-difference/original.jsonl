@@ -1,0 +1,25 @@
+{"config": {"cipher": "simon", "word_bits": 32, "mode": "difference", "width": 14, "left": 1, "right": 1073741828, "rounds": 24}, "source": "experiments/SIMON64_DIFFERENCE_FROM_0x1_0x40000004_PRECISION_14/info.log", "note": "Archived log, probabilities rounded to six decimals; linear branches converted to physical order."}
+{"round": 1, "window_bits": [1, 8], "window_base": "0x40000000", "log2_max": -2.0, "output": ["0x40000000", "0x1"]}
+{"round": 2, "window_bits": [2, 3, 6, 9, 10, 16, 31], "window_base": "0x0", "log2_max": -4.0, "output": ["0", "0x40000000"]}
+{"round": 3, "window_bits": [0, 1, 3, 4, 5, 7, 8, 10, 11, 12, 14, 17, 18, 24], "window_base": "0x40000000", "log2_max": -4.0, "output": ["0x40000000", "0"]}
+{"round": 4, "window_bits": [2, 3, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 19, 31], "window_base": "0x1", "log2_max": -6.0, "output": ["0x1", "0x40000000"]}
+{"round": 5, "window_bits": [0, 1, 4, 5, 7, 8, 9, 10, 11, 12, 14, 16, 17, 18], "window_base": "0x40000004", "log2_max": -8.0, "output": ["0x40000004", "0x1"]}
+{"round": 6, "window_bits": [1, 2, 3, 6, 7, 8, 9, 10, 13, 14, 15, 16, 22, 31], "window_base": "0x10", "log2_max": -11.29956, "output": ["0x10", "0x40000004"]}
+{"round": 7, "window_bits": [0, 1, 3, 4, 5, 7, 8, 10, 11, 12, 14, 17, 18, 24], "window_base": "0x40000044", "log2_max": -13.29956, "output": ["0x40000044", "0x10"]}
+{"round": 8, "window_bits": [2, 3, 6, 7, 8, 9, 10, 12, 13, 14, 16, 19, 20, 31], "window_base": "0x1", "log2_max": -18.375212, "output": ["0x101", "0x40000044"]}
+{"round": 9, "window_bits": [0, 1, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15, 16, 18], "window_base": "0x40000040", "log2_max": -21.975247, "output": ["0x40000440", "0x101"]}
+{"round": 10, "window_bits": [2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 18, 31], "window_base": "0x0", "log2_max": -26.165042, "output": ["0x1000", "0x40000440"]}
+{"round": 11, "window_bits": [1, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 20], "window_base": "0x40000040", "log2_max": -28.165042, "output": ["0x40004440", "0x1000"]}
+{"round": 12, "window_bits": [2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 18, 31], "window_base": "0x1", "log2_max": -35.01864, "output": ["0x10101", "0x40004440"]}
+{"round": 13, "window_bits": [1, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 20], "window_base": "0x40000044", "log2_max": -39.652051, "output": ["0x40004444", "0x1001"]}
+{"round": 14, "window_bits": [3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 22, 31], "window_base": "0x10", "log2_max": -44.099882, "output": ["0x10", "0x40000044"]}
+{"round": 15, "window_bits": [1, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 20], "window_base": "0x40000004", "log2_max": -45.387732, "output": ["0x40000004", "0x10"]}
+{"round": 16, "window_bits": [3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 22, 31], "window_base": "0x1", "log2_max": -48.324915, "output": ["0x1", "0x40000004"]}
+{"round": 17, "window_bits": [1, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 20], "window_base": "0x40000000", "log2_max": -49.886202, "output": ["0x40000000", "0x1"]}
+{"round": 18, "window_bits": [3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 31], "window_base": "0x0", "log2_max": -51.146582, "output": ["0", "0x40000000"]}
+{"round": 19, "window_bits": [0, 1, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 18], "window_base": "0x40000000", "log2_max": -51.146582, "output": ["0x40000000", "0"]}
+{"round": 20, "window_bits": [2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 31], "window_base": "0x1", "log2_max": -53.146263, "output": ["0x1", "0x40000000"]}
+{"round": 21, "window_bits": [0, 1, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15, 16, 18], "window_base": "0x40000004", "log2_max": -55.146237, "output": ["0x40000004", "0x1"]}
+{"round": 22, "window_bits": [1, 2, 3, 6, 7, 8, 9, 10, 13, 14, 15, 16, 22, 31], "window_base": "0x10", "log2_max": -58.445791, "output": ["0x10", "0x40000004"]}
+{"round": 23, "window_bits": [0, 1, 3, 4, 5, 7, 8, 10, 11, 12, 14, 17, 18, 24], "window_base": "0x40000044", "log2_max": -60.445791, "output": ["0x40000044", "0x10"]}
+{"round": 24, "window_bits": [2, 3, 6, 7, 8, 9, 10, 12, 13, 14, 16, 19, 20, 31], "window_base": "0x1", "log2_max": -65.520921, "output": ["0x101", "0x40000044"]}

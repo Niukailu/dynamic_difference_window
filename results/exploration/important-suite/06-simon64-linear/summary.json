@@ -1,0 +1,26 @@
+{
+  "case": 6,
+  "cipher": "SIMON64",
+  "mode": "linear",
+  "input": [
+    "0x44400",
+    "0x1000"
+  ],
+  "source": "experiments/SIMON64_LINEAR_FROM_0x44400_0x1000_PRECISION_14/info.log",
+  "rounds": 25,
+  "before": -64.398116,
+  "historical_replay_max_error": 3.606924757093566e-06,
+  "status": "passed",
+  "after": -64.18407949701904,
+  "diff": 0.2140365029809601,
+  "target": [
+    4096,
+    279552
+  ],
+  "expanded": -64.20465816532479,
+  "novel": -70.325829538237,
+  "result_file": "results/exploration/important-suite/06-simon64-linear/novel.jsonl",
+  "seconds": 290.14750822400674,
+  "above_threshold": false,
+  "old_above_threshold_rounds": 24
+}

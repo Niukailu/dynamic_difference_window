@@ -1,0 +1,26 @@
+{
+  "case": 11,
+  "cipher": "SIMON128",
+  "mode": "difference",
+  "input": [
+    "0x1000",
+    "0x4440"
+  ],
+  "source": "experiments/SIMON128_DIFFERENCE_FROM_0x1000_0x4440_PRECISION_14/info.log",
+  "rounds": 45,
+  "before": -128.665612,
+  "historical_replay_max_error": 0.00017325560115466487,
+  "status": "passed",
+  "after": -127.65453576991557,
+  "diff": 1.0110762300844414,
+  "target": [
+    4472896,
+    1048576
+  ],
+  "expanded": -127.65455133085464,
+  "novel": -144.1550212700969,
+  "result_file": "results/exploration/important-suite/11-simon128-difference/novel.jsonl",
+  "seconds": 394.53246661508456,
+  "above_threshold": true,
+  "old_above_threshold_rounds": 44
+}

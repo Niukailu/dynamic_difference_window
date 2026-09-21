@@ -1,0 +1,395 @@
+{
+  "scope": "Best verified results for the 15 requested initial points, at their first archived failing round; prior stronger results retained explicitly. Not a proof of maximal rounds.",
+  "results": [
+    {
+      "case": 1,
+      "cipher": "SIMON64",
+      "mode": "difference",
+      "input": [
+        "0x4000000",
+        "0x11000000"
+      ],
+      "source": "experiments/SIMON64_DIFFERENCE_FROM_0x4000000_0x11000000_PRECISION_14/info.log",
+      "rounds": 24,
+      "before": -65.520874,
+      "after": -65.28641616258011,
+      "diff": 0.234457837419896,
+      "target": [
+        67108868,
+        285212673
+      ],
+      "result_file": "results/exploration/important-suite/01-simon64-difference/novel.jsonl",
+      "metric": "optimization.log2_union",
+      "selection_kind": "new suite union",
+      "suite_after": -65.28641616258011,
+      "above_threshold": false,
+      "old_above_threshold_rounds": 23,
+      "confirmed_rounds": 23,
+      "suite_summary": "results/exploration/important-suite/01-simon64-difference/summary.json"
+    },
+    {
+      "case": 2,
+      "cipher": "SIMON64",
+      "mode": "difference",
+      "input": [
+        "0x440",
+        "0x1880"
+      ],
+      "source": "experiments/SIMON64_DIFFERENCE_FROM_0x440_0x1880_PRECISION_14/info.log",
+      "rounds": 25,
+      "before": -68.820868,
+      "after": -68.5826666607156,
+      "diff": 0.23820133928440157,
+      "target": [
+        65792,
+        17472
+      ],
+      "result_file": "results/exploration/important-suite/02-simon64-difference/novel.jsonl",
+      "metric": "optimization.log2_union",
+      "selection_kind": "new suite union",
+      "suite_after": -68.5826666607156,
+      "above_threshold": false,
+      "old_above_threshold_rounds": 24,
+      "confirmed_rounds": 24,
+      "suite_summary": "results/exploration/important-suite/02-simon64-difference/summary.json"
+    },
+    {
+      "case": 3,
+      "cipher": "SIMON64",
+      "mode": "difference",
+      "input": [
+        "0x1",
+        "0x40000004"
+      ],
+      "source": "experiments/SIMON64_DIFFERENCE_FROM_0x1_0x40000004_PRECISION_14/info.log",
+      "rounds": 24,
+      "before": -65.520921,
+      "after": -65.28687772755715,
+      "diff": 0.23404327244284673,
+      "target": [
+        257,
+        1073741892
+      ],
+      "result_file": "results/exploration/important-suite/03-simon64-difference/novel.jsonl",
+      "metric": "optimization.log2_union",
+      "selection_kind": "new suite union",
+      "suite_after": -65.28687772755715,
+      "above_threshold": false,
+      "old_above_threshold_rounds": 23,
+      "confirmed_rounds": 23,
+      "suite_summary": "results/exploration/important-suite/03-simon64-difference/summary.json"
+    },
+    {
+      "case": 4,
+      "cipher": "SIMON64",
+      "mode": "difference",
+      "input": [
+        "0x80000",
+        "0x222000"
+      ],
+      "source": "experiments/SIMON64_DIFFERENCE_FROM_0x80000_0x222000_PRECISION_14/info.log",
+      "rounds": 25,
+      "before": -65.732964,
+      "after": -65.50939107202213,
+      "diff": 0.22357292797786954,
+      "target": [
+        2236416,
+        524288
+      ],
+      "result_file": "results/exploration/important-suite/04-simon64-difference/novel.jsonl",
+      "metric": "optimization.log2_union",
+      "selection_kind": "new suite union",
+      "suite_after": -65.50939107202213,
+      "above_threshold": false,
+      "old_above_threshold_rounds": 24,
+      "confirmed_rounds": 24,
+      "suite_summary": "results/exploration/important-suite/04-simon64-difference/summary.json"
+    },
+    {
+      "case": 5,
+      "cipher": "SIMON64",
+      "mode": "linear",
+      "input": [
+        "0x40000004",
+        "0x1"
+      ],
+      "source": "experiments/SIMON64_LINEAR_FROM_0x40000004_0x1_PRECISION_14/info.log",
+      "rounds": 24,
+      "before": -64.164774,
+      "after": -63.93763556004823,
+      "diff": 0.22713843995176575,
+      "target": [
+        1140850692,
+        16777217
+      ],
+      "result_file": "results/exploration/important-suite/05-simon64-linear/novel.jsonl",
+      "metric": "optimization.log2_union",
+      "selection_kind": "new suite union",
+      "suite_after": -63.93763556004823,
+      "above_threshold": true,
+      "old_above_threshold_rounds": 23,
+      "confirmed_rounds": 24,
+      "suite_summary": "results/exploration/important-suite/05-simon64-linear/summary.json"
+    },
+    {
+      "case": 6,
+      "cipher": "SIMON64",
+      "mode": "linear",
+      "input": [
+        "0x44400",
+        "0x1000"
+      ],
+      "source": "experiments/SIMON64_LINEAR_FROM_0x44400_0x1000_PRECISION_14/info.log",
+      "rounds": 25,
+      "before": -64.398116,
+      "after": -64.08810560425165,
+      "diff": 0.31001039574834977,
+      "target": [
+        4096,
+        279552
+      ],
+      "result_file": "results/best/simon64-linear25-novel-union.json",
+      "metric": "log2_union",
+      "selection_kind": "retained verified result",
+      "suite_after": -64.18407949701904,
+      "above_threshold": false,
+      "old_above_threshold_rounds": 24,
+      "confirmed_rounds": 24,
+      "suite_summary": "results/exploration/important-suite/06-simon64-linear/summary.json"
+    },
+    {
+      "case": 7,
+      "cipher": "SIMON96",
+      "mode": "difference",
+      "input": [
+        "0x4000",
+        "0x11101"
+      ],
+      "source": "experiments/SIMON96_DIFFERENCE_FROM_0x4000_0x11101_PRECISION_14/info.log",
+      "rounds": 33,
+      "before": -96.003572,
+      "after": -95.40709238243225,
+      "diff": 0.596479617567752,
+      "target": [
+        69889,
+        16384
+      ],
+      "result_file": "results/exploration/important-suite/07-simon96-difference/novel.jsonl",
+      "metric": "optimization.log2_union",
+      "selection_kind": "new suite union",
+      "suite_after": -95.40709238243225,
+      "above_threshold": true,
+      "old_above_threshold_rounds": 32,
+      "confirmed_rounds": 33,
+      "suite_summary": "results/exploration/important-suite/07-simon96-difference/summary.json"
+    },
+    {
+      "case": 8,
+      "cipher": "SIMON96",
+      "mode": "linear",
+      "input": [
+        "0x400000004044",
+        "0x1"
+      ],
+      "source": "experiments/SIMON96_LINEAR_FROM_0x400000004044_0x1_PRECISION_14/info.log",
+      "rounds": 34,
+      "before": -100.206918,
+      "after": -99.93262677186246,
+      "diff": 0.2742912281375425,
+      "target": [
+        70368744194116,
+        17592186048528
+      ],
+      "result_file": "results/exploration/important-suite/08-simon96-linear/novel.jsonl",
+      "metric": "optimization.log2_union",
+      "selection_kind": "new suite union",
+      "suite_after": -99.93262677186246,
+      "above_threshold": false,
+      "old_above_threshold_rounds": 33,
+      "confirmed_rounds": 33,
+      "suite_summary": "results/exploration/important-suite/08-simon96-linear/summary.json"
+    },
+    {
+      "case": 9,
+      "cipher": "SIMON96",
+      "mode": "linear",
+      "input": [
+        "0x400000000044",
+        "0x1"
+      ],
+      "source": "experiments/SIMON96_LINEAR_FROM_0x400000000044_0x1_PRECISION_14/info.log",
+      "rounds": 34,
+      "before": -98.716786,
+      "after": -98.3497465949237,
+      "diff": 0.36703940507629795,
+      "target": [
+        68,
+        16
+      ],
+      "result_file": "results/exploration/important-suite/09-simon96-linear/novel.jsonl",
+      "metric": "optimization.log2_union",
+      "selection_kind": "new suite union",
+      "suite_after": -98.3497465949237,
+      "above_threshold": false,
+      "old_above_threshold_rounds": 33,
+      "confirmed_rounds": 33,
+      "suite_summary": "results/exploration/important-suite/09-simon96-linear/summary.json"
+    },
+    {
+      "case": 10,
+      "cipher": "SIMON96",
+      "mode": "linear",
+      "input": [
+        "0x1",
+        "0x0"
+      ],
+      "source": "experiments/SIMON96_LINEAR_FROM_0x1_0x0_PRECISION_14/info.log",
+      "rounds": 36,
+      "before": -99.185423,
+      "after": -98.8393092646916,
+      "diff": 0.34611373530840694,
+      "target": [
+        17592186044417,
+        4398046511104
+      ],
+      "result_file": "results/exploration/important-suite/10-simon96-linear/novel.jsonl",
+      "metric": "optimization.log2_union",
+      "selection_kind": "new suite union",
+      "suite_after": -98.8393092646916,
+      "above_threshold": false,
+      "old_above_threshold_rounds": 35,
+      "confirmed_rounds": 35,
+      "suite_summary": "results/exploration/important-suite/10-simon96-linear/summary.json"
+    },
+    {
+      "case": 11,
+      "cipher": "SIMON128",
+      "mode": "difference",
+      "input": [
+        "0x1000",
+        "0x4440"
+      ],
+      "source": "experiments/SIMON128_DIFFERENCE_FROM_0x1000_0x4440_PRECISION_14/info.log",
+      "rounds": 45,
+      "before": -128.665612,
+      "after": -127.44271310401243,
+      "diff": 1.2228988959875835,
+      "target": [
+        4472896,
+        1048576
+      ],
+      "result_file": "results/best/simon128-w19-endpoint-expanded.jsonl",
+      "metric": "log2_max",
+      "selection_kind": "retained verified result",
+      "suite_after": -127.65453576991557,
+      "above_threshold": true,
+      "old_above_threshold_rounds": 44,
+      "confirmed_rounds": 45,
+      "suite_summary": "results/exploration/important-suite/11-simon128-difference/summary.json"
+    },
+    {
+      "case": 12,
+      "cipher": "SIMON128",
+      "mode": "linear",
+      "input": [
+        "0x4000000000000004",
+        "0x1"
+      ],
+      "source": "experiments/SIMON128_LINEAR_FROM_0x4000000000000004_0x1_PRECISION_14/info.log",
+      "rounds": 45,
+      "before": -131.069584,
+      "after": -130.65025083163593,
+      "diff": 0.4193331683640622,
+      "target": [
+        4503599627370497,
+        4919056692995424260
+      ],
+      "result_file": "results/exploration/important-suite/12-simon128-linear/novel.jsonl",
+      "metric": "optimization.log2_union",
+      "selection_kind": "new suite union",
+      "suite_after": -130.65025083163593,
+      "above_threshold": false,
+      "old_above_threshold_rounds": 44,
+      "confirmed_rounds": 44,
+      "suite_summary": "results/exploration/important-suite/12-simon128-linear/summary.json"
+    },
+    {
+      "case": 13,
+      "cipher": "SIMON128",
+      "mode": "linear",
+      "input": [
+        "0x4000000000000044",
+        "0x1"
+      ],
+      "source": "experiments/SIMON128_LINEAR_FROM_0x4000000000000044_0x1_PRECISION_14/info.log",
+      "rounds": 46,
+      "before": -131.751124,
+      "after": -131.29019566116432,
+      "diff": 0.46092833883568574,
+      "target": [
+        4917930793088581696,
+        1157425104234217488
+      ],
+      "result_file": "results/baselines/simon128-linear-w17.jsonl",
+      "metric": "log2_max",
+      "selection_kind": "retained verified result",
+      "suite_after": -131.35035257868196,
+      "above_threshold": false,
+      "old_above_threshold_rounds": 45,
+      "confirmed_rounds": 45,
+      "suite_summary": "results/exploration/important-suite/13-simon128-linear/summary.json"
+    },
+    {
+      "case": 14,
+      "cipher": "SIMON128",
+      "mode": "linear",
+      "input": [
+        "0x1",
+        "0x0"
+      ],
+      "source": "experiments/SIMON128_LINEAR_FROM_0x1_0x0_PRECISION_14/info.log",
+      "rounds": 44,
+      "before": -131.706222,
+      "after": -131.2170201330949,
+      "diff": 0.48920186690509126,
+      "target": [
+        1224979098644774913,
+        288230376151711744
+      ],
+      "result_file": "results/exploration/important-suite/14-simon128-linear/novel.jsonl",
+      "metric": "optimization.log2_union",
+      "selection_kind": "new suite union",
+      "suite_after": -131.2170201330949,
+      "above_threshold": false,
+      "old_above_threshold_rounds": 43,
+      "confirmed_rounds": 43,
+      "suite_summary": "results/exploration/important-suite/14-simon128-linear/summary.json"
+    },
+    {
+      "case": 15,
+      "cipher": "SIMECK64",
+      "mode": "difference",
+      "input": [
+        "0x0",
+        "0x1"
+      ],
+      "source": "experiments/SIMECK64_DIFFERENCE_FROM_0x0_0x1_PRECISION_14/info.log",
+      "rounds": 32,
+      "before": -64.483982,
+      "after": -63.93606977085435,
+      "diff": 0.5479122291456449,
+      "target": [
+        2,
+        1
+      ],
+      "result_file": "results/exploration/important-suite/simeck64-expanded18.jsonl",
+      "metric": "log2_max",
+      "selection_kind": "new additional expansion",
+      "suite_after": -64.13070484371283,
+      "above_threshold": true,
+      "old_above_threshold_rounds": 31,
+      "confirmed_rounds": 32,
+      "suite_summary": "results/exploration/important-suite/15-simeck64-difference/summary.json"
+    }
+  ]
+}

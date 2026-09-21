@@ -1,0 +1,26 @@
+{
+  "case": 3,
+  "cipher": "SIMON64",
+  "mode": "difference",
+  "input": [
+    "0x1",
+    "0x40000004"
+  ],
+  "source": "experiments/SIMON64_DIFFERENCE_FROM_0x1_0x40000004_PRECISION_14/info.log",
+  "rounds": 24,
+  "before": -65.520921,
+  "historical_replay_max_error": 0.00011534761044629249,
+  "status": "passed",
+  "after": -65.28687772755715,
+  "diff": 0.23404327244284673,
+  "target": [
+    257,
+    1073741892
+  ],
+  "expanded": -65.31313231362329,
+  "novel": -71.08003822541338,
+  "result_file": "results/exploration/important-suite/03-simon64-difference/novel.jsonl",
+  "seconds": 270.243269728031,
+  "above_threshold": false,
+  "old_above_threshold_rounds": 23
+}

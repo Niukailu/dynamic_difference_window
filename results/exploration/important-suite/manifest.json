@@ -1,0 +1,113 @@
+{
+  "source_commit": "f382978b51557225ed93b209962cf9e75cba349a",
+  "binary_sha256": "431ed34724773d3cc2e28e95390150a1770a98fc8ef804edb58705086fbf49d0",
+  "runner_sha256": "d7ec16a40ec3b264da05e335efa7e121562c035273f190e915f9834672079141",
+  "devices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "cases": [
+    [
+      "SIMON64",
+      "DIFFERENCE",
+      "0x4000000",
+      "0x11000000"
+    ],
+    [
+      "SIMON64",
+      "DIFFERENCE",
+      "0x440",
+      "0x1880"
+    ],
+    [
+      "SIMON64",
+      "DIFFERENCE",
+      "0x1",
+      "0x40000004"
+    ],
+    [
+      "SIMON64",
+      "DIFFERENCE",
+      "0x80000",
+      "0x222000"
+    ],
+    [
+      "SIMON64",
+      "LINEAR",
+      "0x40000004",
+      "0x1"
+    ],
+    [
+      "SIMON64",
+      "LINEAR",
+      "0x44400",
+      "0x1000"
+    ],
+    [
+      "SIMON96",
+      "DIFFERENCE",
+      "0x4000",
+      "0x11101"
+    ],
+    [
+      "SIMON96",
+      "LINEAR",
+      "0x400000004044",
+      "0x1"
+    ],
+    [
+      "SIMON96",
+      "LINEAR",
+      "0x400000000044",
+      "0x1"
+    ],
+    [
+      "SIMON96",
+      "LINEAR",
+      "0x1",
+      "0x0"
+    ],
+    [
+      "SIMON128",
+      "DIFFERENCE",
+      "0x1000",
+      "0x4440"
+    ],
+    [
+      "SIMON128",
+      "LINEAR",
+      "0x4000000000000004",
+      "0x1"
+    ],
+    [
+      "SIMON128",
+      "LINEAR",
+      "0x4000000000000044",
+      "0x1"
+    ],
+    [
+      "SIMON128",
+      "LINEAR",
+      "0x1",
+      "0x0"
+    ],
+    [
+      "SIMECK64",
+      "DIFFERENCE",
+      "0x0",
+      "0x1"
+    ]
+  ],
+  "scope": "All 15 inputs; last archived round; two local sweeps, width-16 expansion, one midpoint adjacent-window novel-path search. Not exhaustive search.",
+  "memory_gib": 52,
+  "host_memory_gib": 128,
+  "block_pool": 16,
+  "runner_final_sha256": "838b622ed42c51e425e2aa561ecc7b230f15efd0a22adf02961a05542db8445c",
+  "runner_formatting_note": "Import ordering normalized after execution; runner_sha256 is the executed source, runner_final_sha256 is the formatted source. Algorithm unchanged."
+}

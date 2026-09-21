@@ -1,0 +1,26 @@
+{
+  "case": 7,
+  "cipher": "SIMON96",
+  "mode": "difference",
+  "input": [
+    "0x4000",
+    "0x11101"
+  ],
+  "source": "experiments/SIMON96_DIFFERENCE_FROM_0x4000_0x11101_PRECISION_14/info.log",
+  "rounds": 33,
+  "before": -96.003572,
+  "historical_replay_max_error": 0.00011162396810959763,
+  "status": "passed",
+  "after": -95.40709238243225,
+  "diff": 0.596479617567752,
+  "target": [
+    69889,
+    16384
+  ],
+  "expanded": -95.4334194021823,
+  "novel": -101.19631422139152,
+  "result_file": "results/exploration/important-suite/07-simon96-difference/novel.jsonl",
+  "seconds": 344.302658631932,
+  "above_threshold": true,
+  "old_above_threshold_rounds": 32
+}

@@ -1,0 +1,78 @@
+[
+  {
+    "stage": "replay",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "replay",
+      "results/exploration/important-suite/06-simon64-linear/original.jsonl",
+      "--devices",
+      "5",
+      "--memory-gib",
+      "52",
+      "--output",
+      "results/exploration/important-suite/06-simon64-linear/replay.jsonl"
+    ],
+    "status": "passed",
+    "seconds": 9.389152717776597
+  },
+  {
+    "stage": "refined",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "refine",
+      "results/exploration/important-suite/06-simon64-linear/replay.jsonl",
+      "--device",
+      "5",
+      "--memory-gib",
+      "52",
+      "--host-memory-gib",
+      "128",
+      "--passes",
+      "2",
+      "--output",
+      "results/exploration/important-suite/06-simon64-linear/refined.jsonl"
+    ],
+    "status": "passed",
+    "seconds": 161.18643943686038
+  },
+  {
+    "stage": "expanded",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "compressed",
+      "results/exploration/important-suite/06-simon64-linear/refined.jsonl",
+      "--width",
+      "16",
+      "--device",
+      "5",
+      "--memory-gib",
+      "52",
+      "--output",
+      "results/exploration/important-suite/06-simon64-linear/expanded.jsonl"
+    ],
+    "status": "passed",
+    "seconds": 14.828244469128549
+  },
+  {
+    "stage": "novel",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "block-refine",
+      "results/exploration/important-suite/06-simon64-linear/refined.jsonl",
+      "--reference",
+      "results/exploration/important-suite/06-simon64-linear/expanded.jsonl",
+      "--round",
+      "12",
+      "--pool",
+      "16",
+      "--device",
+      "5",
+      "--memory-gib",
+      "52",
+      "--output",
+      "results/exploration/important-suite/06-simon64-linear/novel.jsonl"
+    ],
+    "status": "passed",
+    "seconds": 104.31440624175593
+  }
+]

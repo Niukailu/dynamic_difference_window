@@ -1,0 +1,467 @@
+{
+  "cases": 15,
+  "complete_runs_checked": 61,
+  "checks": [
+    {
+      "file": "results/exploration/important-suite/01-simon64-difference/replay.jsonl",
+      "rounds": 24,
+      "max_log2_error": null,
+      "total_seconds": 0.868942017
+    },
+    {
+      "file": "results/exploration/important-suite/01-simon64-difference/refined.jsonl",
+      "rounds": 24,
+      "max_log2_error": null,
+      "total_seconds": 1.076396139
+    },
+    {
+      "file": "results/exploration/important-suite/01-simon64-difference/expanded.jsonl",
+      "rounds": 24,
+      "max_log2_error": null,
+      "total_seconds": 9.58768286
+    },
+    {
+      "file": "results/exploration/important-suite/01-simon64-difference/novel.jsonl",
+      "rounds": 24,
+      "max_log2_error": null,
+      "total_seconds": 0.52949583
+    },
+    {
+      "file": "results/exploration/important-suite/02-simon64-difference/replay.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.944979571
+    },
+    {
+      "file": "results/exploration/important-suite/02-simon64-difference/refined.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.9123399090000001
+    },
+    {
+      "file": "results/exploration/important-suite/02-simon64-difference/expanded.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 10.245989594000001
+    },
+    {
+      "file": "results/exploration/important-suite/02-simon64-difference/novel.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.43992839699999997
+    },
+    {
+      "file": "results/exploration/important-suite/03-simon64-difference/replay.jsonl",
+      "rounds": 24,
+      "max_log2_error": null,
+      "total_seconds": 0.930691323
+    },
+    {
+      "file": "results/exploration/important-suite/03-simon64-difference/refined.jsonl",
+      "rounds": 24,
+      "max_log2_error": null,
+      "total_seconds": 0.701964096
+    },
+    {
+      "file": "results/exploration/important-suite/03-simon64-difference/expanded.jsonl",
+      "rounds": 24,
+      "max_log2_error": null,
+      "total_seconds": 9.177892273
+    },
+    {
+      "file": "results/exploration/important-suite/03-simon64-difference/novel.jsonl",
+      "rounds": 24,
+      "max_log2_error": null,
+      "total_seconds": 0.6828774009999999
+    },
+    {
+      "file": "results/exploration/important-suite/04-simon64-difference/replay.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.8865952
+    },
+    {
+      "file": "results/exploration/important-suite/04-simon64-difference/refined.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 1.132882937
+    },
+    {
+      "file": "results/exploration/important-suite/04-simon64-difference/expanded.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 11.255415624
+    },
+    {
+      "file": "results/exploration/important-suite/04-simon64-difference/novel.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.818946198
+    },
+    {
+      "file": "results/exploration/important-suite/05-simon64-linear/replay.jsonl",
+      "rounds": 24,
+      "max_log2_error": null,
+      "total_seconds": 0.726510995
+    },
+    {
+      "file": "results/exploration/important-suite/05-simon64-linear/refined.jsonl",
+      "rounds": 24,
+      "max_log2_error": null,
+      "total_seconds": 0.45299764800000003
+    },
+    {
+      "file": "results/exploration/important-suite/05-simon64-linear/expanded.jsonl",
+      "rounds": 24,
+      "max_log2_error": null,
+      "total_seconds": 10.747257009
+    },
+    {
+      "file": "results/exploration/important-suite/05-simon64-linear/novel.jsonl",
+      "rounds": 24,
+      "max_log2_error": null,
+      "total_seconds": 0.917100408
+    },
+    {
+      "file": "results/exploration/important-suite/06-simon64-linear/replay.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.681762916
+    },
+    {
+      "file": "results/exploration/important-suite/06-simon64-linear/refined.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.470211749
+    },
+    {
+      "file": "results/exploration/important-suite/06-simon64-linear/expanded.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 10.965300523
+    },
+    {
+      "file": "results/exploration/important-suite/06-simon64-linear/novel.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.553482802
+    },
+    {
+      "file": "results/exploration/important-suite/07-simon96-difference/replay.jsonl",
+      "rounds": 33,
+      "max_log2_error": null,
+      "total_seconds": 1.076165847
+    },
+    {
+      "file": "results/exploration/important-suite/07-simon96-difference/refined.jsonl",
+      "rounds": 33,
+      "max_log2_error": null,
+      "total_seconds": 0.906990951
+    },
+    {
+      "file": "results/exploration/important-suite/07-simon96-difference/expanded.jsonl",
+      "rounds": 33,
+      "max_log2_error": null,
+      "total_seconds": 14.437516531
+    },
+    {
+      "file": "results/exploration/important-suite/07-simon96-difference/novel.jsonl",
+      "rounds": 33,
+      "max_log2_error": null,
+      "total_seconds": 0.558758407
+    },
+    {
+      "file": "results/exploration/important-suite/08-simon96-linear/replay.jsonl",
+      "rounds": 34,
+      "max_log2_error": null,
+      "total_seconds": 0.929810441
+    },
+    {
+      "file": "results/exploration/important-suite/08-simon96-linear/refined.jsonl",
+      "rounds": 34,
+      "max_log2_error": null,
+      "total_seconds": 0.676632724
+    },
+    {
+      "file": "results/exploration/important-suite/08-simon96-linear/expanded.jsonl",
+      "rounds": 34,
+      "max_log2_error": null,
+      "total_seconds": 13.815430852
+    },
+    {
+      "file": "results/exploration/important-suite/08-simon96-linear/novel.jsonl",
+      "rounds": 34,
+      "max_log2_error": null,
+      "total_seconds": 0.589855272
+    },
+    {
+      "file": "results/exploration/important-suite/09-simon96-linear/replay.jsonl",
+      "rounds": 34,
+      "max_log2_error": null,
+      "total_seconds": 1.070850462
+    },
+    {
+      "file": "results/exploration/important-suite/09-simon96-linear/refined.jsonl",
+      "rounds": 34,
+      "max_log2_error": null,
+      "total_seconds": 0.81935146
+    },
+    {
+      "file": "results/exploration/important-suite/09-simon96-linear/expanded.jsonl",
+      "rounds": 34,
+      "max_log2_error": null,
+      "total_seconds": 14.821415748
+    },
+    {
+      "file": "results/exploration/important-suite/09-simon96-linear/novel.jsonl",
+      "rounds": 34,
+      "max_log2_error": null,
+      "total_seconds": 0.774046342
+    },
+    {
+      "file": "results/exploration/important-suite/10-simon96-linear/replay.jsonl",
+      "rounds": 36,
+      "max_log2_error": null,
+      "total_seconds": 1.064928864
+    },
+    {
+      "file": "results/exploration/important-suite/10-simon96-linear/refined.jsonl",
+      "rounds": 36,
+      "max_log2_error": null,
+      "total_seconds": 0.579804777
+    },
+    {
+      "file": "results/exploration/important-suite/10-simon96-linear/expanded.jsonl",
+      "rounds": 36,
+      "max_log2_error": null,
+      "total_seconds": 16.296191653
+    },
+    {
+      "file": "results/exploration/important-suite/10-simon96-linear/novel.jsonl",
+      "rounds": 36,
+      "max_log2_error": null,
+      "total_seconds": 1.036077245
+    },
+    {
+      "file": "results/exploration/important-suite/11-simon128-difference/replay.jsonl",
+      "rounds": 45,
+      "max_log2_error": null,
+      "total_seconds": 0.818694826
+    },
+    {
+      "file": "results/exploration/important-suite/11-simon128-difference/refined.jsonl",
+      "rounds": 45,
+      "max_log2_error": null,
+      "total_seconds": 1.283574295
+    },
+    {
+      "file": "results/exploration/important-suite/11-simon128-difference/expanded.jsonl",
+      "rounds": 45,
+      "max_log2_error": null,
+      "total_seconds": 18.641421124
+    },
+    {
+      "file": "results/exploration/important-suite/11-simon128-difference/novel.jsonl",
+      "rounds": 45,
+      "max_log2_error": null,
+      "total_seconds": 0.883873564
+    },
+    {
+      "file": "results/exploration/important-suite/12-simon128-linear/replay.jsonl",
+      "rounds": 45,
+      "max_log2_error": null,
+      "total_seconds": 1.6373376
+    },
+    {
+      "file": "results/exploration/important-suite/12-simon128-linear/refined.jsonl",
+      "rounds": 45,
+      "max_log2_error": null,
+      "total_seconds": 0.956264465
+    },
+    {
+      "file": "results/exploration/important-suite/12-simon128-linear/expanded.jsonl",
+      "rounds": 45,
+      "max_log2_error": null,
+      "total_seconds": 21.005318876
+    },
+    {
+      "file": "results/exploration/important-suite/12-simon128-linear/novel.jsonl",
+      "rounds": 45,
+      "max_log2_error": null,
+      "total_seconds": 0.892311056
+    },
+    {
+      "file": "results/exploration/important-suite/13-simon128-linear/replay.jsonl",
+      "rounds": 46,
+      "max_log2_error": null,
+      "total_seconds": 1.301035042
+    },
+    {
+      "file": "results/exploration/important-suite/13-simon128-linear/refined.jsonl",
+      "rounds": 46,
+      "max_log2_error": null,
+      "total_seconds": 0.987837939
+    },
+    {
+      "file": "results/exploration/important-suite/13-simon128-linear/expanded.jsonl",
+      "rounds": 46,
+      "max_log2_error": null,
+      "total_seconds": 21.756219846
+    },
+    {
+      "file": "results/exploration/important-suite/13-simon128-linear/novel.jsonl",
+      "rounds": 46,
+      "max_log2_error": null,
+      "total_seconds": 0.9166656559999999
+    },
+    {
+      "file": "results/exploration/important-suite/14-simon128-linear/replay.jsonl",
+      "rounds": 44,
+      "max_log2_error": null,
+      "total_seconds": 0.856430455
+    },
+    {
+      "file": "results/exploration/important-suite/14-simon128-linear/refined.jsonl",
+      "rounds": 44,
+      "max_log2_error": null,
+      "total_seconds": 1.088097989
+    },
+    {
+      "file": "results/exploration/important-suite/14-simon128-linear/expanded.jsonl",
+      "rounds": 44,
+      "max_log2_error": null,
+      "total_seconds": 20.002081899
+    },
+    {
+      "file": "results/exploration/important-suite/14-simon128-linear/novel.jsonl",
+      "rounds": 44,
+      "max_log2_error": null,
+      "total_seconds": 0.842680026
+    },
+    {
+      "file": "results/exploration/important-suite/15-simeck64-difference/replay.jsonl",
+      "rounds": 32,
+      "max_log2_error": null,
+      "total_seconds": 1.170165799
+    },
+    {
+      "file": "results/exploration/important-suite/15-simeck64-difference/refined.jsonl",
+      "rounds": 32,
+      "max_log2_error": null,
+      "total_seconds": 0.965003273
+    },
+    {
+      "file": "results/exploration/important-suite/15-simeck64-difference/expanded.jsonl",
+      "rounds": 32,
+      "max_log2_error": null,
+      "total_seconds": 13.031338358000001
+    },
+    {
+      "file": "results/exploration/important-suite/15-simeck64-difference/novel.jsonl",
+      "rounds": 32,
+      "max_log2_error": null,
+      "total_seconds": 0.610091576
+    }
+  ],
+  "scope": "FP64 probability identities, fixed inputs/rounds/targets, historical deltas; not interval arithmetic proof",
+  "additional_checks": [
+    {
+      "file": "results/exploration/important-suite/simeck64-expanded18.jsonl",
+      "rounds": 32,
+      "max_log2_error": null,
+      "total_seconds": 213.228851879
+    }
+  ],
+  "selected_result_checks": [
+    {
+      "case": 1,
+      "source": "results/exploration/important-suite/01-simon64-difference/novel.jsonl",
+      "metric": "optimization.log2_union",
+      "log2_weight": -65.28641616258011
+    },
+    {
+      "case": 2,
+      "source": "results/exploration/important-suite/02-simon64-difference/novel.jsonl",
+      "metric": "optimization.log2_union",
+      "log2_weight": -68.5826666607156
+    },
+    {
+      "case": 3,
+      "source": "results/exploration/important-suite/03-simon64-difference/novel.jsonl",
+      "metric": "optimization.log2_union",
+      "log2_weight": -65.28687772755715
+    },
+    {
+      "case": 4,
+      "source": "results/exploration/important-suite/04-simon64-difference/novel.jsonl",
+      "metric": "optimization.log2_union",
+      "log2_weight": -65.50939107202213
+    },
+    {
+      "case": 5,
+      "source": "results/exploration/important-suite/05-simon64-linear/novel.jsonl",
+      "metric": "optimization.log2_union",
+      "log2_weight": -63.93763556004823
+    },
+    {
+      "case": 6,
+      "source": "results/best/simon64-linear25-novel-union.json",
+      "metric": "log2_union",
+      "log2_weight": -64.08810560425165
+    },
+    {
+      "case": 7,
+      "source": "results/exploration/important-suite/07-simon96-difference/novel.jsonl",
+      "metric": "optimization.log2_union",
+      "log2_weight": -95.40709238243225
+    },
+    {
+      "case": 8,
+      "source": "results/exploration/important-suite/08-simon96-linear/novel.jsonl",
+      "metric": "optimization.log2_union",
+      "log2_weight": -99.93262677186246
+    },
+    {
+      "case": 9,
+      "source": "results/exploration/important-suite/09-simon96-linear/novel.jsonl",
+      "metric": "optimization.log2_union",
+      "log2_weight": -98.3497465949237
+    },
+    {
+      "case": 10,
+      "source": "results/exploration/important-suite/10-simon96-linear/novel.jsonl",
+      "metric": "optimization.log2_union",
+      "log2_weight": -98.8393092646916
+    },
+    {
+      "case": 11,
+      "source": "results/best/simon128-w19-endpoint-expanded.jsonl",
+      "metric": "log2_max",
+      "log2_weight": -127.44271310401243
+    },
+    {
+      "case": 12,
+      "source": "results/exploration/important-suite/12-simon128-linear/novel.jsonl",
+      "metric": "optimization.log2_union",
+      "log2_weight": -130.65025083163593
+    },
+    {
+      "case": 13,
+      "source": "results/baselines/simon128-linear-w17.jsonl",
+      "metric": "log2_max",
+      "log2_weight": -131.29019566116432
+    },
+    {
+      "case": 14,
+      "source": "results/exploration/important-suite/14-simon128-linear/novel.jsonl",
+      "metric": "optimization.log2_union",
+      "log2_weight": -131.2170201330949
+    },
+    {
+      "case": 15,
+      "source": "results/exploration/important-suite/simeck64-expanded18.jsonl",
+      "metric": "log2_max",
+      "log2_weight": -63.93606977085435
+    }
+  ]
+}

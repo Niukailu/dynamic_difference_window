@@ -1,0 +1,21 @@
+[
+  {
+    "case": 15,
+    "purpose": "Check whether wider windows cross the 32-round threshold",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "compressed",
+      "results/exploration/important-suite/15-simeck64-difference/expanded.jsonl",
+      "--width",
+      "18",
+      "--device",
+      "7",
+      "--memory-gib",
+      "52",
+      "--output",
+      "results/exploration/important-suite/simeck64-expanded18.jsonl"
+    ],
+    "log": "results/exploration/important-suite/simeck64-expanded18.log",
+    "status": "passed"
+  }
+]

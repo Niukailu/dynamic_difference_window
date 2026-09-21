@@ -10,6 +10,8 @@
 
 重点记录：
 
+- [论文 15 个初始点的最终对照](best/important-results.json)：全部完成新版补跑；[实验与新增轮数](../docs/important-results.md)、[61 份新记录审计](validation/important-suite-checks.json)。
+
 - [SIMON128，45 轮，w19，−127.442713104012](best/simon128-w19-endpoint-expanded.jsonl)。
 - [SIMON64，25 轮，跨轮互补路径并集，−64.088105604252](best/simon64-linear25-novel-union.json)，仍低于 −64 阈值。
 - [自适应宽度选择](exploration/adaptive-width-w14/summary.json)与[同规模选窗对照](../docs/window-selection.md)。

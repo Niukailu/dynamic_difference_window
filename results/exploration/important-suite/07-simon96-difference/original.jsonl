@@ -1,0 +1,34 @@
+{"config": {"cipher": "simon", "word_bits": 48, "mode": "difference", "width": 14, "left": 16384, "right": 69889, "rounds": 33}, "source": "experiments/SIMON96_DIFFERENCE_FROM_0x4000_0x11101_PRECISION_14/info.log", "note": "Archived log, probabilities rounded to six decimals; linear branches converted to physical order."}
+{"round": 1, "window_bits": [15, 22], "window_base": "0x1101", "log2_max": -2.0, "output": ["0x1101", "0x4000"]}
+{"round": 2, "window_bits": [1, 8, 9, 13, 16, 17, 20, 23, 24, 30], "window_base": "0x404", "log2_max": -8.0, "output": ["0x404", "0x1101"]}
+{"round": 3, "window_bits": [3, 9, 10, 11, 15, 17, 18, 19, 21, 22, 24, 25, 26, 28], "window_base": "0x111", "log2_max": -12.0, "output": ["0x111", "0x404"]}
+{"round": 4, "window_bits": [1, 5, 8, 9, 10, 12, 13, 16, 17, 19, 20, 23, 24, 26], "window_base": "0x40", "log2_max": -16.205584, "output": ["0x40", "0x111"]}
+{"round": 5, "window_bits": [3, 7, 9, 10, 11, 14, 15, 17, 18, 19, 21, 22, 24, 28], "window_base": "0x11", "log2_max": -18.205584, "output": ["0x11", "0x40"]}
+{"round": 6, "window_bits": [1, 5, 8, 9, 11, 12, 13, 15, 16, 17, 19, 20, 24, 26], "window_base": "0x4", "log2_max": -21.311719, "output": ["0x4", "0x11"]}
+{"round": 7, "window_bits": [3, 7, 9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 22, 24], "window_base": "0x1", "log2_max": -22.957138, "output": ["0x1", "0x4"]}
+{"round": 8, "window_bits": [1, 4, 5, 8, 9, 11, 12, 13, 15, 16, 17, 18, 19, 20], "window_base": "0x0", "log2_max": -24.237798, "output": ["0", "0x1"]}
+{"round": 9, "window_bits": [2, 3, 6, 7, 9, 10, 11, 13, 14, 15, 16, 17, 19, 20], "window_base": "0x1", "log2_max": -24.237798, "output": ["0x1", "0"]}
+{"round": 10, "window_bits": [1, 4, 5, 8, 9, 11, 12, 13, 15, 16, 17, 18, 21, 22], "window_base": "0x4", "log2_max": -26.237798, "output": ["0x4", "0x1"]}
+{"round": 11, "window_bits": [2, 3, 6, 7, 9, 10, 11, 13, 14, 16, 17, 18, 19, 20], "window_base": "0x11", "log2_max": -28.237797, "output": ["0x11", "0x4"]}
+{"round": 12, "window_bits": [1, 3, 4, 5, 8, 9, 10, 11, 12, 15, 16, 17, 18, 24], "window_base": "0x40", "log2_max": -31.537357, "output": ["0x40", "0x11"]}
+{"round": 13, "window_bits": [2, 3, 5, 6, 7, 9, 10, 12, 13, 14, 16, 19, 20, 26], "window_base": "0x111", "log2_max": -33.537357, "output": ["0x111", "0x40"]}
+{"round": 14, "window_bits": [1, 4, 5, 8, 9, 10, 11, 12, 14, 15, 16, 18, 21, 22], "window_base": "0x4", "log2_max": -38.613008, "output": ["0x404", "0x111"]}
+{"round": 15, "window_bits": [2, 3, 6, 7, 9, 10, 11, 12, 13, 14, 16, 17, 18, 20], "window_base": "0x101", "log2_max": -42.213044, "output": ["0x1101", "0x404"]}
+{"round": 16, "window_bits": [1, 4, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19], "window_base": "0x0", "log2_max": -46.402883, "output": ["0x4000", "0x1101"]}
+{"round": 17, "window_bits": [3, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20], "window_base": "0x101", "log2_max": -48.402883, "output": ["0x11101", "0x4000"]}
+{"round": 18, "window_bits": [1, 4, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19], "window_base": "0x4", "log2_max": -55.702497, "output": ["0x40404", "0x11101"]}
+{"round": 19, "window_bits": [3, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20], "window_base": "0x111", "log2_max": -59.892089, "output": ["0x11111", "0x4004"]}
+{"round": 20, "window_bits": [1, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20], "window_base": "0x40", "log2_max": -64.906864, "output": ["0x40", "0x111"]}
+{"round": 21, "window_bits": [3, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 22], "window_base": "0x11", "log2_max": -66.181927, "output": ["0x11", "0x40"]}
+{"round": 22, "window_bits": [1, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20], "window_base": "0x4", "log2_max": -69.058494, "output": ["0x4", "0x11"]}
+{"round": 23, "window_bits": [3, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20], "window_base": "0x1", "log2_max": -70.584357, "output": ["0x1", "0x4"]}
+{"round": 24, "window_bits": [1, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], "window_base": "0x0", "log2_max": -71.839602, "output": ["0", "0x1"]}
+{"round": 25, "window_bits": [2, 3, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 20], "window_base": "0x1", "log2_max": -71.839602, "output": ["0x1", "0"]}
+{"round": 26, "window_bits": [1, 4, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], "window_base": "0x4", "log2_max": -73.839169, "output": ["0x4", "0x1"]}
+{"round": 27, "window_bits": [2, 3, 6, 7, 9, 10, 11, 12, 13, 14, 16, 17, 18, 20], "window_base": "0x11", "log2_max": -75.839135, "output": ["0x11", "0x4"]}
+{"round": 28, "window_bits": [1, 3, 4, 5, 8, 9, 10, 11, 12, 15, 16, 17, 18, 24], "window_base": "0x40", "log2_max": -79.138686, "output": ["0x40", "0x11"]}
+{"round": 29, "window_bits": [2, 3, 5, 6, 7, 9, 10, 12, 13, 14, 16, 19, 20, 26], "window_base": "0x111", "log2_max": -81.138686, "output": ["0x111", "0x40"]}
+{"round": 30, "window_bits": [1, 4, 5, 8, 9, 10, 11, 12, 14, 15, 16, 18, 21, 22], "window_base": "0x4", "log2_max": -86.213771, "output": ["0x404", "0x111"]}
+{"round": 31, "window_bits": [2, 3, 6, 7, 9, 10, 11, 12, 13, 14, 16, 17, 18, 20], "window_base": "0x101", "log2_max": -89.813745, "output": ["0x1101", "0x404"]}
+{"round": 32, "window_bits": [1, 4, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19], "window_base": "0x0", "log2_max": -94.003572, "output": ["0x4000", "0x1101"]}
+{"round": 33, "window_bits": [3, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20], "window_base": "0x101", "log2_max": -96.003572, "output": ["0x11101", "0x4000"]}

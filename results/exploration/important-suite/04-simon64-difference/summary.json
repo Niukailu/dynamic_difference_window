@@ -1,0 +1,26 @@
+{
+  "case": 4,
+  "cipher": "SIMON64",
+  "mode": "difference",
+  "input": [
+    "0x80000",
+    "0x222000"
+  ],
+  "source": "experiments/SIMON64_DIFFERENCE_FROM_0x80000_0x222000_PRECISION_14/info.log",
+  "rounds": 25,
+  "before": -65.732964,
+  "historical_replay_max_error": 9.172234049259487e-05,
+  "status": "passed",
+  "after": -65.50939107202213,
+  "diff": 0.22357292797786954,
+  "target": [
+    2236416,
+    524288
+  ],
+  "expanded": -65.53710885843535,
+  "novel": -71.22503829320422,
+  "result_file": "results/exploration/important-suite/04-simon64-difference/novel.jsonl",
+  "seconds": 263.77986059570685,
+  "above_threshold": false,
+  "old_above_threshold_rounds": 24
+}

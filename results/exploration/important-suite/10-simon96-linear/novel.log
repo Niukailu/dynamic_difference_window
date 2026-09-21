@@ -1,0 +1,52 @@
+block round=18 first=1/16 evaluated=16 target=-117.815166781442 novel=-117.815166781442
+block round=18 first=2/16 evaluated=32 target=-116.672452326560 novel=-116.672452326560
+block round=18 first=3/16 evaluated=48 target=-99.022440485319 novel=-116.143928172909
+block round=18 first=4/16 evaluated=64 target=-99.022440485319 novel=-116.143928172909
+block round=18 first=5/16 evaluated=80 target=-99.022440485319 novel=-116.143928172909
+block round=18 first=6/16 evaluated=96 target=-99.022440485319 novel=-116.143928172909
+block round=18 first=7/16 evaluated=112 target=-99.022440485319 novel=-116.143928172909
+block round=18 first=8/16 evaluated=128 target=-99.022440485319 novel=-116.143928172909
+block round=18 first=9/16 evaluated=144 target=-99.022440485319 novel=-116.143928172909
+block round=18 first=10/16 evaluated=160 target=-99.022440485319 novel=-116.143928172909
+block round=18 first=11/16 evaluated=176 target=-99.022440485319 novel=-116.143928172909
+block round=18 first=12/16 evaluated=192 target=-99.022440485319 novel=-116.143928172909
+block round=18 first=13/16 evaluated=208 target=-99.022440485319 novel=-116.143928172909
+block round=18 first=14/16 evaluated=224 target=-99.022440485319 novel=-116.143928172909
+block round=18 first=15/16 evaluated=240 target=-99.022440485319 novel=-116.143928172909
+block round=18 first=16/16 evaluated=256 target=-99.022440485319 novel=-116.143928172909
+round=1 log2_max=0.000000000000 seconds=0.0876
+round=2 log2_max=-2.000000000000 seconds=0.0119
+round=3 log2_max=-4.000000000000 seconds=0.0727
+round=4 log2_max=-7.192645077942 seconds=0.1176
+round=5 log2_max=-9.192645077942 seconds=0.1886
+round=6 log2_max=-14.101209691619 seconds=0.0768
+round=7 log2_max=-17.585868101565 seconds=0.0408
+round=8 log2_max=-21.645487805205 seconds=0.0132
+round=9 log2_max=-23.645487805205 seconds=0.0232
+round=10 log2_max=-30.446736927952 seconds=0.0152
+round=11 log2_max=-34.939731371771 seconds=0.0168
+round=12 log2_max=-39.645120958504 seconds=0.0168
+round=13 log2_max=-40.629550675617 seconds=0.0141
+round=14 log2_max=-43.358127049257 seconds=0.0172
+round=15 log2_max=-44.784097214516 seconds=0.0128
+round=16 log2_max=-45.916189317184 seconds=0.0172
+round=17 log2_max=-45.916189317184 seconds=0.0155
+round=18 log2_max=-47.915479695931 seconds=0.0116
+round=19 log2_max=-49.915450611721 seconds=0.0171
+round=20 log2_max=-53.108052785039 seconds=0.0173
+round=21 log2_max=-55.108052230495 seconds=0.0149
+round=22 log2_max=-60.016245875786 seconds=0.0135
+round=23 log2_max=-63.500812550717 seconds=0.0172
+round=24 log2_max=-67.560453890715 seconds=0.0122
+round=25 log2_max=-69.560453890715 seconds=0.0171
+round=26 log2_max=-76.361682705579 seconds=0.0151
+round=27 log2_max=-80.852097448049 seconds=0.0137
+round=28 log2_max=-85.559948066974 seconds=0.0171
+round=29 log2_max=-86.544369302218 seconds=0.0175
+round=30 log2_max=-89.272673425474 seconds=0.0159
+round=31 log2_max=-90.698516864649 seconds=0.0119
+round=32 log2_max=-91.830578322175 seconds=0.0173
+round=33 log2_max=-91.830578322175 seconds=0.0131
+round=34 log2_max=-93.829868045886 seconds=0.0155
+round=35 log2_max=-95.829838640418 seconds=0.0165
+round=36 log2_max=-99.022440485319 seconds=0.0117

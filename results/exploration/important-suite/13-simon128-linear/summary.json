@@ -1,0 +1,26 @@
+{
+  "case": 13,
+  "cipher": "SIMON128",
+  "mode": "linear",
+  "input": [
+    "0x4000000000000044",
+    "0x1"
+  ],
+  "source": "experiments/SIMON128_LINEAR_FROM_0x4000000000000044_0x1_PRECISION_14/info.log",
+  "rounds": 46,
+  "before": -131.751124,
+  "historical_replay_max_error": 0.0014433475769948245,
+  "status": "passed",
+  "after": -131.35035257868196,
+  "diff": 0.40077142131804067,
+  "target": [
+    4917930793088581696,
+    1157425104234217488
+  ],
+  "expanded": -131.35053779602953,
+  "novel": -144.27770471022131,
+  "result_file": "results/exploration/important-suite/13-simon128-linear/novel.jsonl",
+  "seconds": 438.7719868118875,
+  "above_threshold": false,
+  "old_above_threshold_rounds": 45
+}
