@@ -36,10 +36,35 @@ class MultiGPU(unittest.TestCase):
                 source = cp.asarray(probability)
                 cp.cuda.Stream.null.synchronize()
                 shards = cluster.split(source)
+                single = cluster.engines[0]
+                cp.cuda.Device(devices[0]).use()
+                expected_windows = single.candidates(
+                    source, right, single.basis(left), 8, count=4
+                )
+                self.assertEqual(
+                    cluster.candidates(shards, left, right, 8, count=4),
+                    expected_windows,
+                )
                 current_left, current_right = left, right
                 for t in (target, target, target):
                     expected = cpu_step(
                         probability, current_left, current_right, t, 16, "simon", mode
+                    )
+                    self.assertAlmostEqual(
+                        cluster.masses(shards, current_left, current_right, [t])[0],
+                        expected.sum(),
+                        places=12,
+                    )
+                    _, trial_stats, _ = cluster.step(
+                        shards, current_left, current_right, t, advance=False
+                    )
+                    self.assertAlmostEqual(trial_stats[1], expected.sum(), places=12)
+                    # Candidate evaluation must leave the input distribution untouched.
+                    np.testing.assert_allclose(
+                        np.concatenate(cluster.map(lambda rank: shards[rank].get())),
+                        probability,
+                        rtol=2e-14,
+                        atol=2e-15,
                     )
                     shards, (peak, total, index), _ = cluster.step(
                         shards, current_left, current_right, t

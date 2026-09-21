@@ -68,7 +68,7 @@ python scripts/check_results.py results/my-wider.jsonl
 | 16 | 64 GiB |
 | 17 | 256 GiB |
 
-还需要陪集聚合缓存（最坏可达一张输入矩阵）、内核数据、统计缓存和 CUDA 上下文。`--memory-gib` 限制 CuPy 内存池，并在转移前检查矩阵预算和可用显存。它不预留 GPU，也不能保证其他进程增加显存后仍有空间。固定窗口计划支持 NVLink 多卡分片重放，见下文；动态选窗和束搜索目前仍在单卡执行。
+还需要陪集聚合缓存（最坏可达一张输入矩阵）、内核数据、统计缓存和 CUDA 上下文。`--memory-gib` 限制 CuPy 内存池，并在转移前检查矩阵预算和可用显存。它不预留 GPU，也不能保证其他进程增加显存后仍有空间。支持 NVLink 多卡分片重放、嵌套扩窗和局部候选搜索，见下文；束搜索目前仍在单卡执行。
 
 ## 探索其他策略
 
@@ -100,7 +100,7 @@ python scripts/benchmark_legacy.py --width 10 --rounds 12 --output results/my-cp
 
 [实测结果](docs/results.md)汇总速度与概率改进；[实现与研究判断](docs/research-notes.md)记录模型、数值边界和后续方向。实测原始记录放在 `results/`，修正前的探索记录单独存放在 `results/prototype/`。
 
-## NVLink 多卡重放
+## NVLink 多卡重放与扩窗
 
 ```bash
 python -m ddw.multigpu results/simon128-diff-w16.jsonl \
@@ -115,4 +115,15 @@ DDW_TEST_DEVICE=1 DDW_TEST_DEVICES=1,2 python -m unittest discover -s tests -v
 
 设备数必须为 2 的幂，且支持彼此的 CUDA peer access。输入按行分片，每卡计算不相交的输出列；下一轮通过 NVLink 直接读取远端列并重排为行分片，同时归一化。概率不跨卡重复计数。小窗口先用首卡运行，窗口足够大后启用全部指定卡。分片后不支持窗口缩小到小于卡数。
 
-默认 `--exchange peer` 使用直接远端读取；`--exchange staged` 保留先复制到中间缓冲的对照实现。`--memory-gib` 是每卡预算，默认实现需约两张矩阵分片加陪集缓存与工作区，中间缓冲模式再增加一张分片。当前实现重放已有计划，不执行跨卡动态选窗。共享训练负载下的实测与具体限制见 [硬件优化记录](docs/hardware-optimization.md)。
+默认 `--exchange peer` 使用直接远端读取；`--exchange staged` 保留先复制到中间缓冲的对照实现。`--memory-gib` 是每卡预算，默认实现需约两张矩阵分片加陪集缓存与工作区，中间缓冲模式再增加一张分片。不加 `--width` 时重放已有计划；加 `--width` 时跨卡汇总位统计，在包含参考窗口的前提下动态扩窗。共享训练负载下的实测与具体限制见 [硬件优化记录](docs/hardware-optimization.md) 和 [w17 搜索记录](docs/distributed-search.md)。
+
+
+```bash
+# 八卡扩展当前最强差分计划，单卡预算 60 GiB；无需独占
+python -m ddw.multigpu results/simon128-diff-w16.jsonl --width 17 \
+  --memory-gib 60 --output results/my-w17.jsonl
+# 可加 --candidates 4 --objective mass 或 peak 比较局部候选
+# mass 使用投影公式直接评估，不生成每个候选的完整输出矩阵
+```
+
+w17 矩阵含 2^34 个 FP64 值，合计 128 GiB，八卡每份 16 GiB。完整流程还需输出矩阵和工作区；上述 60 GiB 是每卡内存池上限，不是固定占用承诺。`--kernel coset` / `gather` 可用于固定计划的其他内核复核。扩窗和候选搜索不保证增加区分器轮数。

@@ -1,0 +1,70 @@
+{
+  "reference": "results/simon64-diff-w15.jsonl",
+  "round": 12,
+  "device": 0,
+  "input_bytes": 8589934592,
+  "output_bytes": 8589934592,
+  "kernel_sha256": "78ce990b8e9d857d49c286db90a6c4da09ad5ce054980670b9e58bd0f606c086",
+  "results": [
+    {
+      "repeat": 1,
+      "method": "projected",
+      "seconds": 0.007262773346155882,
+      "mass": 1556.7167050267099
+    },
+    {
+      "repeat": 1,
+      "method": "matrix",
+      "seconds": 0.028971059247851372,
+      "mass": 1556.71670502671
+    },
+    {
+      "repeat": 2,
+      "method": "matrix",
+      "seconds": 0.03206914337351918,
+      "mass": 1556.71670502671
+    },
+    {
+      "repeat": 2,
+      "method": "projected",
+      "seconds": 0.0054028937593102455,
+      "mass": 1556.7167050267099
+    },
+    {
+      "repeat": 3,
+      "method": "projected",
+      "seconds": 0.006068069953471422,
+      "mass": 1556.7167050267099
+    },
+    {
+      "repeat": 3,
+      "method": "matrix",
+      "seconds": 0.02943454310297966,
+      "mass": 1556.71670502671
+    },
+    {
+      "repeat": 4,
+      "method": "matrix",
+      "seconds": 0.02815043879672885,
+      "mass": 1556.71670502671
+    },
+    {
+      "repeat": 4,
+      "method": "projected",
+      "seconds": 0.00537622207775712,
+      "mass": 1556.7167050267099
+    },
+    {
+      "repeat": 5,
+      "method": "projected",
+      "seconds": 0.00823682639747858,
+      "mass": 1556.7167050267099
+    },
+    {
+      "repeat": 5,
+      "method": "matrix",
+      "seconds": 0.034035980235785246,
+      "mass": 1556.71670502671
+    }
+  ]
+}

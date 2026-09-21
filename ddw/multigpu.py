@@ -1,4 +1,4 @@
-"""NVLink row-sharded replay. Each round transposes the column shards all-to-all.
+"""NVLink row-sharded replay and nested-window search. Each round redistributes columns.
 No probability contributions are duplicated or summed between devices.
 """
 
@@ -57,7 +57,9 @@ def subset(window, rank, devices):
 
 
 class ShardedReplay:
-    def __init__(self, devices, n, cipher, mode, memory_gib, exchange="peer"):
+    def __init__(
+        self, devices, n, cipher, mode, memory_gib, exchange="peer", kernel="coset_lut"
+    ):
         if exchange not in ("peer", "staged"):
             raise ValueError("unknown exchange method")
         self.exchange = exchange
@@ -84,7 +86,7 @@ class ShardedReplay:
                     if error.status != 704:  # cudaErrorPeerAccessAlreadyEnabled
                         raise
             return (
-                Engine(n, cipher, mode, memory_gib, "coset_lut", "hierarchical"),
+                Engine(n, cipher, mode, memory_gib, kernel, "hierarchical"),
                 cp.RawKernel(PACK, "unpack"),
                 cp.RawKernel(PEER, "peer_unpack"),
             )
@@ -122,7 +124,31 @@ class ShardedReplay:
 
         return self.map(copy)
 
-    def step(self, shards, left, right, target):
+    def candidates(self, shards, left, right, width, include=None, count=1):
+        def moments(rank):
+            engine = self.engines[rank]
+            basis = engine.basis(subset(left, rank, len(self.devices)))
+            return engine.window_moments(shards[rank], right, basis)
+
+        values = np.sum(self.map(moments), axis=0)
+        chosen = values[0] > values[3, 0] * 0.5
+        base = sum(1 << i for i, value in enumerate(chosen) if value)
+        scores = np.where(chosen, values[3, 1] - values[1], values[1]) + values[2]
+        return self.engines[0].windows_from_scores(base, scores, width, include, count)
+
+    def masses(self, shards, left, right, candidates):
+        def evaluate(rank):
+            engine = self.engines[rank]
+            local_left = subset(left, rank, len(self.devices))
+            basis = engine.basis(local_left)
+            return [
+                engine.retained_mass(shards[rank], local_left, right, target, basis)
+                for target in candidates
+            ]
+
+        return np.sum(self.map(evaluate), axis=0)
+
+    def step(self, shards, left, right, target, *, advance=True):
         devices = len(self.devices)
         nt = 1 << len(target.bits)
         nl = 1 << len(left.bits)
@@ -147,7 +173,7 @@ class ShardedReplay:
 
         stats = self.map(compute)
         peak = max(s[0] for s in stats)
-        if peak <= 0 or not math.isfinite(peak):
+        if not math.isfinite(peak) or (peak <= 0 and advance):
             raise RuntimeError("empty or invalid retained distribution")
         total = math.fsum(s[1] for s in stats)
         candidates = []
@@ -157,6 +183,12 @@ class ShardedReplay:
                 candidates.append(row * nl + rank * cols + col)
         index = min(candidates)
         compute_seconds = time.perf_counter() - started
+        if not advance:
+            return (
+                None,
+                (peak, total, index),
+                dict(compute_seconds=compute_seconds, exchange_seconds=0.0),
+            )
         exchange_start = time.perf_counter()
 
         def exchange(rank):
@@ -243,6 +275,21 @@ def main():
     p.add_argument("reference", type=Path)
     p.add_argument("--devices", default="0,1,2,3,4,5,6,7")
     p.add_argument("--rounds", type=int)
+    p.add_argument(
+        "--kernel", choices=("coset_lut", "coset", "gather"), default="coset_lut"
+    )
+    p.add_argument(
+        "--width",
+        type=int,
+        help="expand each reference window using distributed scoring",
+    )
+    p.add_argument(
+        "--candidates",
+        type=int,
+        default=1,
+        help="evaluate local window exchanges before advancing",
+    )
+    p.add_argument("--objective", choices=("mass", "peak"), default="mass")
     p.add_argument("--exchange", choices=("peer", "staged"), default="peer")
     p.add_argument(
         "--memory-gib",
@@ -257,8 +304,19 @@ def main():
     config = records[0]["config"].copy()
     schedule = [r for r in records if "round" in r]
     rounds = len(schedule) if args.rounds is None else args.rounds
-    if rounds < 1 or rounds > len(schedule) or args.memory_gib <= 0:
+    if (
+        rounds < 1
+        or rounds > len(schedule)
+        or args.memory_gib <= 0
+        or args.candidates < 1
+    ):
         p.error("invalid rounds or memory budget")
+    if args.width is not None and not max(
+        len(r["window_bits"]) for r in schedule[:rounds]
+    ) <= args.width <= min(20, config["word_bits"]):
+        p.error("width must contain all reference windows and be at most 20")
+    if args.candidates > 1 and args.width is None:
+        p.error("candidate search requires --width")
     cluster = ShardedReplay(
         devices,
         config["word_bits"],
@@ -266,6 +324,7 @@ def main():
         config["mode"],
         args.memory_gib,
         args.exchange,
+        args.kernel,
     )
     cp.cuda.Device(devices[0]).use()
     initial = (
@@ -284,8 +343,14 @@ def main():
         output=str(args.output),
         reference=str(args.reference),
         exchange=args.exchange,
-        kernel="coset_lut",
+        kernel=args.kernel,
         statistics="hierarchical",
+        width=args.width if args.width is not None else config["width"],
+        candidates=args.candidates,
+        objective=args.objective,
+        selection="nested distributed legacy"
+        if args.width is not None
+        else "fixed replay",
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     try:
@@ -294,7 +359,7 @@ def main():
                 json.dumps(
                     dict(
                         config=config,
-                        algorithm="row shards, NVLink all-to-all, exact fixed window replay",
+                        algorithm="row shards, NVLink all-to-all, FP64 propagation",
                         kernel_sha256=hashlib.sha256(
                             Path(__file__).with_name("kernels.cu").read_bytes()
                         ).hexdigest(),
@@ -317,6 +382,56 @@ def main():
                 ) >= len(devices):
                     shards = cluster.split(prob)
                     prob = None
+                selection_start = time.perf_counter()
+                candidates = [target]
+                if args.width is not None:
+                    if shards is None:
+                        engine = cluster.engines[0]
+                        candidates = engine.candidates(
+                            prob,
+                            right,
+                            engine.basis(left),
+                            args.width,
+                            include=target,
+                            count=args.candidates,
+                        )
+                    else:
+                        candidates = cluster.candidates(
+                            shards,
+                            left,
+                            right,
+                            args.width,
+                            include=target,
+                            count=args.candidates,
+                        )
+                target = candidates[0]
+                if len(candidates) > 1 and args.objective == "mass":
+                    if shards is None:
+                        engine = cluster.engines[0]
+                        basis = engine.basis(left)
+                        scores = [
+                            engine.retained_mass(prob, left, right, candidate, basis)
+                            for candidate in candidates
+                        ]
+                    else:
+                        scores = cluster.masses(shards, left, right, candidates)
+                    target = candidates[int(np.argmax(scores))]
+                elif len(candidates) > 1:
+                    best_score = -1.0
+                    for candidate in candidates:
+                        if shards is None:
+                            trial, stats = cluster.engines[0].step_and_summary(
+                                prob, left, right, candidate
+                            )
+                            del trial
+                        else:
+                            _, stats, _ = cluster.step(
+                                shards, left, right, candidate, advance=False
+                            )
+                        score = stats[0 if args.objective == "peak" else 1]
+                        if score > best_score:
+                            best_score, target = score, candidate
+                selection_seconds = time.perf_counter() - selection_start
                 if shards is None:
                     prob, (peak, total, index) = cluster.engines[0].step_and_summary(
                         prob, left, right, target
@@ -365,6 +480,8 @@ def main():
                     if value
                     else None,
                     active_devices=len(devices) if shards else 1,
+                    selection_seconds=selection_seconds,
+                    candidates_evaluated=len(candidates),
                     seconds=time.perf_counter() - start,
                     **phases,
                 )

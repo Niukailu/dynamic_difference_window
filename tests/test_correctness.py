@@ -69,6 +69,34 @@ class GPU(unittest.TestCase):
             raise unittest.SkipTest(str(exc))
         cls.cp = cp
 
+    def test_projected_retained_mass(self):
+        from ddw.gpu import Engine
+
+        cp = self.cp
+        rng = np.random.default_rng(846)
+        for n in (16, 32, 64):
+            for cipher in ("simon", "simeck"):
+                for mode in ("difference", "linear"):
+                    engine = Engine(n, cipher, mode)
+                    for width in (0, 3, 10, 13, min(17, n)):
+                        left = Window(0, (0, n - 1))
+                        right = Window(0, tuple(range(width)))
+                        target = Window(0, tuple(sorted({0, 1, 2, 7, n - 1})))
+                        prob = cp.asarray(rng.random((4, 1 << width)))
+                        expected = float(engine.step(prob, left, right, target).sum())
+                        self.assertAlmostEqual(
+                            engine.retained_mass(prob, left, right, target),
+                            expected,
+                            delta=max(1e-12, expected * 2e-14),
+                        )
+                        target = Window(1 << (n - 2), target.bits)
+                        expected = float(engine.step(prob, left, right, target).sum())
+                        self.assertAlmostEqual(
+                            engine.retained_mass(prob, left, right, target),
+                            expected,
+                            delta=max(1e-12, expected * 2e-14),
+                        )
+
     def test_cpu_gpu_and_mass(self):
         from ddw.gpu import Engine
 

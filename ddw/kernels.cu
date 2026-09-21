@@ -429,3 +429,41 @@ extern "C" __global__ void coset_lookup_lut_stats(U nl, U nt, int chunks,
         if(!lane) {maxima[blockIdx.x]=maximum;indices[blockIdx.x]=index;totals[blockIdx.x]=total;}
     }
 }
+// A target window retains 2^-outside of an affine transition iff its projected
+// syndrome vanishes. Evaluate mass without constructing the output matrix.
+extern "C" __global__ void mass_columns(U nl, int width, const int* bits,
+    U mask, U base, U right_base, const U* bases, const U* vectors,
+    const int* outside, U* columns) {
+    U i=(U)blockIdx.x*blockDim.x+threadIdx.x;
+    if(i>=nl*(width+1)) return;
+    U l=i%nl; int column=i/nl;
+    U x=(column==width ? base^right_base^bases[l] : 1ULL<<bits[column])&~mask;
+    for(int j=0;j<outside[l];j++) {
+        U a=vectors[l*BITS+j]&~mask;
+        if((x^a)<x) x^=a;
+    }
+    columns[i]=x;
+}
+extern "C" __global__ void retained_mass_tiles(const double* prob, U nl, U nr,
+    U tiles, int chunks, const U* tables, const int* outside, double* partial) {
+    U row=blockIdx.x/tiles, tile=blockIdx.x%tiles;
+    __shared__ U lut[3*256];
+    __shared__ double warp_sums[8];
+    for(int i=threadIdx.x;i<chunks*256;i+=256) lut[i]=tables[(U)i*nl+row];
+    __syncthreads();
+    double sum=0;
+    for(U j=tile*4096+threadIdx.x;j<nr && j<(tile+1)*4096;j+=256) {
+        U key=0;
+        for(int c=0;c<chunks;c++) key^=lut[c*256+((j>>(c*8))&255)];
+        if(!key) sum+=prob[row*nr+j];
+    }
+    for(int d=16;d;d>>=1) sum+=__shfl_down_sync(0xffffffff,sum,d);
+    int lane=threadIdx.x&31, warp=threadIdx.x>>5;
+    if(!lane) warp_sums[warp]=sum;
+    __syncthreads();
+    if(!threadIdx.x) {
+        double value=0;
+        for(int w=0;w<8;w++) value+=warp_sums[w];
+        partial[blockIdx.x]=value*__longlong_as_double((U)(1023-outside[row])<<52);
+    }
+}

@@ -176,6 +176,29 @@ class Engine:
         )
         if strategy == "marginal":
             scores = cp.asnumpy(cp.minimum(totals, edge.sum() - totals))
+        return self.windows_from_scores(base, scores, width, include, count)
+
+    def window_moments(self, prob, right, basis):
+        """Additive sufficient statistics for global legacy window scoring."""
+        bases, _, ranks, supports = basis
+        ones, edge = self.marginals(prob, right)
+        base_bits = ((bases[:, None] >> self.shifts) & cp.uint64(1)).astype(cp.bool_)
+        ones = cp.where(base_bits, edge[:, None] - ones, ones)
+        active = ((supports[:, None] >> self.shifts) & cp.uint64(1)).astype(cp.float64)
+        weights = cp.exp2(-ranks.astype(cp.float64))
+        weighted = edge * weights
+        # Four vectors; the final vector stores scalar totals in its first two entries.
+        result = cp.zeros((4, self.n), dtype=cp.float64)
+        result[0] = ones.sum(axis=0)
+        result[1] = (ones * weights[:, None]).sum(axis=0)
+        result[2] = (
+            active * (weighted / cp.maximum(active.sum(axis=1), 1))[:, None]
+        ).sum(axis=0)
+        result[3, 0] = edge.sum()
+        result[3, 1] = weighted.sum()
+        return cp.asnumpy(result)
+
+    def windows_from_scores(self, base, scores, width, include=None, count=1):
         # Subtractions in marginals can create tiny negative round-off.
         scores = np.maximum(scores, 0)
         selected = set(include.bits if include is not None else ())
@@ -203,6 +226,71 @@ class Engine:
             bits = (selected - {old}) | {new}
             windows.append(Window(base, tuple(sorted(bits))))
         return windows
+
+    def retained_mass(self, prob, left, right, target, basis=None):
+        """Exact projected-affine mass; no output matrix or cross-device exchange."""
+        if (
+            prob.shape != (1 << len(left.bits), 1 << len(right.bits))
+            or prob.dtype != cp.float64
+            or not prob.flags.c_contiguous
+        ):
+            raise ValueError(
+                "expected a contiguous FP64 probability matrix matching windows"
+            )
+        if max(len(left.bits), len(right.bits), len(target.bits)) > 20:
+            raise ValueError("CUDA windows support at most 20 bits")
+        nl, nr = prob.shape
+        bases, vectors, ranks, _ = self.basis(left) if basis is None else basis
+        bases, vectors = bases.copy(), vectors.copy()
+        outside = cp.empty(nl, dtype=cp.int32)
+        self.launch(
+            "restrict_basis",
+            nl,
+            (np.uint64(nl), np.uint64(target.mask), bases, vectors, ranks, outside),
+        )
+        width = len(right.bits)
+        chunks = max(1, (width + 7) // 8)
+        columns = cp.empty((width + 1, nl), dtype=cp.uint64)
+        tables = cp.empty((chunks * 256, nl), dtype=cp.uint64)
+        self.launch(
+            "mass_columns",
+            columns.size,
+            (
+                np.uint64(nl),
+                np.int32(width),
+                cp.asarray(right.bits, dtype=cp.int32),
+                np.uint64(target.mask),
+                np.uint64(target.base),
+                np.uint64(right.base),
+                bases,
+                vectors,
+                outside,
+                columns,
+            ),
+        )
+        self.launch(
+            "affine_tables",
+            tables.size,
+            (np.uint64(nl), np.int32(width), np.int32(chunks), columns, tables),
+        )
+        tiles = (nr + 4095) // 4096
+        partial = cp.empty(nl * tiles, dtype=cp.float64)
+        self.launch(
+            "retained_mass_tiles",
+            partial.size * 256,
+            (
+                prob,
+                np.uint64(nl),
+                np.uint64(nr),
+                np.uint64(tiles),
+                np.int32(chunks),
+                tables,
+                outside,
+                partial,
+            ),
+            threads=256,
+        )
+        return float(partial.sum())
 
     def step_and_summary(self, prob, left, right, target, basis=None, out=None):
         """Fused output statistics when supported; sync once to return scalar results."""

@@ -179,15 +179,16 @@ def main():
                 # Recompute the winning candidate to keep the two-matrix memory bound.
                 best_score = -1.0
                 for candidate in candidates:
-                    trial = engine.step(prob, left, right, candidate, basis)
-                    score = float(
-                        trial.max()
-                        if args.lookahead_objective == "peak"
-                        else trial.sum()
-                    )
+                    if args.lookahead_objective == "mass":
+                        score = engine.retained_mass(
+                            prob, left, right, candidate, basis
+                        )
+                    else:
+                        trial = engine.step(prob, left, right, candidate, basis)
+                        score = float(trial.max())
+                        del trial
                     if score > best_score:
                         best_score, target = score, candidate
-                    del trial
             next_prob, (peak, total, index) = engine.step_and_summary(
                 prob, left, right, target, basis, out=spare
             )
