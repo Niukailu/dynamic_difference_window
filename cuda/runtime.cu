@@ -186,3 +186,28 @@ extern "C" __global__ void posterior_halves(const double *rows, U count,
     result[blockIdx.x] = total;
   }
 }
+// Four disjoint posterior masses for each pair of packed row bits.
+extern "C" __global__ void posterior_quarters(const double *rows, U count,
+                                              int width, double *result) {
+  int pair = blockIdx.x >> 2, value = blockIdx.x & 3;
+  int first = 0;
+  while (pair >= width - first - 1)
+    pair -= width - first++ - 1;
+  int second = first + 1 + pair;
+  double sum = 0;
+  for (U row = threadIdx.x; row < count; row += 256)
+    if ((((row >> first) & 1) | (((row >> second) & 1) << 1)) == (U)value)
+      sum += rows[row];
+  __shared__ double warp[8];
+  for (int d = 16; d; d >>= 1)
+    sum += __shfl_down_sync(0xffffffff, sum, d);
+  if (!(threadIdx.x & 31))
+    warp[threadIdx.x >> 5] = sum;
+  __syncthreads();
+  if (!threadIdx.x) {
+    double total = 0;
+    for (int w = 0; w < 8; w++)
+      total += warp[w];
+    result[blockIdx.x] = total;
+  }
+}

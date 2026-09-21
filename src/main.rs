@@ -29,6 +29,34 @@ struct Selection {
 }
 #[derive(Subcommand)]
 enum Command {
+    /// Replace one coordinate window by an equal-cardinality XOR-constrained window.
+    AffineRefine {
+        plan: PathBuf,
+        #[arg(long)]
+        round: usize,
+        #[arg(long, default_value_t = 0)]
+        device: i32,
+        #[arg(long, default_value_t = 128.)]
+        memory_gib: f64,
+        #[arg(long)]
+        output: PathBuf,
+    },
+    /// Evaluate two-bit window replacements at one round; shard added-bit pairs across GPUs.
+    JointRefine {
+        plan: PathBuf,
+        #[arg(long)]
+        round: usize,
+        #[arg(long, default_value_t = 0)]
+        shard: usize,
+        #[arg(long, default_value_t = 1)]
+        shards: usize,
+        #[arg(long, default_value_t = 0)]
+        device: i32,
+        #[arg(long, default_value_t = 128.)]
+        memory_gib: f64,
+        #[arg(long)]
+        output: PathBuf,
+    },
     Replay {
         plan: PathBuf,
         #[arg(long)]
@@ -274,6 +302,32 @@ fn main() -> Result<()> {
                 )
             }
         }
+        Command::JointRefine {
+            plan,
+            round,
+            shard,
+            shards,
+            device,
+            memory_gib,
+            output,
+        } => ddw::posterior::execute_joint(
+            &Plan::read(&plan)?,
+            &ddw::posterior::JointOptions {
+                round,
+                shard,
+                shards,
+                device,
+                memory: memory_gib,
+            },
+            &output,
+        ),
+        Command::AffineRefine {
+            plan,
+            round,
+            device,
+            memory_gib,
+            output,
+        } => ddw::affine::execute(&Plan::read(&plan)?, round, device, memory_gib, &output),
         Command::SymmetricUnion {
             plan,
             rounds,

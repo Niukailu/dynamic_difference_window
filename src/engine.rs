@@ -735,6 +735,17 @@ impl Engine {
     /// For each packed row bit, return endpoint mass in its zero and one halves.
     /// Both halves are summed directly to avoid cancellation for rare endpoint paths.
     pub fn posterior_halves(&mut self, forward: &Matrix, backward: &Matrix) -> Result<Vec<f64>> {
+        self.posterior_partition(forward, backward, false)
+    }
+    pub fn posterior_quarters(&mut self, forward: &Matrix, backward: &Matrix) -> Result<Vec<f64>> {
+        self.posterior_partition(forward, backward, true)
+    }
+    fn posterior_partition(
+        &mut self,
+        forward: &Matrix,
+        backward: &Matrix,
+        pairs: bool,
+    ) -> Result<Vec<f64>> {
         ensure!(
             (forward.rows, forward.cols) == (backward.rows, backward.cols)
                 && forward.rows.is_power_of_two()
@@ -742,21 +753,36 @@ impl Engine {
             "invalid posterior shape"
         );
         let width = forward.rows.trailing_zeros() as usize;
+        ensure!(!pairs || width >= 2, "pair posterior requires two bits");
+        let count = if pairs {
+            width * (width - 1) * 2
+        } else {
+            width * 2
+        };
         let rows = self.reserve("posterior_rows", forward.rows * 8)?;
-        let halves = self.reserve("posterior_halves", width * 2 * 8)?;
+        let halves = self.reserve("posterior_halves", count * 8)?;
         self.module.launch(
             "posterior_rows",
             forward.rows,
             256,
             args![forward.ptr(), backward.ptr(), forward.cols, rows],
         )?;
-        self.module.launch(
-            "posterior_halves",
-            width * 2,
-            256,
-            args![rows, forward.rows, halves],
-        )?;
-        self.workspace["posterior_halves"].download(width * 2)
+        if pairs {
+            self.module.launch(
+                "posterior_quarters",
+                count,
+                256,
+                args![rows, forward.rows, width as i32, halves],
+            )?;
+        } else {
+            self.module.launch(
+                "posterior_halves",
+                width * 2,
+                256,
+                args![rows, forward.rows, halves],
+            )?;
+        }
+        self.workspace["posterior_halves"].download(count)
     }
     pub fn unpack(
         &mut self,

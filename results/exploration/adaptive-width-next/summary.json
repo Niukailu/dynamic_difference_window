@@ -1,0 +1,16 @@
+{
+  "history": [
+    {
+      "source": "results/exploration/adaptive-width-w14/iteration-3/round-11.expanded.jsonl",
+      "improved": true,
+      "profile": "results/exploration/adaptive-width-next/iteration-1/round-12.json",
+      "round": 12,
+      "added_bit": 24,
+      "before": -64.19790975786857,
+      "after": -64.1821302026967,
+      "plan": "results/exploration/adaptive-width-next/iteration-1/round-12.expanded.jsonl",
+      "rounds_evaluated": 25
+    }
+  ],
+  "best_plan": "results/exploration/adaptive-width-next/iteration-1/round-12.expanded.jsonl"
+}

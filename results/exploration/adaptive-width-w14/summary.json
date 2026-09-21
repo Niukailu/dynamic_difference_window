@@ -1,0 +1,38 @@
+{
+  "history": [
+    {
+      "source": "results/exploration/simon64-linear25-posterior-w14.jsonl",
+      "improved": true,
+      "profile": "results/exploration/adaptive-width-w14/iteration-1/round-12.json",
+      "round": 12,
+      "added_bit": 0,
+      "before": -64.26348411476403,
+      "after": -64.23305192317365,
+      "plan": "results/exploration/adaptive-width-w14/iteration-1/round-12.expanded.jsonl",
+      "rounds_evaluated": 25
+    },
+    {
+      "source": "results/exploration/adaptive-width-w14/iteration-1/round-12.expanded.jsonl",
+      "improved": true,
+      "profile": "results/exploration/adaptive-width-w14/iteration-2/round-13.json",
+      "round": 13,
+      "added_bit": 26,
+      "before": -64.23305192317363,
+      "after": -64.21604036395526,
+      "plan": "results/exploration/adaptive-width-w14/iteration-2/round-13.expanded.jsonl",
+      "rounds_evaluated": 25
+    },
+    {
+      "source": "results/exploration/adaptive-width-w14/iteration-2/round-13.expanded.jsonl",
+      "improved": true,
+      "profile": "results/exploration/adaptive-width-w14/iteration-3/round-11.json",
+      "round": 11,
+      "added_bit": 26,
+      "before": -64.21604036395526,
+      "after": -64.19790975786857,
+      "plan": "results/exploration/adaptive-width-w14/iteration-3/round-11.expanded.jsonl",
+      "rounds_evaluated": 25
+    }
+  ],
+  "best_plan": "results/exploration/adaptive-width-w14/iteration-3/round-11.expanded.jsonl"
+}

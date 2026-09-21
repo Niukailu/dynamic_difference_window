@@ -5,24 +5,32 @@
 use crate::{
     engine::{Engine, Matrix},
     model::{Plan, Window},
-    refine::{backward, endpoint, score},
+    refine::{backward, backward_suffix, endpoint, score},
     run::{self, Options},
 };
 use anyhow::{ensure, Result};
 use serde_json::{json, Value};
 use std::{path::Path, time::Instant};
 
-struct Local<'a> {
-    prob: &'a Matrix,
-    left: &'a Window,
-    right: &'a Window,
-    schedule: &'a [Window],
-    position: usize,
-    suffix: Option<(&'a Matrix, f64)>,
-    point: (u64, u64),
+pub(crate) struct Local<'a> {
+    pub(crate) prob: &'a Matrix,
+    pub(crate) left: &'a Window,
+    pub(crate) right: &'a Window,
+    pub(crate) schedule: &'a [Window],
+    pub(crate) position: usize,
+    pub(crate) suffix: Option<(&'a Matrix, f64)>,
+    pub(crate) point: (u64, u64),
 }
 impl Local<'_> {
     fn halves(&self, engine: &mut Engine, expanded: &Window) -> Result<(Vec<f64>, f64)> {
+        self.partition(engine, expanded, false)
+    }
+    pub(crate) fn partition(
+        &self,
+        engine: &mut Engine,
+        expanded: &Window,
+        pairs: bool,
+    ) -> Result<(Vec<f64>, f64)> {
         let stop = (self.position + 3).min(self.schedule.len());
         let (forward, stats) = engine.step(self.prob, self.left, self.right, expanded, None)?;
         ensure!(stats.peak > 0., "expanded window lost original paths");
@@ -61,9 +69,14 @@ impl Local<'_> {
             owned = next;
             h = &owned;
         }
-        Ok((engine.posterior_halves(&forward, h)?, scale))
+        let masses = if pairs {
+            engine.posterior_quarters(&forward, h)?
+        } else {
+            engine.posterior_halves(&forward, h)?
+        };
+        Ok((masses, scale))
     }
-    fn baseline(&self, engine: &mut Engine, target: &Window) -> Result<f64> {
+    pub(crate) fn baseline(&self, engine: &mut Engine, target: &Window) -> Result<f64> {
         score(
             engine,
             self.prob,
@@ -75,7 +88,7 @@ impl Local<'_> {
         )
     }
 }
-fn log_weight(value: f64, scale: f64) -> f64 {
+pub(crate) fn log_weight(value: f64, scale: f64) -> f64 {
     if value > 0. {
         scale + value.log2()
     } else {
@@ -246,6 +259,208 @@ pub fn execute(
     Ok(())
 }
 
+/// One round is changed against a fixed prefix/suffix. Shards are independent
+/// candidate partitions; choose the best complete replay, never merge windows
+/// from independently optimized plans without another complete replay.
+pub struct JointOptions {
+    pub round: usize,
+    pub shard: usize,
+    pub shards: usize,
+    pub device: i32,
+    pub memory: f64,
+}
+pub fn execute_joint(plan: &Plan, options: &JointOptions, output: &Path) -> Result<()> {
+    let JointOptions {
+        round,
+        shard,
+        shards,
+        device,
+        memory,
+    } = *options;
+    ensure!(!output.exists(), "output exists");
+    ensure!(
+        round > 0 && round <= plan.windows.len() && shards > 0 && shard < shards,
+        "invalid round or shard"
+    );
+    ensure!(
+        plan.config.width <= 18 && memory.is_finite() && memory > 0.,
+        "invalid joint refinement budget"
+    );
+    let base_bytes = 8. * 2f64.powi((2 * plan.config.width) as i32);
+    ensure!(
+        24. * base_bytes <= memory * 1073741824.,
+        "expanded workspace exceeds GPU budget"
+    );
+    let position = round - 1;
+    let original = &plan.windows[position];
+    let missing: Vec<i32> = (0..plan.config.word_bits as i32)
+        .filter(|bit| !original.bits.contains(bit))
+        .collect();
+    ensure!(missing.len() >= 2, "requires two fixed bits to expand");
+    let start = Instant::now();
+    let initial = plan.config.initial();
+    let point = plan.config.physical(plan.endpoint()?);
+    let mut engine = Engine::new(&plan.config, device, memory)?;
+    let stop = (position + 3).min(plan.windows.len());
+    let suffix = if stop < plan.windows.len() {
+        Some(backward_suffix(
+            &mut engine,
+            &initial,
+            &plan.windows,
+            point,
+            stop,
+        )?)
+    } else {
+        None
+    };
+    let (mut left, mut right) = initial;
+    let mut prob = engine.point(1, 1, 0)?;
+    let mut prefix_scale = 0.;
+    for target in &plan.windows[..position] {
+        let (next, stats) = engine.step(&prob, &left, &right, target, None)?;
+        ensure!(stats.peak > 0., "empty prefix");
+        engine.scale(&next, 1. / stats.peak)?;
+        prefix_scale += stats.peak.log2();
+        prob = next;
+        right = left;
+        left = target.clone();
+    }
+    let local = Local {
+        prob: &prob,
+        left: &left,
+        right: &right,
+        schedule: &plan.windows,
+        position,
+        suffix: suffix.as_ref().map(|(m, s)| (m, *s)),
+        point,
+    };
+    let original_score = local.baseline(&mut engine, original)?;
+    let before = prefix_scale + original_score;
+    if let Some(reference) = plan.records.last() {
+        ensure!(
+            (before - reference["log2_max"].as_f64().unwrap()).abs() < 1e-9,
+            "prefix/suffix mismatch against source replay"
+        );
+    }
+    let mut best_score = original_score;
+    let mut best = original.clone();
+    let mut pair_index = 0;
+    let mut evaluated = 0;
+    let mut expansions = 0;
+    for a in 0..missing.len() {
+        for b in a + 1..missing.len() {
+            let belongs = pair_index % shards == shard;
+            pair_index += 1;
+            if !belongs {
+                continue;
+            }
+            let mut bits = original.bits.clone();
+            bits.extend([missing[a], missing[b]]);
+            bits.sort();
+            let expanded = Window::new(original.base, bits)?;
+            let (quarters, scale) = local.partition(&mut engine, &expanded, true)?;
+            let mut index = 0;
+            for i in 0..expanded.bits.len() {
+                for j in i + 1..expanded.bits.len() {
+                    let first = expanded.bits[i];
+                    let second = expanded.bits[j];
+                    for fixed in 0..4 {
+                        let current = log_weight(quarters[index * 4 + fixed], scale);
+                        if first == missing[a]
+                            && second == missing[b]
+                            && fixed
+                                == (((original.base >> first) & 1)
+                                    | (((original.base >> second) & 1) << 1))
+                                    as usize
+                        {
+                            ensure!(
+                                (current - original_score).abs() < 1e-9,
+                                "joint posterior/direct baseline mismatch"
+                            );
+                        }
+                        evaluated += 1;
+                        if current > best_score + 1e-12 {
+                            let bits = expanded
+                                .bits
+                                .iter()
+                                .copied()
+                                .filter(|&bit| bit != first && bit != second)
+                                .collect();
+                            best = Window::new(
+                                expanded.base
+                                    | (((fixed & 1) as u64) << first)
+                                    | (((fixed >> 1) as u64) << second),
+                                bits,
+                            )?;
+                            best_score = current;
+                        }
+                    }
+                    index += 1;
+                }
+            }
+            expansions += 1;
+            println!(
+                "joint round={round} shard={shard}/{shards} expansions={expansions} best={:.12}",
+                prefix_scale + best_score
+            );
+        }
+    }
+    // Independent local replay of the selected window before saving the full plan.
+    let checked = local.baseline(&mut engine, &best)?;
+    ensure!(
+        (checked - best_score).abs() < 1e-9,
+        "selected joint score mismatch"
+    );
+    let after = prefix_scale + checked;
+    ensure!(
+        after >= before - 1e-10,
+        "joint search decreased endpoint probability"
+    );
+    let seconds = start.elapsed().as_secs_f64();
+    drop(suffix);
+    drop(prob);
+    let mut schedule = plan.windows.clone();
+    schedule[position] = best.clone();
+    let optimized = Plan {
+        config: plan.config.clone(),
+        windows: schedule,
+        records: vec![],
+    };
+    let full = crate::refine::replay_endpoint(&mut engine, &optimized, point)?;
+    ensure!(
+        (full - after).abs() < 1e-9,
+        "joint full endpoint replay mismatch"
+    );
+    drop(engine);
+    let replay = Options {
+        devices: vec![device],
+        memory_gib: memory,
+        candidates: 1,
+        objective: "mass".into(),
+        extend: false,
+        expand: false,
+    };
+    run::execute(&optimized.config, Some(&optimized), &replay, output)?;
+    let text = std::fs::read_to_string(output)?;
+    let mut records: Vec<Value> = text
+        .lines()
+        .map(serde_json::from_str)
+        .collect::<std::result::Result<_, _>>()?;
+    // The explicit endpoint score is authoritative; replay's maximum may be elsewhere.
+    records[0]["optimization"] = json!({"method":"exact endpoint posterior two-bit swaps",
+        "round":round,"shard":shard,"shards":shards,"endpoint":plan.endpoint()?,
+        "before":before,"after":after,"full_replay_log2_target":full,"old":original,"new":best,
+        "expansions":expansions,"candidates_evaluated":evaluated,"seconds":seconds});
+    let data = records
+        .iter()
+        .map(|r| serde_json::to_string(r).unwrap())
+        .collect::<Vec<_>>()
+        .join("\n")
+        + "\n";
+    std::fs::write(output, data)?;
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -299,6 +514,31 @@ mod tests {
                         },
                         point: (0, 0),
                     };
+                    let (quarters, pair_scale) = local.partition(&mut engine, &expanded, true)?;
+                    let mut pair = 0;
+                    for i in 0..expanded.bits.len() {
+                        for j in i + 1..expanded.bits.len() {
+                            let first = expanded.bits[i];
+                            let second = expanded.bits[j];
+                            for fixed in 0..4 {
+                                let target = Window::new(
+                                    (((fixed & 1) as u64) << first)
+                                        | (((fixed >> 1) as u64) << second),
+                                    expanded
+                                        .bits
+                                        .iter()
+                                        .copied()
+                                        .filter(|&b| b != first && b != second)
+                                        .collect(),
+                                )?;
+                                let direct = local.baseline(&mut engine, &target)?;
+                                let marginal = log_weight(quarters[4 * pair + fixed], pair_scale);
+                                assert!(direct == marginal || (direct-marginal).abs() < 1e-10,
+                                    "joint {cipher}/{mode}, tail={count}, bits={first}/{second}, fixed={fixed}: {direct} != {marginal}");
+                            }
+                            pair += 1;
+                        }
+                    }
                     let (halves, scale) = local.halves(&mut engine, &expanded)?;
                     for (bit, &physical) in expanded.bits.iter().enumerate() {
                         for fixed in 0..2 {

@@ -1,0 +1,523 @@
+{
+  "after": -64.21604036395527,
+  "before": -64.21604036395527,
+  "best_expansion": null,
+  "branches": [],
+  "candidates_evaluated": 1728,
+  "config": {
+    "cipher": "simon",
+    "left": 279552,
+    "mode": "linear",
+    "right": 4096,
+    "rounds": 25,
+    "width": 15,
+    "word_bits": 32
+  },
+  "device": 2,
+  "disjoint": true,
+  "endpoint": [
+    4096,
+    279552
+  ],
+  "expansion_profile": [
+    {
+      "added_bit": 0,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 65536,
+        "bits": [
+          0,
+          2,
+          3,
+          6,
+          9,
+          10,
+          13,
+          17,
+          28
+        ]
+      }
+    },
+    {
+      "added_bit": 1,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 65536,
+        "bits": [
+          1,
+          2,
+          3,
+          6,
+          9,
+          10,
+          13,
+          17,
+          28
+        ]
+      }
+    },
+    {
+      "added_bit": 4,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 65536,
+        "bits": [
+          2,
+          3,
+          4,
+          6,
+          9,
+          10,
+          13,
+          17,
+          28
+        ]
+      }
+    },
+    {
+      "added_bit": 5,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 65536,
+        "bits": [
+          2,
+          3,
+          5,
+          6,
+          9,
+          10,
+          13,
+          17,
+          28
+        ]
+      }
+    },
+    {
+      "added_bit": 7,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 65536,
+        "bits": [
+          2,
+          3,
+          6,
+          7,
+          9,
+          10,
+          13,
+          17,
+          28
+        ]
+      }
+    },
+    {
+      "added_bit": 8,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 65536,
+        "bits": [
+          2,
+          3,
+          6,
+          8,
+          9,
+          10,
+          13,
+          17,
+          28
+        ]
+      }
+    },
+    {
+      "added_bit": 11,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 65536,
+        "bits": [
+          2,
+          3,
+          6,
+          9,
+          10,
+          11,
+          13,
+          17,
+          28
+        ]
+      }
+    },
+    {
+      "added_bit": 12,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 65536,
+        "bits": [
+          2,
+          3,
+          6,
+          9,
+          10,
+          12,
+          13,
+          17,
+          28
+        ]
+      }
+    },
+    {
+      "added_bit": 14,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 65536,
+        "bits": [
+          2,
+          3,
+          6,
+          9,
+          10,
+          13,
+          14,
+          17,
+          28
+        ]
+      }
+    },
+    {
+      "added_bit": 15,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 65536,
+        "bits": [
+          2,
+          3,
+          6,
+          9,
+          10,
+          13,
+          15,
+          17,
+          28
+        ]
+      }
+    },
+    {
+      "added_bit": 16,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 0,
+        "bits": [
+          2,
+          3,
+          6,
+          9,
+          10,
+          13,
+          16,
+          17,
+          28
+        ]
+      }
+    },
+    {
+      "added_bit": 18,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 65536,
+        "bits": [
+          2,
+          3,
+          6,
+          9,
+          10,
+          13,
+          17,
+          18,
+          28
+        ]
+      }
+    },
+    {
+      "added_bit": 19,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 65536,
+        "bits": [
+          2,
+          3,
+          6,
+          9,
+          10,
+          13,
+          17,
+          19,
+          28
+        ]
+      }
+    },
+    {
+      "added_bit": 20,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 65536,
+        "bits": [
+          2,
+          3,
+          6,
+          9,
+          10,
+          13,
+          17,
+          20,
+          28
+        ]
+      }
+    },
+    {
+      "added_bit": 21,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 65536,
+        "bits": [
+          2,
+          3,
+          6,
+          9,
+          10,
+          13,
+          17,
+          21,
+          28
+        ]
+      }
+    },
+    {
+      "added_bit": 22,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 65536,
+        "bits": [
+          2,
+          3,
+          6,
+          9,
+          10,
+          13,
+          17,
+          22,
+          28
+        ]
+      }
+    },
+    {
+      "added_bit": 23,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 65536,
+        "bits": [
+          2,
+          3,
+          6,
+          9,
+          10,
+          13,
+          17,
+          23,
+          28
+        ]
+      }
+    },
+    {
+      "added_bit": 24,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 65536,
+        "bits": [
+          2,
+          3,
+          6,
+          9,
+          10,
+          13,
+          17,
+          24,
+          28
+        ]
+      }
+    },
+    {
+      "added_bit": 25,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 65536,
+        "bits": [
+          2,
+          3,
+          6,
+          9,
+          10,
+          13,
+          17,
+          25,
+          28
+        ]
+      }
+    },
+    {
+      "added_bit": 26,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 65536,
+        "bits": [
+          2,
+          3,
+          6,
+          9,
+          10,
+          13,
+          17,
+          26,
+          28
+        ]
+      }
+    },
+    {
+      "added_bit": 27,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 65536,
+        "bits": [
+          2,
+          3,
+          6,
+          9,
+          10,
+          13,
+          17,
+          27,
+          28
+        ]
+      }
+    },
+    {
+      "added_bit": 29,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 65536,
+        "bits": [
+          2,
+          3,
+          6,
+          9,
+          10,
+          13,
+          17,
+          28,
+          29
+        ]
+      }
+    },
+    {
+      "added_bit": 30,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 65536,
+        "bits": [
+          2,
+          3,
+          6,
+          9,
+          10,
+          13,
+          17,
+          28,
+          30
+        ]
+      }
+    },
+    {
+      "added_bit": 31,
+      "gain_bits": 0.0,
+      "log2_target": -64.21604036395527,
+      "state_count": 512,
+      "window": {
+        "base": 65536,
+        "bits": [
+          2,
+          3,
+          6,
+          9,
+          10,
+          13,
+          17,
+          28,
+          31
+        ]
+      }
+    }
+  ],
+  "improved": false,
+  "method": "equal-cardinality single-round pairwise-XOR window",
+  "old_window": {
+    "base": 65536,
+    "bits": [
+      2,
+      3,
+      6,
+      9,
+      10,
+      13,
+      17,
+      28
+    ]
+  },
+  "relation": null,
+  "round": 2,
+  "seconds": 7.984205803,
+  "state_count": 256
+}

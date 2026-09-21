@@ -1,0 +1,25 @@
+{
+  "above_threshold": false,
+  "config": {
+    "cipher": "simon",
+    "left": 279552,
+    "mode": "linear",
+    "right": 4096,
+    "rounds": 25,
+    "width": 19,
+    "word_bits": 32
+  },
+  "endpoint": [
+    4096,
+    279552
+  ],
+  "intersection_file": "results/exploration/dedicated-expansion/gpu-1-union.intersection.jsonl",
+  "log2_a": -64.12919873288332,
+  "log2_intersection": -64.15101727935246,
+  "log2_union": -64.10770524845479,
+  "method": "2P(A)-P(A intersection reflected(A)); exact virtual FP64 replay",
+  "reference": "results/exploration/dedicated-expansion/gpu-1-w19.jsonl",
+  "rounds": 25,
+  "seconds": 37.613019622,
+  "threshold_log2": -64.0
+}

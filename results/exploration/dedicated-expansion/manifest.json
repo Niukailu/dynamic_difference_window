@@ -1,0 +1,178 @@
+[
+  {
+    "device": 0,
+    "source": "results/exploration/simon64-linear25-implicit-w19.jsonl",
+    "width": 20,
+    "rounds": 25,
+    "output": "results/exploration/dedicated-expansion/gpu-0-w20.jsonl",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "compressed",
+      "results/exploration/simon64-linear25-implicit-w19.jsonl",
+      "--width",
+      "20",
+      "--rounds",
+      "25",
+      "--device",
+      "0",
+      "--memory-gib",
+      "160",
+      "--output",
+      "results/exploration/dedicated-expansion/gpu-0-w20.jsonl"
+    ]
+  },
+  {
+    "device": 1,
+    "source": "results/exploration/simon64-linear25-implicit-w18.jsonl",
+    "width": 19,
+    "rounds": 25,
+    "output": "results/exploration/dedicated-expansion/gpu-1-w19.jsonl",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "compressed",
+      "results/exploration/simon64-linear25-implicit-w18.jsonl",
+      "--width",
+      "19",
+      "--rounds",
+      "25",
+      "--device",
+      "1",
+      "--memory-gib",
+      "160",
+      "--output",
+      "results/exploration/dedicated-expansion/gpu-1-w19.jsonl"
+    ]
+  },
+  {
+    "device": 2,
+    "source": "results/exploration/simon64-linear25-implicit-mirror-w18.jsonl",
+    "width": 19,
+    "rounds": 25,
+    "output": "results/exploration/dedicated-expansion/gpu-2-w19.jsonl",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "compressed",
+      "results/exploration/simon64-linear25-implicit-mirror-w18.jsonl",
+      "--width",
+      "19",
+      "--rounds",
+      "25",
+      "--device",
+      "2",
+      "--memory-gib",
+      "160",
+      "--output",
+      "results/exploration/dedicated-expansion/gpu-2-w19.jsonl"
+    ]
+  },
+  {
+    "device": 3,
+    "source": "results/exploration/simon64-linear25-implicit-nested-mirror-w18.jsonl",
+    "width": 19,
+    "rounds": 25,
+    "output": "results/exploration/dedicated-expansion/gpu-3-w19.jsonl",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "compressed",
+      "results/exploration/simon64-linear25-implicit-nested-mirror-w18.jsonl",
+      "--width",
+      "19",
+      "--rounds",
+      "25",
+      "--device",
+      "3",
+      "--memory-gib",
+      "160",
+      "--output",
+      "results/exploration/dedicated-expansion/gpu-3-w19.jsonl"
+    ]
+  },
+  {
+    "device": 4,
+    "source": "results/exploration/simon64-linear25-midpoint-forward-w17.jsonl",
+    "width": 19,
+    "rounds": 25,
+    "output": "results/exploration/dedicated-expansion/gpu-4-w19.jsonl",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "compressed",
+      "results/exploration/simon64-linear25-midpoint-forward-w17.jsonl",
+      "--width",
+      "19",
+      "--rounds",
+      "25",
+      "--device",
+      "4",
+      "--memory-gib",
+      "160",
+      "--output",
+      "results/exploration/dedicated-expansion/gpu-4-w19.jsonl"
+    ]
+  },
+  {
+    "device": 5,
+    "source": "results/exploration/simon64-linear25-midpoint-backward-w17.jsonl",
+    "width": 19,
+    "rounds": 25,
+    "output": "results/exploration/dedicated-expansion/gpu-5-w19.jsonl",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "compressed",
+      "results/exploration/simon64-linear25-midpoint-backward-w17.jsonl",
+      "--width",
+      "19",
+      "--rounds",
+      "25",
+      "--device",
+      "5",
+      "--memory-gib",
+      "160",
+      "--output",
+      "results/exploration/dedicated-expansion/gpu-5-w19.jsonl"
+    ]
+  },
+  {
+    "device": 6,
+    "source": "results/best/simon128-w17-endpoint-expanded.jsonl",
+    "width": 19,
+    "rounds": 45,
+    "output": "results/exploration/dedicated-expansion/gpu-6-w19.jsonl",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "compressed",
+      "results/best/simon128-w17-endpoint-expanded.jsonl",
+      "--width",
+      "19",
+      "--rounds",
+      "45",
+      "--device",
+      "6",
+      "--memory-gib",
+      "160",
+      "--output",
+      "results/exploration/dedicated-expansion/gpu-6-w19.jsonl"
+    ]
+  },
+  {
+    "device": 7,
+    "source": "results/best/simon128-w14-endpoint-refined.jsonl",
+    "width": 19,
+    "rounds": 45,
+    "output": "results/exploration/dedicated-expansion/gpu-7-w19.jsonl",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "compressed",
+      "results/best/simon128-w14-endpoint-refined.jsonl",
+      "--width",
+      "19",
+      "--rounds",
+      "45",
+      "--device",
+      "7",
+      "--memory-gib",
+      "160",
+      "--output",
+      "results/exploration/dedicated-expansion/gpu-7-w19.jsonl"
+    ]
+  }
+]

@@ -10,6 +10,10 @@
 
 重点记录：
 
+- [SIMON128，45 轮，w19，−127.442713104012](best/simon128-w19-endpoint-expanded.jsonl)。
+- [SIMON64，25 轮，w20 反射并集，−64.104083953419](best/simon64-linear25-dedicated-union.json)，仍低于 −64 阈值。
+- [自适应宽度选择](exploration/adaptive-width-w14/summary.json)与[同规模选窗对照](../docs/window-selection.md)。
+
 - [SIMON128，45 轮，w17，−127.574478192099](best/simon128-w17-endpoint-expanded.jsonl)；[Rust 八卡逐轮复核](validation/rust-eight-gpu-w17.jsonl)。
 - [SIMON128，45 轮，w14，−127.859300186727](best/simon128-w14-endpoint-refined.jsonl)。
 - [SIMON64，23 轮，w10，−65.590628604365](best/simon64-w10-endpoint-refined.jsonl)。

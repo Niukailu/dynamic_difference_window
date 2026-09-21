@@ -43,6 +43,28 @@ pub(crate) fn endpoint(
         _ => Ok(0.),
     }
 }
+pub(crate) fn replay_endpoint(engine: &mut Engine, plan: &Plan, point: (u64, u64)) -> Result<f64> {
+    let (mut left, mut right) = plan.config.initial();
+    let mut prob = engine.point(1, 1, 0)?;
+    let mut scale = 0.;
+    for target in &plan.windows {
+        let (next, stats) = engine.step(&prob, &left, &right, target, None)?;
+        if stats.peak == 0. {
+            return Ok(f64::NEG_INFINITY);
+        }
+        engine.scale(&next, 1. / stats.peak)?;
+        scale += stats.peak.log2();
+        prob = next;
+        right = left;
+        left = target.clone();
+    }
+    let value = endpoint(&prob, &left, &right, point)?;
+    Ok(if value > 0. {
+        scale + value.log2()
+    } else {
+        f64::NEG_INFINITY
+    })
+}
 pub(crate) fn backward(
     engine: &mut Engine,
     initial: &(Window, Window),
@@ -80,6 +102,34 @@ pub(crate) fn backward(
     }
     messages.reverse();
     Ok(messages)
+}
+/// Keep only the suffix needed by a single-round search, entirely on the GPU.
+pub(crate) fn backward_suffix(
+    engine: &mut Engine,
+    initial: &(Window, Window),
+    schedule: &[Window],
+    point: (u64, u64),
+    stop: usize,
+) -> Result<(Matrix, f64)> {
+    ensure!(stop <= schedule.len(), "suffix position outside schedule");
+    let (left, right) = windows(initial, schedule, schedule.len());
+    let i = left
+        .index(point.0)
+        .ok_or_else(|| anyhow::anyhow!("endpoint outside window"))?;
+    let j = right
+        .index(point.1)
+        .ok_or_else(|| anyhow::anyhow!("endpoint outside window"))?;
+    let mut prob = engine.point(left.size(), right.size(), i * right.size() + j)?;
+    let mut scale = 0.;
+    for completed in (stop..schedule.len()).rev() {
+        let (left, right) = windows(initial, schedule, completed);
+        prob = engine.adjoint(&prob, &left, &right, &schedule[completed])?;
+        let stats = engine.summary(prob.ptr(), prob.size())?;
+        ensure!(stats.peak > 0., "endpoint has no retained paths");
+        engine.scale(&prob, 1. / stats.peak)?;
+        scale += stats.peak.log2();
+    }
+    Ok((prob, scale))
 }
 pub(crate) fn score(
     engine: &mut Engine,

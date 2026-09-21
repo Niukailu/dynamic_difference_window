@@ -1,0 +1,457 @@
+{
+  "after": -64.19790975786857,
+  "before": -64.19790975786857,
+  "best_expansion": null,
+  "branches": [],
+  "candidates_evaluated": 180,
+  "config": {
+    "cipher": "simon",
+    "left": 279552,
+    "mode": "linear",
+    "right": 4096,
+    "rounds": 25,
+    "width": 15,
+    "word_bits": 32
+  },
+  "device": 1,
+  "disjoint": true,
+  "endpoint": [
+    4096,
+    279552
+  ],
+  "expansion_profile": [
+    {
+      "added_bit": 0,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          0,
+          4,
+          11
+        ]
+      }
+    },
+    {
+      "added_bit": 1,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          1,
+          4,
+          11
+        ]
+      }
+    },
+    {
+      "added_bit": 2,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          2,
+          4,
+          11
+        ]
+      }
+    },
+    {
+      "added_bit": 3,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          3,
+          4,
+          11
+        ]
+      }
+    },
+    {
+      "added_bit": 5,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          5,
+          11
+        ]
+      }
+    },
+    {
+      "added_bit": 6,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          6,
+          11
+        ]
+      }
+    },
+    {
+      "added_bit": 7,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          7,
+          11
+        ]
+      }
+    },
+    {
+      "added_bit": 8,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          8,
+          11
+        ]
+      }
+    },
+    {
+      "added_bit": 9,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          9,
+          11
+        ]
+      }
+    },
+    {
+      "added_bit": 10,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          10,
+          11
+        ]
+      }
+    },
+    {
+      "added_bit": 12,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          11,
+          12
+        ]
+      }
+    },
+    {
+      "added_bit": 13,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          11,
+          13
+        ]
+      }
+    },
+    {
+      "added_bit": 14,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 262144,
+        "bits": [
+          4,
+          11,
+          14
+        ]
+      }
+    },
+    {
+      "added_bit": 15,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          11,
+          15
+        ]
+      }
+    },
+    {
+      "added_bit": 16,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          11,
+          16
+        ]
+      }
+    },
+    {
+      "added_bit": 17,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          11,
+          17
+        ]
+      }
+    },
+    {
+      "added_bit": 18,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 16384,
+        "bits": [
+          4,
+          11,
+          18
+        ]
+      }
+    },
+    {
+      "added_bit": 19,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          11,
+          19
+        ]
+      }
+    },
+    {
+      "added_bit": 20,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          11,
+          20
+        ]
+      }
+    },
+    {
+      "added_bit": 21,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          11,
+          21
+        ]
+      }
+    },
+    {
+      "added_bit": 22,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          11,
+          22
+        ]
+      }
+    },
+    {
+      "added_bit": 23,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          11,
+          23
+        ]
+      }
+    },
+    {
+      "added_bit": 24,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          11,
+          24
+        ]
+      }
+    },
+    {
+      "added_bit": 25,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          11,
+          25
+        ]
+      }
+    },
+    {
+      "added_bit": 26,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          11,
+          26
+        ]
+      }
+    },
+    {
+      "added_bit": 27,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          11,
+          27
+        ]
+      }
+    },
+    {
+      "added_bit": 28,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          11,
+          28
+        ]
+      }
+    },
+    {
+      "added_bit": 29,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          11,
+          29
+        ]
+      }
+    },
+    {
+      "added_bit": 30,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          11,
+          30
+        ]
+      }
+    },
+    {
+      "added_bit": 31,
+      "gain_bits": 0.0,
+      "log2_target": -64.19790975786857,
+      "state_count": 8,
+      "window": {
+        "base": 278528,
+        "bits": [
+          4,
+          11,
+          31
+        ]
+      }
+    }
+  ],
+  "improved": false,
+  "method": "equal-cardinality single-round pairwise-XOR window",
+  "old_window": {
+    "base": 278528,
+    "bits": [
+      4,
+      11
+    ]
+  },
+  "relation": null,
+  "round": 1,
+  "seconds": 8.498426462,
+  "state_count": 4
+}

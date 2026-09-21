@@ -263,3 +263,143 @@ class Rust(unittest.TestCase):
                 self.assertAlmostEqual(
                     summary["log2_union"], rows[-1]["log2_max"], places=10
                 )
+
+    def test_joint_and_affine_windows(self):
+        binary = os.environ["DDW_RUST"]
+        device = os.environ.get("DDW_TEST_DEVICE", "0")
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source.jsonl"
+            subprocess.run(
+                [
+                    binary,
+                    "search",
+                    "--word-bits",
+                    "16",
+                    "--mode",
+                    "linear",
+                    "--width",
+                    "3",
+                    "--rounds",
+                    "5",
+                    "--devices",
+                    device,
+                    "--output",
+                    str(source),
+                ],
+                check=True,
+                stdout=subprocess.DEVNULL,
+            )
+            source_rows = self.check_cpu(source)
+            endpoint = tuple(int(x, 0) for x in source_rows[-1]["output"])
+
+            def endpoint_weight(path, replacement=None):
+                records = [json.loads(line) for line in path.read_text().splitlines()]
+                config = records[0]["config"]
+                left, right = Window(config["right"]), Window(config["left"])
+                prob = np.ones((1, 1))
+                for row in records[1:]:
+                    if "round" not in row:
+                        continue
+                    target = Window(
+                        int(row["window_base"], 0), tuple(row["window_bits"])
+                    )
+                    if replacement is not None and row["round"] == 3:
+                        target = Window(replacement["base"], tuple(replacement["bits"]))
+                    prob = cpu_step(prob, left, right, target, 16, "simon", "linear")
+                    left, right = target, left
+
+                # Physical linear output is swapped relative to the internal state.
+                def packed(window, value):
+                    if value & ~window.mask != window.base:
+                        return None
+                    return sum(
+                        ((value >> bit) & 1) << i for i, bit in enumerate(window.bits)
+                    )
+
+                i, j = packed(left, endpoint[1]), packed(right, endpoint[0])
+                return 0.0 if i is None or j is None else float(prob[i, j])
+
+            for shard in range(2):
+                path = root / f"joint-{shard}.jsonl"
+                subprocess.run(
+                    [
+                        binary,
+                        "joint-refine",
+                        str(source),
+                        "--round",
+                        "3",
+                        "--shard",
+                        str(shard),
+                        "--shards",
+                        "2",
+                        "--device",
+                        device,
+                        "--memory-gib",
+                        "2",
+                        "--output",
+                        str(path),
+                    ],
+                    check=True,
+                    stdout=subprocess.DEVNULL,
+                )
+                self.check_cpu(path)
+                metadata = json.loads(path.read_text().splitlines()[0])["optimization"]
+                self.assertAlmostEqual(
+                    metadata["after"], math.log2(endpoint_weight(path)), places=10
+                )
+                self.assertGreaterEqual(metadata["after"] + 1e-10, metadata["before"])
+            path = root / "affine.json"
+            subprocess.run(
+                [
+                    binary,
+                    "affine-refine",
+                    str(source),
+                    "--round",
+                    "3",
+                    "--device",
+                    device,
+                    "--memory-gib",
+                    "2",
+                    "--output",
+                    str(path),
+                ],
+                check=True,
+                stdout=subprocess.DEVNULL,
+            )
+            summary = json.loads(path.read_text())
+            for expanded in summary["expansion_profile"]:
+                self.assertAlmostEqual(
+                    expanded["log2_target"],
+                    math.log2(endpoint_weight(source, expanded["window"])),
+                    places=10,
+                )
+                self.assertGreaterEqual(expanded["gain_bits"] + 1e-10, 0.0)
+            if summary["best_expansion"] is not None:
+                expanded = summary["best_expansion"]
+                expanded_path = Path(expanded["path"])
+                self.check_cpu(expanded_path)
+                self.assertAlmostEqual(
+                    expanded["log2_target"],
+                    math.log2(endpoint_weight(expanded_path)),
+                    places=10,
+                )
+            if summary["improved"]:
+                total = 0.0
+                state_count = 0
+                for branch in summary["branches"]:
+                    state_count += 1 << len(branch["window"]["bits"])
+                    if branch["path"] is not None:
+                        branch_path = Path(branch["path"])
+                        self.check_cpu(branch_path)
+                        value = endpoint_weight(branch_path)
+                        self.assertAlmostEqual(
+                            math.log2(value), branch["log2_target"], places=10
+                        )
+                        total += value
+                self.assertEqual(state_count, summary["state_count"])
+                self.assertAlmostEqual(math.log2(total), summary["after"], places=10)
+            else:
+                self.assertAlmostEqual(
+                    summary["after"], source_rows[-1]["log2_max"], places=10
+                )

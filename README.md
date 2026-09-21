@@ -2,7 +2,7 @@
 
 SIMON / SIMECK 差分聚集与线性壳研究，基于《动态聚集效应及其在 SIMON 算法上的应用》。Rust 负责搜索、显存管理、结果记录和多卡调度；CUDA 负责 FP64 转移、选窗统计、投影质量评估和 NVLink 数据交换。主程序不依赖 Python。
 
-当前已验证的 SIMON128 差分结果为 **45 轮，log₂ 概率 −127.574478192099**；尚未突破到 46 轮。这里计算的是论文模型下保留路径的聚集权重，线性模式使用平方相关路径权重，不等同于固定密钥的有符号相关性。见[研究结果](docs/endpoint-refinement.md)和[后续轮数探索](docs/round-search.md)。
+当前已验证的 SIMON128 差分结果为 **45 轮，log₂ 概率 −127.442713104012**；尚未突破到 46 轮。这里计算的是论文模型下保留路径的聚集权重，线性模式使用平方相关路径权重，不等同于固定密钥的有符号相关性。见[研究结果](docs/endpoint-refinement.md)、[后续轮数探索](docs/round-search.md)和[本轮对照](docs/window-selection.md)。
 
 ## 构建与运行
 
@@ -60,9 +60,9 @@ CUDA_HOME=/usr/local/cuda cargo build --release
 
 新增 `compressed` 无损隐式矩阵后端：保持 FP64，把转移输出保存为陪集值和仿射映射，而非完整矩阵。已在共享单卡上完成 w19；对应稠密单状态为 2 TiB，实际表示约 14 GiB，另需工作区和前后状态。它降低显存需求，计算仍随窗口宽度指数增长。
 
-`refine --strategy posterior` 用最终端点后验质量评价全部单比特换位；`mirror` 构造对称计划；`symmetric-union` / `path-union` 对同端点路径集合进行精确去重。本轮 SIMON64 线性 25 轮候选达到 **−64.105767763312**，仍低于 −64 阈值。方法、限制、结果与命令见[隐式矩阵与 25 轮搜索](docs/implicit-search.md)。
+`refine --strategy posterior` 用最终端点后验质量评价全部单比特换位；`mirror` 构造对称计划；`symmetric-union` / `path-union` 对同端点路径集合进行精确去重。本轮 SIMON64 线性 25 轮候选达到 **−64.104083953419**，仍低于 −64 阈值。方法、限制、结果与命令见[隐式矩阵与 25 轮搜索](docs/implicit-search.md)。
 
-进一步的算法检查、已实现的零行消除，以及面向新增路径权重和联合换窗的研究方案见[算法优化方向](docs/algorithm-directions.md)。
+已实现按端点贡献自适应分配自由位：只加宽三轮即可优于原均匀 w15 方案，详见[选窗算法对照](docs/window-selection.md)。零行消除与新增路径评分的研究方案见[算法优化方向](docs/algorithm-directions.md)。
 
 ## 仓库结构
 
