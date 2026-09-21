@@ -784,6 +784,122 @@ impl Engine {
         }
         self.workspace["posterior_halves"].download(count)
     }
+    pub fn zeros(&mut self, rows: usize, cols: usize) -> Result<Matrix> {
+        let result = self.allocate(rows, cols)?;
+        self.module.launch(
+            "point_matrix",
+            blocks(result.size(), 256).min(65535),
+            256,
+            args![result.ptr(), result.size(), u64::MAX],
+        )?;
+        Ok(result)
+    }
+    fn reference_flags(&mut self, window: &Window, allowed: Option<&Window>) -> Result<u64> {
+        let flags = self.reserve("reference_flags", window.size() * 8)?;
+        let (mask, base) = allowed.map_or((0, 0), |w| (w.mask(), w.base));
+        self.module.launch(
+            "reference_membership",
+            blocks(window.size(), 128),
+            128,
+            args![
+                window.size(),
+                window.mask(),
+                window.base,
+                mask,
+                base,
+                i32::from(allowed.is_some()),
+                flags
+            ],
+        )?;
+        Ok(flags)
+    }
+    pub fn novelty_route(
+        &mut self,
+        inside: &Matrix,
+        outside: &Matrix,
+        window: &Window,
+        allowed: Option<&Window>,
+    ) -> Result<()> {
+        ensure!(
+            (inside.rows, inside.cols) == (outside.rows, outside.cols)
+                && inside.rows == window.size(),
+            "invalid tagged shape"
+        );
+        let flags = self.reference_flags(window, allowed)?;
+        self.module.launch(
+            "novelty_route",
+            blocks(inside.size(), 256).min(65535),
+            256,
+            args![
+                inside.ptr(),
+                outside.ptr(),
+                inside.size(),
+                inside.cols,
+                flags
+            ],
+        )
+    }
+    pub fn novelty_mix(
+        &mut self,
+        inside: &Matrix,
+        outside: &Matrix,
+        window: &Window,
+        allowed: Option<&Window>,
+    ) -> Result<Matrix> {
+        ensure!(
+            (inside.rows, inside.cols) == (outside.rows, outside.cols)
+                && inside.rows == window.size(),
+            "invalid tagged shape"
+        );
+        let flags = self.reference_flags(window, allowed)?;
+        let mixed = self.allocate(inside.rows, inside.cols)?;
+        self.module.launch(
+            "novelty_backward_mix",
+            blocks(inside.size(), 256).min(65535),
+            256,
+            args![
+                inside.ptr(),
+                outside.ptr(),
+                inside.size(),
+                inside.cols,
+                flags,
+                mixed.ptr()
+            ],
+        )?;
+        Ok(mixed)
+    }
+    pub fn posterior_tagged_halves(
+        &mut self,
+        forward: (&Matrix, &Matrix),
+        backward: (&Matrix, &Matrix),
+    ) -> Result<Vec<f64>> {
+        let (f0, f1) = forward;
+        let (h0, h1) = backward;
+        ensure!(
+            [f1, h0, h1]
+                .iter()
+                .all(|m| (m.rows, m.cols) == (f0.rows, f0.cols))
+                && f0.rows.is_power_of_two()
+                && f0.rows > 1,
+            "invalid tagged posterior shape"
+        );
+        let width = f0.rows.trailing_zeros() as usize;
+        let rows = self.reserve("posterior_rows", f0.rows * 8)?;
+        let result = self.reserve("posterior_halves", width * 2 * 8)?;
+        self.module.launch(
+            "posterior_tagged_rows",
+            f0.rows,
+            256,
+            args![f0.ptr(), f1.ptr(), h0.ptr(), h1.ptr(), f0.cols, rows],
+        )?;
+        self.module.launch(
+            "posterior_halves",
+            width * 2,
+            256,
+            args![rows, f0.rows, result],
+        )?;
+        self.workspace["posterior_halves"].download(width * 2)
+    }
     pub fn unpack(
         &mut self,
         pointers: &[u64],

@@ -1,0 +1,422 @@
+{
+  "jsonl_count": 57,
+  "checks": [
+    {
+      "file": "results/exploration/cross-round-search/endpoint-round-10.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.416214725,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/cross-round-search/endpoint-round-11.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.642506403,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/cross-round-search/endpoint-round-12.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.748378295,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/cross-round-search/endpoint-round-13.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.513747713,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/cross-round-search/novel-round-10.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.281333278,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/cross-round-search/novel-round-11.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.73512302,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/cross-round-search/novel-round-12.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.448260684,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/cross-round-search/novel-round-13.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 1.536379883,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/cross-round-search/novel-union.intersection-03.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 142.896483529
+    },
+    {
+      "file": "results/exploration/cross-round-search/novel-union.intersection-05.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 1.044070218
+    },
+    {
+      "file": "results/exploration/cross-round-search/novel-union.intersection-06.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 1.173227584
+    },
+    {
+      "file": "results/exploration/cross-round-search/novel-union.intersection-07.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 1.207076217
+    },
+    {
+      "file": "results/exploration/cross-round-search/novel-union.intersection-09.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 2.13287713
+    },
+    {
+      "file": "results/exploration/cross-round-search/novel-union.intersection-10.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.887243274
+    },
+    {
+      "file": "results/exploration/cross-round-search/novel-union.intersection-11.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 1.012147739
+    },
+    {
+      "file": "results/exploration/cross-round-search/novel-union.intersection-12.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 1.037528061
+    },
+    {
+      "file": "results/exploration/cross-round-search/novel-union.intersection-13.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 2.300285227
+    },
+    {
+      "file": "results/exploration/cross-round-search/novel-union.intersection-14.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 1.3919635910000001
+    },
+    {
+      "file": "results/exploration/cross-round-search/novel-union.intersection-15.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.753495826
+    },
+    {
+      "file": "results/exploration/novel-block-sweep/iteration-1/round-10.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.869135949,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/novel-block-sweep/iteration-1/round-11.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.752798384,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/novel-block-sweep/iteration-1/round-12.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.775002959,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/novel-block-sweep/iteration-1/round-13.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.775674487,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/novel-block-sweep/iteration-1/round-14.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 1.048523575,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/novel-block-sweep/iteration-1/round-7.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.168430184,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/novel-block-sweep/iteration-1/round-8.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 1.202789054,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/novel-block-sweep/iteration-1/round-9.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.930539602,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/novel-block-sweep/union.intersection-03.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 149.838667916
+    },
+    {
+      "file": "results/exploration/novel-block-sweep/union.intersection-05.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 1.328862953
+    },
+    {
+      "file": "results/exploration/novel-block-sweep/union.intersection-06.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.660636511
+    },
+    {
+      "file": "results/exploration/novel-block-sweep/union.intersection-07.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 1.192601764
+    },
+    {
+      "file": "results/exploration/novel-block-sweep/union.intersection-09.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 1.608348095
+    },
+    {
+      "file": "results/exploration/novel-block-sweep/union.intersection-10.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 2.877077682
+    },
+    {
+      "file": "results/exploration/novel-block-sweep/union.intersection-11.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 1.755184355
+    },
+    {
+      "file": "results/exploration/novel-block-sweep/union.intersection-12.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 1.272053009
+    },
+    {
+      "file": "results/exploration/novel-block-sweep/union.intersection-13.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 1.192023928
+    },
+    {
+      "file": "results/exploration/novel-block-sweep/union.intersection-14.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 1.169202788
+    },
+    {
+      "file": "results/exploration/novel-block-sweep/union.intersection-15.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.655404162
+    },
+    {
+      "file": "results/exploration/novel-block-sweep-next/iteration-1/round-10.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.428538414,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/novel-block-sweep-next/iteration-1/round-11.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.724276974,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/novel-block-sweep-next/iteration-1/round-12.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.414990678,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/novel-block-sweep-next/iteration-1/round-13.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 1.137999652,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/novel-block-sweep-next/iteration-1/round-14.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 1.141861398,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/novel-block-sweep-next/iteration-1/round-15.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.478294871,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/novel-block-sweep-next/iteration-1/round-16.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 1.053557048,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/novel-block-sweep-next/iteration-1/round-17.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.703104904,
+      "objective_monotone": true,
+      "fixed_target_valid": true
+    },
+    {
+      "file": "results/exploration/novel-block-sweep-next/union.intersection-03.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 150.041705628
+    },
+    {
+      "file": "results/exploration/novel-block-sweep-next/union.intersection-05.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.682341112
+    },
+    {
+      "file": "results/exploration/novel-block-sweep-next/union.intersection-06.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.44072765
+    },
+    {
+      "file": "results/exploration/novel-block-sweep-next/union.intersection-07.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.459923587
+    },
+    {
+      "file": "results/exploration/novel-block-sweep-next/union.intersection-09.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.431906673
+    },
+    {
+      "file": "results/exploration/novel-block-sweep-next/union.intersection-10.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.545679395
+    },
+    {
+      "file": "results/exploration/novel-block-sweep-next/union.intersection-11.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 1.012371198
+    },
+    {
+      "file": "results/exploration/novel-block-sweep-next/union.intersection-12.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.959600867
+    },
+    {
+      "file": "results/exploration/novel-block-sweep-next/union.intersection-13.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.658661744
+    },
+    {
+      "file": "results/exploration/novel-block-sweep-next/union.intersection-14.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.47840241
+    },
+    {
+      "file": "results/exploration/novel-block-sweep-next/union.intersection-15.jsonl",
+      "rounds": 25,
+      "max_log2_error": null,
+      "total_seconds": 0.672877662
+    }
+  ],
+  "maximum_novelty_identity_error": 1.4210854715202004e-14,
+  "unions": [
+    {
+      "file": "results/exploration/cross-round-search/novel-union.json",
+      "log2_union": -64.0940602401298,
+      "independent_sum_error": 0.0
+    },
+    {
+      "file": "results/exploration/novel-block-sweep/union.json",
+      "log2_union": -64.08810560425165,
+      "independent_sum_error": 0.0
+    },
+    {
+      "file": "results/exploration/novel-block-sweep-next/union.json",
+      "log2_union": -64.08815533501945,
+      "independent_sum_error": 0.0
+    }
+  ],
+  "tests": {
+    "rust_unit": 4,
+    "rust_gpu": 2,
+    "cpu_block_oracle_cases": 12,
+    "declared_target_and_existing_union_tests": 2,
+    "clippy": "passed",
+    "release_build": "passed"
+  },
+  "scope": "FP64 numerical checks, not interval arithmetic proof"
+}

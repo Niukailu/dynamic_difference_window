@@ -19,3 +19,5 @@ JSONL 保存完整窗口、概率峰值、总质量、输出端点、设备列�
 新的 `compressed.rs` 组织无损隐式状态的固定重放/嵌套扩窗，`cuda/implicit.cu` 在虚拟元素上执行归约，并缓存边缘统计。`posterior.rs` 利用前向与伴随后向消息批量评价窗口换位；`union.rs` 用完整容斥计算同端点路径并集。详见[后续实现与验证](implicit-search.md)。
 
 `posterior.rs` 还支持双位四分区与候选分片；`affine.rs` 使用这些分区评价等状态数的二元 XOR 窗口，并保存单比特扩展的端点贡献。单轮搜索通过 `refine::backward_suffix` 在 GPU 上保留唯一需要的后缀。`tools/profile_windows.py` 只负责分配 Rust 进程和选择完整重放过的新增位，密码计算仍在 Rust/CUDA 中。详见[选窗算法实验](window-selection.md)。
+
+`tagged.rs` 用非负双状态记录仍在参考窗口内与曾离开参考窗口的路径，支持前向、伴随和新增路径后验。`block.rs` 在相邻两个窗口的候选池中联合搜索；`tools/block_sweep.py` 调度独立 GPU 任务并逐批接受最佳完整计划。候选输出保留真实峰值，另以 `target_output` / `log2_target` 声明优化端点；`union.rs` 使用声明端点及其权重。详见[跨轮与新增路径搜索](cross-round-search.md)。

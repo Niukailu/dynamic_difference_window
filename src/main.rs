@@ -29,6 +29,22 @@ struct Selection {
 }
 #[derive(Subcommand)]
 enum Command {
+    /// Jointly replace adjacent windows; optionally maximize paths outside a reference.
+    BlockRefine {
+        plan: PathBuf,
+        #[arg(long)]
+        reference: Option<PathBuf>,
+        #[arg(long)]
+        round: usize,
+        #[arg(long, default_value_t = 32)]
+        pool: usize,
+        #[arg(long, default_value_t = 0)]
+        device: i32,
+        #[arg(long, default_value_t = 192.)]
+        memory_gib: f64,
+        #[arg(long)]
+        output: PathBuf,
+    },
     /// Replace one coordinate window by an equal-cardinality XOR-constrained window.
     AffineRefine {
         plan: PathBuf,
@@ -321,6 +337,28 @@ fn main() -> Result<()> {
             },
             &output,
         ),
+        Command::BlockRefine {
+            plan,
+            reference,
+            round,
+            pool,
+            device,
+            memory_gib,
+            output,
+        } => {
+            let reference = reference.as_deref().map(Plan::read).transpose()?;
+            ddw::block::execute(
+                &Plan::read(&plan)?,
+                reference.as_ref(),
+                &ddw::block::Options {
+                    round,
+                    pool,
+                    device,
+                    memory: memory_gib,
+                },
+                &output,
+            )
+        }
         Command::AffineRefine {
             plan,
             round,

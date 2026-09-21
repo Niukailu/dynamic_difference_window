@@ -403,3 +403,195 @@ class Rust(unittest.TestCase):
                 self.assertAlmostEqual(
                     summary["after"], source_rows[-1]["log2_max"], places=10
                 )
+
+    def test_cross_round_and_novelty(self):
+        binary = os.environ["DDW_RUST"]
+        device = os.environ.get("DDW_TEST_DEVICE", "0")
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for mode in ("difference", "linear"):
+                source = root / f"source-{mode}.jsonl"
+                subprocess.run(
+                    [
+                        binary,
+                        "search",
+                        "--word-bits",
+                        "16",
+                        "--mode",
+                        mode,
+                        "--left",
+                        "1",
+                        "--right",
+                        "1",
+                        "--width",
+                        "3",
+                        "--rounds",
+                        "5",
+                        "--devices",
+                        device,
+                        "--output",
+                        str(source),
+                    ],
+                    check=True,
+                    stdout=subprocess.DEVNULL,
+                )
+                original = self.check_cpu(source)
+                schedule = [
+                    Window(int(x["window_base"], 0), tuple(x["window_bits"]))
+                    for x in original
+                ]
+                physical = tuple(int(x, 0) for x in original[-1]["output"])
+                point = physical[::-1] if mode == "linear" else physical
+
+                def score(windows, novel):
+                    left, right = Window(1), Window(1)
+                    total = np.ones((1, 1))
+                    common = np.ones((1, 1))
+                    for index, target in enumerate(windows):
+                        total = cpu_step(total, left, right, target, 16, "simon", mode)
+                        common = cpu_step(
+                            common, left, right, target, 16, "simon", mode
+                        )
+                        for row, value in enumerate(target.values()):
+                            if schedule[index].index(int(value)) is None:
+                                common[row, :] = 0.0
+                        left, right = target, left
+                    i, j = left.index(point[0]), right.index(point[1])
+                    if i is None or j is None:
+                        return 0.0, 0.0
+                    weight = float(total[i, j])
+                    return weight, weight - float(common[i, j]) if novel else weight
+
+                for novel in (False, True):
+                    for round_ in (1, 2, 4):
+                        path = root / f"block-{mode}-{novel}-{round_}.jsonl"
+                        command = [
+                            binary,
+                            "block-refine",
+                            str(source),
+                            "--round",
+                            str(round_),
+                            "--pool",
+                            "4",
+                            "--device",
+                            device,
+                            "--memory-gib",
+                            "2",
+                            "--output",
+                            str(path),
+                        ]
+                        if novel:
+                            command += ["--reference", str(source)]
+                        subprocess.run(command, check=True, stdout=subprocess.DEVNULL)
+                        self.check_cpu(path)
+                        records = [json.loads(x) for x in path.read_text().splitlines()]
+                        meta = records[0]["optimization"]
+                        pools = [
+                            [Window(x[0]["base"], tuple(x[0]["bits"])) for x in pool]
+                            for pool in meta["candidate_pools"]
+                        ]
+                        best = 0.0
+                        for a in pools[0]:
+                            for b in pools[1]:
+                                candidate = schedule.copy()
+                                candidate[round_ - 1 : round_ + 1] = [a, b]
+                                _, value = score(candidate, novel)
+                                best = max(best, value)
+                        actual = (
+                            0.0
+                            if meta["after_novel"] is None
+                            else 2.0 ** meta["after_novel"]
+                        )
+                        self.assertTrue(
+                            math.isclose(actual, best, rel_tol=1e-9, abs_tol=1e-30)
+                        )
+                        selected = schedule.copy()
+                        selected[round_ - 1 : round_ + 1] = [
+                            pools[k][i] for k, i in enumerate(meta["selected_indices"])
+                        ]
+                        total, value = score(selected, novel)
+                        self.assertAlmostEqual(
+                            math.log2(total), meta["after_target"], places=10
+                        )
+                        self.assertTrue(
+                            math.isclose(actual, value, rel_tol=1e-9, abs_tol=1e-30)
+                        )
+                        final = [x for x in records if "round" in x][-1]
+                        self.assertEqual(
+                            [int(x, 0) for x in final["target_output"]], list(physical)
+                        )
+                        self.assertAlmostEqual(
+                            final["log2_target"], math.log2(total), places=10
+                        )
+                        if novel:
+                            ref_weight = 2.0 ** original[-1]["log2_max"]
+                            self.assertAlmostEqual(
+                                meta["log2_union"],
+                                math.log2(ref_weight + value),
+                                places=10,
+                            )
+
+    def test_union_uses_declared_target(self):
+        binary = os.environ["DDW_RUST"]
+        device = os.environ.get("DDW_TEST_DEVICE", "0")
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "target.jsonl"
+            config = {
+                "cipher": "simon",
+                "mode": "linear",
+                "word_bits": 16,
+                "left": 65535,
+                "right": 65535,
+                "width": 2,
+                "rounds": 5,
+            }
+            left = right = Window(65535)
+            prob = np.ones((1, 1))
+            records = [{"config": config}]
+            for round_ in range(1, 6):
+                target = Window(65535, (0, 2)) if round_ == 5 else Window(65535)
+                prob = cpu_step(prob, left, right, target, 16, "simon", "linear")
+                row, col = np.unravel_index(prob.argmax(), prob.shape)
+                record = {
+                    "round": round_,
+                    "window_base": hex(target.base),
+                    "window_bits": target.bits,
+                    "output": [
+                        hex(int(left.values()[col])),
+                        hex(int(target.values()[row])),
+                    ],
+                    "log2_max": math.log2(prob.max()),
+                    "log2_mass": math.log2(prob.sum()),
+                }
+                records.append(record)
+                right, left = left, target
+            records[-1]["target_output"] = ["0xffff", "0xffff"]
+            records[-1]["log2_target"] = math.log2(
+                prob[left.index(65535), right.index(65535)]
+            )
+            self.assertNotEqual(records[-1]["output"], records[-1]["target_output"])
+            source.write_text("\n".join(map(json.dumps, records)) + "\n")
+            self.check_cpu(source)
+            summary = root / "union.json"
+            subprocess.run(
+                [
+                    binary,
+                    "symmetric-union",
+                    str(source),
+                    "--device",
+                    device,
+                    "--memory-gib",
+                    "2",
+                    "--output",
+                    str(summary),
+                ],
+                check=True,
+                stdout=subprocess.DEVNULL,
+            )
+            result = json.loads(summary.read_text())
+            self.assertEqual(result["endpoint"], [65535, 65535])
+            self.assertAlmostEqual(
+                result["log2_a"], records[-1]["log2_target"], places=10
+            )
+            self.check_cpu(Path(result["intersection_file"]))

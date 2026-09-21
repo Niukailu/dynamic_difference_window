@@ -1,0 +1,39 @@
+{
+  "reference": "results/exploration/dedicated-expansion/gpu-0-w20.jsonl",
+  "objective": "novel paths",
+  "pool": 32,
+  "rounds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17
+  ],
+  "devices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "history": [
+    {
+      "source": "results/exploration/novel-block-sweep/iteration-1/round-10.jsonl",
+      "selected": "results/exploration/novel-block-sweep-next/iteration-1/round-13.jsonl",
+      "improved": true,
+      "before": -70.74666925077149,
+      "after": -70.462383169268,
+      "after_target": -64.86744461922954,
+      "block_round": 13,
+      "blocks_evaluated": 8
+    }
+  ],
+  "best_plan": "results/exploration/novel-block-sweep-next/iteration-1/round-13.jsonl",
+  "seconds": 286.41970929922536
+}

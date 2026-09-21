@@ -211,3 +211,50 @@ extern "C" __global__ void posterior_quarters(const double *rows, U count,
     result[blockIdx.x] = total;
   }
 }
+
+// The tag records whether a path has ever left the reference schedule.
+extern "C" __global__ void reference_membership(U rows, U mask, U base,
+                                                U allowed_mask, U allowed_base,
+                                                int enabled, U *flags) {
+  U row = (U)blockIdx.x * blockDim.x + threadIdx.x;
+  if (row < rows)
+    flags[row] = enabled && !(((deposit(row, mask) | base) ^ allowed_base) & ~allowed_mask);
+}
+extern "C" __global__ void novelty_route(double *inside, double *outside,
+                                         U count, U cols, const U *flags) {
+  for (U i = (U)blockIdx.x * blockDim.x + threadIdx.x; i < count;
+       i += (U)gridDim.x * blockDim.x) {
+    if (!flags[i / cols]) {
+      outside[i] += inside[i];
+      inside[i] = 0;
+    }
+  }
+}
+extern "C" __global__ void novelty_backward_mix(const double *inside,
+                                                const double *outside,
+                                                U count, U cols, const U *flags,
+                                                double *mixed) {
+  for (U i = (U)blockIdx.x * blockDim.x + threadIdx.x; i < count;
+       i += (U)gridDim.x * blockDim.x)
+    mixed[i] = flags[i / cols] ? inside[i] : outside[i];
+}
+extern "C" __global__ void posterior_tagged_rows(const double *f0, const double *f1,
+                                                 const double *h0, const double *h1,
+                                                 U cols, double *rows) {
+  U row = blockIdx.x;
+  double sum = 0;
+  for (U col = threadIdx.x; col < cols; col += 256) {
+    U i = row * cols + col;
+    sum += f0[i] * h0[i] + f1[i] * h1[i];
+  }
+  __shared__ double warp[8];
+  for (int d = 16; d; d >>= 1)
+    sum += __shfl_down_sync(0xffffffff, sum, d);
+  if (!(threadIdx.x & 31)) warp[threadIdx.x >> 5] = sum;
+  __syncthreads();
+  if (!threadIdx.x) {
+    double total = 0;
+    for (int w = 0; w < 8; w++) total += warp[w];
+    rows[row] = total;
+  }
+}

@@ -30,10 +30,10 @@ pub fn execute(
     }
     ensure!(plan.windows.len() >= 2, "at least two rounds required");
     ensure!(
-        plan.endpoint()? == (plan.config.right, plan.config.left),
+        plan.target_endpoint()? == (plan.config.right, plan.config.left),
         "reflection requires swapped endpoint"
     );
-    let a = plan.records.last().unwrap()["log2_max"].as_f64().unwrap();
+    let a = plan.target_log2()?;
     let initial = plan.config.initial();
     let mut reverse = vec![initial.1, initial.0];
     reverse.extend_from_slice(&plan.windows[..plan.windows.len() - 2]);
@@ -58,7 +58,7 @@ pub fn execute(
         "intersection exceeds constituent probability"
     );
     let probability = a + (2. - overlap.min(1.)).log2();
-    let result = json!({"config":plan.config,"reference":source,"rounds":plan.config.rounds,"endpoint":plan.endpoint()?,"method":"2P(A)-P(A intersection reflected(A)); exact virtual FP64 replay","log2_a":a,"log2_intersection":intersection,"log2_union":probability,"threshold_log2":-2.*plan.config.word_bits as f64,"above_threshold":probability > -2.*plan.config.word_bits as f64,"intersection_file":if intersection_path.exists(){Some(&intersection_path)}else{None},"seconds":start.elapsed().as_secs_f64()});
+    let result = json!({"config":plan.config,"reference":source,"rounds":plan.config.rounds,"endpoint":plan.target_endpoint()?,"method":"2P(A)-P(A intersection reflected(A)); exact virtual FP64 replay","log2_a":a,"log2_intersection":intersection,"log2_union":probability,"threshold_log2":-2.*plan.config.word_bits as f64,"above_threshold":probability > -2.*plan.config.word_bits as f64,"intersection_file":if intersection_path.exists(){Some(&intersection_path)}else{None},"seconds":start.elapsed().as_secs_f64()});
     if let Some(parent) = output.parent() {
         std::fs::create_dir_all(parent)?;
     }
@@ -149,12 +149,12 @@ pub fn multiple(
             "incompatible plans"
         );
         ensure!(
-            plan.endpoint()? == (c.right, c.left),
+            plan.target_endpoint()? == (c.right, c.left),
             "current union command requires swapped endpoints"
         );
         config.width = config.width.max(c.width);
         sets.push(plan.windows.clone());
-        logs.push(plan.records.last().unwrap()["log2_max"].as_f64().unwrap());
+        logs.push(plan.target_log2()?);
         if reflect {
             let initial = c.initial();
             let mut reversed = vec![initial.1, initial.0];

@@ -60,9 +60,9 @@ CUDA_HOME=/usr/local/cuda cargo build --release
 
 新增 `compressed` 无损隐式矩阵后端：保持 FP64，把转移输出保存为陪集值和仿射映射，而非完整矩阵。已在共享单卡上完成 w19；对应稠密单状态为 2 TiB，实际表示约 14 GiB，另需工作区和前后状态。它降低显存需求，计算仍随窗口宽度指数增长。
 
-`refine --strategy posterior` 用最终端点后验质量评价全部单比特换位；`mirror` 构造对称计划；`symmetric-union` / `path-union` 对同端点路径集合进行精确去重。本轮 SIMON64 线性 25 轮候选达到 **−64.104083953419**，仍低于 −64 阈值。方法、限制、结果与命令见[隐式矩阵与 25 轮搜索](docs/implicit-search.md)。
+`refine --strategy posterior` 用最终端点后验质量评价全部单比特换位；`mirror` 构造对称计划；`symmetric-union` / `path-union` 对同端点路径集合进行精确去重。SIMON64 线性 25 轮经跨轮选窗与新增路径搜索达到 **−64.088105604252**，仍低于 −64 阈值。最新结果、验证与命令见[跨轮与新增路径搜索](docs/cross-round-search.md)；后端说明见[隐式矩阵搜索](docs/implicit-search.md)。
 
-已实现按端点贡献自适应分配自由位：只加宽三轮即可优于原均匀 w15 方案，详见[选窗算法对照](docs/window-selection.md)。零行消除与新增路径评分的研究方案见[算法优化方向](docs/algorithm-directions.md)。
+已实现按端点贡献自适应分配自由位：只加宽三轮即可优于原均匀 w15 方案，详见[选窗算法对照](docs/window-selection.md)。新增路径评分已实现；进一步优化方案见[算法优化方向](docs/algorithm-directions.md)。
 
 ## 仓库结构
 

@@ -1,0 +1,170 @@
+[
+  {
+    "device": 0,
+    "objective": "endpoint",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "block-refine",
+      "results/exploration/simon64-linear25-posterior-w14.jsonl",
+      "--round",
+      "10",
+      "--pool",
+      "32",
+      "--device",
+      "0",
+      "--memory-gib",
+      "192",
+      "--output",
+      "results/exploration/cross-round-search/endpoint-round-10.jsonl"
+    ],
+    "output": "results/exploration/cross-round-search/endpoint-round-10.jsonl"
+  },
+  {
+    "device": 1,
+    "objective": "endpoint",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "block-refine",
+      "results/exploration/simon64-linear25-posterior-w14.jsonl",
+      "--round",
+      "11",
+      "--pool",
+      "32",
+      "--device",
+      "1",
+      "--memory-gib",
+      "192",
+      "--output",
+      "results/exploration/cross-round-search/endpoint-round-11.jsonl"
+    ],
+    "output": "results/exploration/cross-round-search/endpoint-round-11.jsonl"
+  },
+  {
+    "device": 2,
+    "objective": "endpoint",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "block-refine",
+      "results/exploration/simon64-linear25-posterior-w14.jsonl",
+      "--round",
+      "12",
+      "--pool",
+      "32",
+      "--device",
+      "2",
+      "--memory-gib",
+      "192",
+      "--output",
+      "results/exploration/cross-round-search/endpoint-round-12.jsonl"
+    ],
+    "output": "results/exploration/cross-round-search/endpoint-round-12.jsonl"
+  },
+  {
+    "device": 3,
+    "objective": "endpoint",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "block-refine",
+      "results/exploration/simon64-linear25-posterior-w14.jsonl",
+      "--round",
+      "13",
+      "--pool",
+      "32",
+      "--device",
+      "3",
+      "--memory-gib",
+      "192",
+      "--output",
+      "results/exploration/cross-round-search/endpoint-round-13.jsonl"
+    ],
+    "output": "results/exploration/cross-round-search/endpoint-round-13.jsonl"
+  },
+  {
+    "device": 4,
+    "objective": "novel",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "block-refine",
+      "results/exploration/simon64-linear25-posterior-w14.jsonl",
+      "--round",
+      "10",
+      "--pool",
+      "32",
+      "--device",
+      "4",
+      "--memory-gib",
+      "192",
+      "--output",
+      "results/exploration/cross-round-search/novel-round-10.jsonl",
+      "--reference",
+      "results/exploration/dedicated-expansion/gpu-0-w20.jsonl"
+    ],
+    "output": "results/exploration/cross-round-search/novel-round-10.jsonl"
+  },
+  {
+    "device": 5,
+    "objective": "novel",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "block-refine",
+      "results/exploration/simon64-linear25-posterior-w14.jsonl",
+      "--round",
+      "11",
+      "--pool",
+      "32",
+      "--device",
+      "5",
+      "--memory-gib",
+      "192",
+      "--output",
+      "results/exploration/cross-round-search/novel-round-11.jsonl",
+      "--reference",
+      "results/exploration/dedicated-expansion/gpu-0-w20.jsonl"
+    ],
+    "output": "results/exploration/cross-round-search/novel-round-11.jsonl"
+  },
+  {
+    "device": 6,
+    "objective": "novel",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "block-refine",
+      "results/exploration/simon64-linear25-posterior-w14.jsonl",
+      "--round",
+      "12",
+      "--pool",
+      "32",
+      "--device",
+      "6",
+      "--memory-gib",
+      "192",
+      "--output",
+      "results/exploration/cross-round-search/novel-round-12.jsonl",
+      "--reference",
+      "results/exploration/dedicated-expansion/gpu-0-w20.jsonl"
+    ],
+    "output": "results/exploration/cross-round-search/novel-round-12.jsonl"
+  },
+  {
+    "device": 7,
+    "objective": "novel",
+    "command": [
+      "/tmp/ddw-rust-target/release/ddw",
+      "block-refine",
+      "results/exploration/simon64-linear25-posterior-w14.jsonl",
+      "--round",
+      "13",
+      "--pool",
+      "32",
+      "--device",
+      "7",
+      "--memory-gib",
+      "192",
+      "--output",
+      "results/exploration/cross-round-search/novel-round-13.jsonl",
+      "--reference",
+      "results/exploration/dedicated-expansion/gpu-0-w20.jsonl"
+    ],
+    "output": "results/exploration/cross-round-search/novel-round-13.jsonl"
+  }
+]

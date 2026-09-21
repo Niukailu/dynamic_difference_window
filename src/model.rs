@@ -237,6 +237,50 @@ impl Plan {
             records: vec![],
         })
     }
+    /// Explicit optimization target, when different from the maximum entry.
+    pub fn target_endpoint(&self) -> Result<(u64, u64)> {
+        let last = self.records.last().context("no final endpoint")?;
+        if let Some(values) = last.get("target_output") {
+            let values = values.as_array().context("invalid target output")?;
+            ensure!(values.len() == 2, "target output needs two words");
+            let point = (
+                number(values[0].as_str().context("invalid target word")?)?,
+                number(values[1].as_str().context("invalid target word")?)?,
+            );
+            let internal = self.config.physical(point);
+            let left = self.windows.last().context("empty window schedule")?;
+            let initial_left = self.config.initial().0;
+            let right = if self.windows.len() >= 2 {
+                &self.windows[self.windows.len() - 2]
+            } else {
+                &initial_left
+            };
+            ensure!(
+                left.index(internal.0).is_some() && right.index(internal.1).is_some(),
+                "target outside final windows"
+            );
+            Ok(point)
+        } else {
+            self.endpoint()
+        }
+    }
+    pub fn target_log2(&self) -> Result<f64> {
+        let last = self.records.last().context("missing target probability")?;
+        let value = if last.get("target_output").is_some() {
+            &last["log2_target"]
+        } else {
+            &last["log2_max"]
+        };
+        let value = value
+            .as_f64()
+            .context("target has no positive recorded weight")?;
+        let peak = last["log2_max"].as_f64().context("missing peak weight")?;
+        ensure!(
+            value.is_finite() && value <= 1e-12 && value <= peak + 1e-9,
+            "invalid target probability"
+        );
+        Ok(value)
+    }
     pub fn endpoint(&self) -> Result<(u64, u64)> {
         let last = self.records.last().context("no final endpoint")?;
         Ok((
@@ -248,6 +292,19 @@ impl Plan {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn declared_target_is_not_the_peak() {
+        let config = serde_json::json!({"config":{"cipher":"simon","mode":"difference","word_bits":16,"left":0,"right":1,"width":1,"rounds":1}});
+        let row = serde_json::json!({"round":1,"window_base":"0x0","window_bits":[1],"output":["0x0","0x0"],"log2_max":-2.,"target_output":["0x2","0x0"],"log2_target":-3.});
+        let mut plan = Plan::parse(&format!("{config}\n{row}\n")).unwrap();
+        assert_eq!(plan.endpoint().unwrap(), (0, 0));
+        assert_eq!(plan.target_endpoint().unwrap(), (2, 0));
+        assert_eq!(plan.target_log2().unwrap(), -3.);
+        plan.records[0]["log2_target"] = serde_json::json!(-1.);
+        assert!(plan.target_log2().is_err());
+        plan.records[0]["target_output"] = serde_json::json!(["0x1", "0x0"]);
+        assert!(plan.target_endpoint().is_err());
+    }
     #[test]
     fn rejects_invalid_plans() {
         let config = serde_json::json!({"config":{"cipher":"simon","mode":"difference","word_bits":16,"left":0,"right":1,"width":2,"rounds":1}});

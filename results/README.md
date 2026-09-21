@@ -11,14 +11,14 @@
 重点记录：
 
 - [SIMON128，45 轮，w19，−127.442713104012](best/simon128-w19-endpoint-expanded.jsonl)。
-- [SIMON64，25 轮，w20 反射并集，−64.104083953419](best/simon64-linear25-dedicated-union.json)，仍低于 −64 阈值。
+- [SIMON64，25 轮，跨轮互补路径并集，−64.088105604252](best/simon64-linear25-novel-union.json)，仍低于 −64 阈值。
 - [自适应宽度选择](exploration/adaptive-width-w14/summary.json)与[同规模选窗对照](../docs/window-selection.md)。
 
 - [SIMON128，45 轮，w17，−127.574478192099](best/simon128-w17-endpoint-expanded.jsonl)；[Rust 八卡逐轮复核](validation/rust-eight-gpu-w17.jsonl)。
 - [SIMON128，45 轮，w14，−127.859300186727](best/simon128-w14-endpoint-refined.jsonl)。
 - [SIMON64，23 轮，w10，−65.590628604365](best/simon64-w10-endpoint-refined.jsonl)。
 - [SIMON128 继续至 48 轮](exploration/simon128-best-continuation48.jsonl)：46 轮未达到 2^-128。
-- [SIMON64 线性 25 轮最新并集](best/simon64-linear25-implicit-union.json)：**−64.105767763312**，未达到 2^-64；[此前结果](exploration/simon64-linear25-symmetric-union.json)为 −64.134564031949。方法与验证见[隐式矩阵搜索](../docs/implicit-search.md)。
+- [SIMON64 线性 25 轮早期隐式并集](best/simon64-linear25-implicit-union.json)：**−64.105767763312**，未达到 2^-64；[此前结果](exploration/simon64-linear25-symmetric-union.json)为 −64.134564031949。方法与验证见[隐式矩阵搜索](../docs/implicit-search.md)。
 
 JSONL 首行为配置，其后是逐轮记录，可带末尾汇总。`legacy-*` 的概率来自原日志六位小数；其余结果使用修正后的投影消元。`exploration/simon64-diff-w10-marginal.jsonl` 第 18 轮丢失全部路径，是失败证据，不能当作完整 23 轮运行。
 
